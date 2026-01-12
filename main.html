@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система управления требованиями | Requirements Manager</title>
+    <meta name="description"
+        content="Профессиональная система для управления требованиями к программному обеспечению и проектами. Контролируйте, отслеживайте и управляйте требованиями эффективно.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #D946EF 100%);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .requirement-item {
+            transition: all 0.2s ease;
+        }
+
+        .requirement-item:hover {
+            background-color: #F3F4F6;
+        }
+
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-tasks text-2xl"></i>
+                    <h1 class="text-2xl font-bold">AСУРТ</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="hover:text-indigo-200 font-medium">Главная</a>
+                    <a href="#" class="hover:text-indigo-200 font-medium">Возможности</a>
+                    <a href="#" class="hover:text-indigo-200 font-medium">Цены</a>
+                    <a href="#" class="hover:text-indigo-200 font-medium">Документация</a>
+                    <a href="#" class="hover:text-indigo-200 font-medium">Контакты</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="loginBtn"
+                        class="px-4 py-2 rounded-lg bg-white text-indigo-600 font-medium hover:bg-indigo-50 transition">
+                        Войти
+                    </button>
+                    <button class="md:hidden text-xl"><i class="fas fa-bars"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Управляйте требованиями эффективно</h1>
+                    <p class="text-xl mb-8 text-indigo-100">Мощная система для контроля и управления требованиями к ПО,
+                        обеспечивающая ясность, прозрачность и отслеживаемость на всех этапах разработки.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button
+                            class="px-6 py-3 bg-white text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 transition">Начать
+                            бесплатно</button>
+                        <button
+                            class="px-6 py-3 border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-indigo-600 transition">Демо
+                            версия</button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="https://imgholder.ru/600x400/8493a8/adb9ca&amp;text=SCREENSHOT&amp;font=kelson"
+                        alt="Интерфейс системы управления требованиями" class="rounded-xl shadow-2xl">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Мощные функции для ваших проектов</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Все необходимые инструменты для эффективного управления
+                    требованиями в одном месте</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover transition">
+                    <div class="text-indigo-600 mb-4">
+                        <i class="fas fa-sitemap text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Иерархия требований</h3>
+                    <p class="text-gray-600">Создавайте структурированные иерархии требований с неограниченными уровнями
+                        вложенности.</p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover transition">
+                    <div class="text-indigo-600 mb-4">
+                        <i class="fas fa-link text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Трассируемость</h3>
+                    <p class="text-gray-600">Отслеживайте связи между требованиями, тестами и задачами для полной
+                        прозрачности.</p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover transition">
+                    <div class="text-indigo-600 mb-4">
+                        <i class="fas fa-users text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Совместная работа</h3>
+                    <p class="text-gray-600">Встроенные инструменты для совместной работы с комментариями и
+                        уведомлениями.</p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover transition">
+                    <div class="text-indigo-600 mb-4">
+                        <i class="fas fa-file-export text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Экспорт документов</h3>
+                    <p class="text-gray-600">Генерация профессиональных документов в форматах Word, Excel, PDF с вашим
+                        брендингом.</p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover transition">
+                    <div class="text-indigo-600 mb-4">
+                        <i class="fas fa-shield-alt text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Контроль версий</h3>
+                    <p class="text-gray-600">Полная история изменений с возможностью сравнения версий и отката
+                        изменений.</p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-gray-50 p-8 rounded-xl card-hover transition">
+                    <div class="text-indigo-600 mb-4">
+                        <i class="fas fa-chart-line text-4xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-gray-800">Аналитика и отчеты</h3>
+                    <p class="text-gray-600">Мощные инструменты анализа для контроля выполнения и выявления узких мест.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <img src="https://imgholder.ru/550x400/8493a8/adb9ca&amp;text=APP+DEMO&amp;font=kelson"
+                        alt="Демонстрация работы системы" class="rounded-lg shadow-lg">
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Удобный и интуитивный интерфейс</h2>
+                    <p class="text-gray-600 mb-6">Наша система разработана с учетом лучших практик UX/UI, что делает
+                        процесс работы с требованиями простым и приятным.</p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-indigo-100 p-2 rounded-full mr-4">
+                                <i class="fas fa-check text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Быстрый поиск</h4>
+                                <p class="text-gray-600">Мгновенный поиск по всем требованиям с фильтрами и подсказками.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-indigo-100 p-2 rounded-full mr-4">
+                                <i class="fas fa-check text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Гибкие шаблоны</h4>
+                                <p class="text-gray-600">Создавайте собственные шаблоны требований под специфику ваших
+                                    проектов.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-indigo-100 p-2 rounded-full mr-4">
+                                <i class="fas fa-check text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-1">Интеграции</h4>
+                                <p class="text-gray-600">API и готовые интеграции с популярными системами управления
+                                    проектами.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="gradient-bg text-white py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-6">Готовы оптимизировать процесс управления требованиями?</h2>
+            <p class="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto">Начните бесплатный 14-дневный пробный период без
+                необходимости предоставления кредитной карты</p>
+            <button
+                class="px-8 py-3 bg-white text-indigo-600 font-bold rounded-lg hover:bg-indigo-50 transition">Зарегистрироваться
+                сейчас</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-white font-bold mb-4">Продукт</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white">Возможности</a></li>
+                        <li><a href="#" class="hover:text-white">Цены</a></li>
+                        <li><a href="#" class="hover:text-white">Демо</a></li>
+                        <li><a href="#" class="hover:text-white">Обновления</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Ресурсы</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white">Документация</a></li>
+                        <li><a href="#" class="hover:text-white">Блог</a></li>
+                        <li><a href="#" class="hover:text-white">Вебинары</a></li>
+                        <li><a href="#" class="hover:text-white">API</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Компания</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white">О нас</a></li>
+                        <li><a href="#" class="hover:text-white">Карьера</a></li>
+                        <li><a href="#" class="hover:text-white">Контакты</a></li>
+                        <li><a href="#" class="hover:text-white">Партнеры</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-4">Поддержка</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white">Центр поддержки</a></li>
+                        <li><a href="#" class="hover:text-white">Сообщество</a></li>
+                        <li><a href="#" class="hover:text-white">Статус системы</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-tasks text-2xl text-white"></i>
+                        <span class="text-white font-bold text-xl">AСУРТ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Login Modal (Hidden) -->
+    <div id="loginModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+        <!-- overlay -->
+        <div class="absolute inset-0 bg-black/50"></div>
+
+        <!-- modal -->
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <div class="flex items-center justify-between px-6 py-4 border-b">
+                    <h3 id="loginTitle" class="text-lg font-bold text-gray-900">Авторизация</h3>
+                    <button id="closeLoginModal" class="p-2 rounded-lg hover:bg-gray-100" aria-label="Закрыть">
+                        <i class="fas fa-times text-gray-500"></i>
+                    </button>
+                </div>
+
+                <form id="loginForm" class="px-6 py-5 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="loginEmail">Email</label>
+                        <input id="loginEmail" type="email" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="name@example.com" />
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1" for="loginPassword">Пароль</label>
+                        <input id="loginPassword" type="password" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                            placeholder="••••••••" />
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <label class="flex items-center gap-2 text-sm text-gray-600">
+                            <input type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
+                            Запомнить меня
+                        </label>
+                        <a href="#" class="text-sm text-indigo-600 hover:text-indigo-700">Забыли пароль?</a>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full py-2.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">
+                        Войти
+                    </button>
+
+                    <p class="text-xs text-gray-500 text-center">
+                        Нажимая «Войти», вы соглашаетесь с условиями использования.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // ===== Mobile menu =====
+            const mobileMenuButton = document.querySelector('.md\\:hidden');
+            const navLinks = document.querySelector('nav');
+
+            mobileMenuButton?.addEventListener('click', function () {
+                navLinks.classList.toggle('hidden');
+                navLinks.classList.toggle('flex');
+                navLinks.classList.toggle('flex-col');
+                navLinks.classList.toggle('absolute');
+                navLinks.classList.toggle('top-16');
+                navLinks.classList.toggle('left-0');
+                navLinks.classList.toggle('right-0');
+                navLinks.classList.toggle('bg-indigo-700');
+                navLinks.classList.toggle('p-4');
+                navLinks.classList.toggle('space-y-4');
+                navLinks.classList.toggle('space-x-8');
+                navLinks.classList.toggle('z-50');
+            });
+
+            // ===== Login modal =====
+            const loginBtn = document.getElementById('loginBtn');
+            const loginModal = document.getElementById('loginModal');
+            const loginOverlay = document.getElementById('loginOverlay');
+            const closeLoginModal = document.getElementById('closeLoginModal');
+
+            const loginForm = document.getElementById('loginForm');
+            const loginError = document.getElementById('loginError');
+            const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+
+            function openLoginModal() {
+                loginModal.classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+                loginError.classList.add('hidden');
+                loginError.textContent = '';
+                setTimeout(() => document.getElementById('loginUsername')?.focus(), 0);
+            }
+
+            function hideLoginModal() {
+                loginModal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+
+            loginBtn?.addEventListener('click', openLoginModal);
+            closeLoginModal?.addEventListener('click', hideLoginModal);
+            loginOverlay?.addEventListener('click', hideLoginModal);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !loginModal.classList.contains('hidden')) {
+                    hideLoginModal();
+                }
+            });
+
+            // ===== API login =====
+            loginForm?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const username = document.getElementById('loginUsername')?.value.trim();
+                const password = document.getElementById('loginPassword')?.value;
+
+                if (!username || !password) return;
+
+                // UI: disable button while request is running
+                loginSubmitBtn.disabled = true;
+                loginSubmitBtn.textContent = 'Входим...';
+                loginError.classList.add('hidden');
+                loginError.textContent = '';
+
+                try {
+                    const res = await fetch('/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    });
+
+                    if (res.status === 401) {
+                        loginError.textContent = 'Неверные учетные данные';
+                        loginError.classList.remove('hidden');
+                        return;
+                    }
+
+                    if (res.status === 403) {
+                        loginError.textContent = 'Пользователь неактивен';
+                        loginError.classList.remove('hidden');
+                        return;
+                    }
+
+                    if (!res.ok) {
+                        loginError.textContent = `Ошибка входа: ${res.status}`;
+                        loginError.classList.remove('hidden');
+                        return;
+                    }
+
+                    // 200 OK -> { token, token_type, expires_in, user }
+                    const data = await res.json();
+
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('token_type', data.token_type || 'Bearer');
+                    localStorage.setItem('user', JSON.stringify(data.user));
+
+                    hideLoginModal();
+
+                    // после входа переходим на страницу репозиториев
+                    window.location.href = 'repo.html';
+                } catch (err) {
+                    console.error(err);
+                    loginError.textContent = 'Не удалось соединиться с сервером';
+                    loginError.classList.remove('hidden');
+                } finally {
+                    loginSubmitBtn.disabled = false;
+                    loginSubmitBtn.textContent = 'Войти';
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

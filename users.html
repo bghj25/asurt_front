@@ -1,0 +1,711 @@
+<!DOCTYPE html><html lang="ru"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки учетных записей | AСУРТ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .user-item:hover {
+            background-color: #F3F4F6;
+        }
+        .status-active { background-color: #D1FAE5; color: #065F46; }
+        .status-inactive { background-color: #FEE2E2; color: #92400E; }
+        .status-pending { background-color: #FEF3C7; color: #92400E; }
+        .sidebar-link.active {
+            background-color: #E0E7FF;
+            color: #4F46E5;
+            border-left: 3px solid #4F46E5;
+        }
+        .sidebar-link:hover {
+            background-color: #F3F4F6;
+        }
+        .role-admin { background-color: #6366F1; color: white; }
+        .role-manager { background-color: #8B5CF6; color: white; }
+        .role-developer { background-color: #EC4899; color: white; }
+        .role-viewer { background-color: #10B981; color: white; }
+        .checkbox-label:has(input:checked) {
+            background-color: #E0E7FF;
+            border-color: #4F46E5;
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
+                <div class="flex items-center h-16 px-4 border-b border-gray-200">
+                    <i class="fas fa-tasks text-indigo-600 mr-2"></i>
+                    <span class="font-semibold text-gray-800">AСУРТ</span>
+                </div>
+                <div class="flex flex-col flex-grow px-4 overflow-y-auto">
+                    <nav class="flex-1 space-y-1 mt-6">
+                        <a href="repo.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                            <i class="fas fa-list-ul mr-3 text-gray-500 w-5 text-center"></i>
+                            Все требования
+                        </a>
+                
+                        <a href="analytics.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                            <i class="fas fa-chart-bar mr-3 text-gray-500 w-5 text-center"></i>
+                            Аналитика и отчеты
+                        </a>
+                
+                        <a href="users.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                            <i class="fas fa-users mr-3 text-gray-500 w-5 text-center"></i>
+                            Команда
+                        </a>
+                
+                        <a href="settings.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                            <i class="fas fa-cog mr-3 text-gray-500 w-5 text-center"></i>
+                            Настройки
+                        </a>
+                    </nav>
+
+                    <div class="mt-8">
+                        <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Проекты
+                        </h3>
+                        <div class="mt-2 space-y-1">
+                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
+                                <span class="w-2 h-2 mr-3 bg-green-500 rounded-full"></span>
+                                E-Commerce Platform
+                            </a>
+                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
+                                <span class="w-2 h-2 mr-3 bg-blue-500 rounded-full"></span>
+                                CRM System
+                            </a>
+                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
+                                <span class="w-2 h-2 mr-3 bg-purple-500 rounded-full"></span>
+                                Mobile App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow-sm">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16">
+                        <div class="flex items-center">
+                            <button class="md:hidden mr-2 text-gray-500">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <div class="flex-shrink-0">
+                                <h1 class="text-lg font-semibold text-gray-900">Управление учетными записями</h1>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="relative mx-4">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                                <input id="search-users" name="search-users" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Поиск пользователей..." type="search">
+                            </div>
+                            <button id="add-user-btn" class="ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-user-plus mr-2"></i>Добавить пользователя
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+                <div class="max-w-7xl mx-auto">
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <!-- Tabs -->
+                        <div class="border-b border-gray-200">
+                            <nav class="flex -mb-px">
+                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    Общие настройки
+                                </a>
+                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-indigo-500 font-medium text-sm text-indigo-600">
+                                    Настройки учетных записей
+                                </a>
+                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    Настройки уведомлений
+                                </a>
+                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    Интеграции
+                                </a>
+                            </nav>
+                        </div>
+                        
+                        <!-- Settings Content -->
+                        <div class="p-6">
+                            <div class="mb-8">
+                                <div class="flex justify-between items-center mb-6">
+                                    <h2 class="text-lg leading-6 font-medium text-gray-900">Управление пользователями</h2>
+                                    <div class="flex items-center">
+                                        <label for="user-filter" class="mr-2 text-sm text-gray-600">Фильтр по роли:</label>
+                                        <select id="user-filter" class="border border-gray-300 rounded-md px-3 py-1 text-sm">
+                                            <option value="all">Все роли</option>
+                                            <option value="admin">Администраторы</option>
+                                            <option value="manager">Менеджеры</option>
+                                            <option value="developer">Разработчики</option>
+                                            <option value="viewer">Наблюдатели</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Users Table -->
+                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mb-8">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Пользователь
+                                                </th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Email
+                                                </th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Роль
+                                                </th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Статус
+                                                </th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                    Последний вход
+                                                </th>
+                                                <th scope="col" class="relative px-6 py-3">
+                                                    <span class="sr-only">Действия</span>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            <tr class="user-item">
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                                                            <i class="fas fa-user text-indigo-600"></i>
+                                                        </div>
+                                                        <div class="ml-4">
+                                                            <div class="text-sm font-medium text-gray-900">Иван Петров</div>
+                                                            <div class="text-sm text-gray-500">+7 (123) 456-78-90</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    ivan.petrov@example.com
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full role-admin">
+                                                        Администратор
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active">
+                                                        Активен
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    15.06.2025 14:30
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                    <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr class="user-item">
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
+                                                            <i class="fas fa-user text-purple-600"></i>
+                                                        </div>
+                                                        <div class="ml-4">
+                                                            <div class="text-sm font-medium text-gray-900">Мария Сидорова</div>
+                                                            <div class="text-sm text-gray-500">+7 (987) 654-32-10</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    maria.sidorova@example.com
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full role-manager">
+                                                        Менеджер
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active">
+                                                        Активен
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    14.06.2025 11:15
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                    <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr class="user-item">
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-pink-100 flex items-center justify-center">
+                                                            <i class="fas fa-user text-pink-600"></i>
+                                                        </div>
+                                                        <div class="ml-4">
+                                                            <div class="text-sm font-medium text-gray-900">Алексей Иванов</div>
+                                                            <div class="text-sm text-gray-500">+7 (555) 123-45-67</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    alex.ivanov@example.com
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full role-developer">
+                                                        Разработчик
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active">
+                                                        Активен
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    13.06.2025 09:45
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                    <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr class="user-item">
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
+                                                            <i class="fas fa-user text-green-600"></i>
+                                                        </div>
+                                                        <div class="ml-4">
+                                                            <div class="text-sm font-medium text-gray-900">Елена Смирнова</div>
+                                                            <div class="text-sm text-gray-500">+7 (999) 876-54-32</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    elena.smirnova@example.com
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full role-viewer">
+                                                        Наблюдатель
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-inactive">
+                                                        Неактивен
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    01.06.2025 16:20
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                    <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr class="user-item">
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-100 flex items-center justify-center">
+                                                            <i class="fas fa-user text-gray-600"></i>
+                                                        </div>
+                                                        <div class="ml-4">
+                                                            <div class="text-sm font-medium text-gray-900">Дмитрий Кузнецов</div>
+                                                            <div class="text-sm text-gray-500">+7 (495) 123-45-67</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    dmitry.kuznetsov@example.com
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-500 text-white">
+                                                        Гость
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-pending">
+                                                        Ожидает подтверждения
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                    -
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                    <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <!-- Roles and Permissions -->
+                                <h2 class="text-lg leading-6 font-medium text-gray-900 mb-4">Роли и разрешения</h2>
+                                <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
+                                    <div class="border-b border-gray-200">
+                                        <div class="px-4 py-5 sm:px-6 bg-gray-50">
+                                            <h3 class="text-lg leading-6 font-medium text-gray-900">Настройки прав доступа</h3>
+                                            <p class="mt-1 max-w-2xl text-sm text-gray-500">Управление разрешениями для разных ролей пользователей</p>
+                                        </div>
+                                        <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+                                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                                                <div>
+                                                    <label class="block text-sm font-medium text-gray-700 mb-2">Выберите роль:</label>
+                                                    <select id="role-select" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                        <option>Администратор</option>
+                                                        <option>Менеджер</option>
+                                                        <option>Разработчик</option>
+                                                        <option>Наблюдатель</option>
+                                                        <option>Гость</option>
+                                                    </select>
+                                                </div>
+                                                <div class="sm:col-span-2">
+                                                    <label class="block text-sm font-medium text-gray-700 mb-2">Разрешения:</label>
+                                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
+                                                            <div class="flex items-center h-5">
+                                                                <input id="permission-create" name="permission-create" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked="">
+                                                            </div>
+                                                            <div class="ml-3 text-sm">
+                                                                <label for="permission-create" class="font-medium text-gray-700">Создание требований</label>
+                                                                <p class="text-gray-500">Может создавать новые требования</p>
+                                                            </div>
+                                                        </label>
+                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
+                                                            <div class="flex items-center h-5">
+                                                                <input id="permission-edit" name="permission-edit" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked="">
+                                                            </div>
+                                                            <div class="ml-3 text-sm">
+                                                                <label for="permission-edit" class="font-medium text-gray-700">Редактирование требований</label>
+                                                                <p class="text-gray-500">Может изменять существующие требования</p>
+                                                            </div>
+                                                        </label>
+                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
+                                                            <div class="flex items-center h-5">
+                                                                <input id="permission-delete" name="permission-delete" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked="">
+                                                            </div>
+                                                            <div class="ml-3 text-sm">
+                                                                <label for="permission-delete" class="font-medium text-gray-700">Удаление требований</label>
+                                                                <p class="text-gray-500">Может удалять требования</p>
+                                                            </div>
+                                                        </label>
+                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
+                                                            <div class="flex items-center h-5">
+                                                                <input id="permission-approve" name="permission-approve" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                                            </div>
+                                                            <div class="ml-3 text-sm">
+                                                                <label for="permission-approve" class="font-medium text-gray-700">Утверждение требований</label>
+                                                                <p class="text-gray-500">Может утверждать требования</p>
+                                                            </div>
+                                                        </label>
+                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
+                                                            <div class="flex items-center h-5">
+                                                                <input id="permission-settings" name="permission-settings" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                                            </div>
+                                                            <div class="ml-3 text-sm">
+                                                                <label for="permission-settings" class="font-medium text-gray-700">Изменение настроек</label>
+                                                                <p class="text-gray-500">Может изменять системные настройки</p>
+                                                            </div>
+                                                        </label>
+                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
+                                                            <div class="flex items-center h-5">
+                                                                <input id="permission-users" name="permission-users" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                                            </div>
+                                                            <div class="ml-3 text-sm">
+                                                                <label for="permission-users" class="font-medium text-gray-700">Управление пользователями</label>
+                                                                <p class="text-gray-500">Может добавлять/редактировать пользователей</p>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                                            <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                                Сохранить изменения
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-white border-t border-gray-200 py-4">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                        <div class="mb-4 md:mb-0">
+                            © 2025 AСУРТ. Все права защищены.
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div id="add-user-modal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modal-title">
+                        Добавить нового пользователя
+                    </h3>
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-3">
+                            <label for="first-name" class="block text-sm font-medium text-gray-700">Имя</label>
+                            <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="last-name" class="block text-sm font-medium text-gray-700">Фамилия</label>
+                            <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div class="sm:col-span-6">
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <input type="email" name="email" id="email" autocomplete="email" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div class="sm:col-span-6">
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Телефон</label>
+                            <input type="text" name="phone" id="phone" autocomplete="tel" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div class="sm:col-span-6">
+                            <label for="user-role" class="block text-sm font-medium text-gray-700">Роль</label>
+                            <select id="user-role" name="user-role" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option>Администратор</option>
+                                <option>Менеджер</option>
+                                <option>Разработчик</option>
+                                <option>Наблюдатель</option>
+                                <option>Гость</option>
+                            </select>
+                        </div>
+
+                        <div class="sm:col-span-6">
+                            <label for="projects" class="block text-sm font-medium text-gray-700">Проекты</label>
+                            <select id="projects" name="projects" multiple="" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option selected="">E-Commerce Platform</option>
+                                <option>CRM System</option>
+                                <option>Mobile App</option>
+                            </select>
+                            <p class="mt-2 text-sm text-gray-500">Выберите проекты, к которым будет иметь доступ пользователь</p>
+                        </div>
+
+                        <div class="sm:col-span-6">
+                            <label class="block text-sm font-medium text-gray-700">Отправить приглашение</label>
+                            <div class="mt-2">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked="">
+                                    <span class="ml-2 text-sm text-gray-600">Отправить приглашение по электронной почте</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="save-user-btn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Добавить пользователя
+                    </button>
+                    <button type="button" id="cancel-user-btn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.sidebar-link');
+            const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
+
+            links.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            // Mobile menu toggle
+            const mobileMenuButton = document.querySelector('.md\\:hidden button');
+            const sidebar = document.querySelector('aside') || document.querySelector('.hidden.md\\:flex');
+
+            if (mobileMenuButton && sidebar) {
+                mobileMenuButton.addEventListener('click', function () {
+                    sidebar.classList.toggle('hidden');
+                });
+            }
+            
+            // User modal functionality
+            const addUserBtn = document.getElementById('add-user-btn');
+            const userModal = document.getElementById('add-user-modal');
+            const cancelUserBtn = document.getElementById('cancel-user-btn');
+            const saveUserBtn = document.getElementById('save-user-btn');
+            
+            addUserBtn.addEventListener('click', function() {
+                userModal.classList.remove('hidden');
+            });
+            
+            cancelUserBtn.addEventListener('click', function() {
+                userModal.classList.add('hidden');
+            });
+            
+            saveUserBtn.addEventListener('click', function() {
+                const firstName = document.getElementById('first-name').value;
+                const lastName = document.getElementById('last-name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const role = document.getElementById('user-role').value;
+                const projects = Array.from(document.getElementById('projects').selectedOptions).map(option => option.value);
+                
+                if (!firstName || !lastName || !email) {
+                    alert('Пожалуйста, заполните обязательные поля: Имя, Фамилия, Email');
+                    return;
+                }
+                
+                // Create new user in the table
+                const usersTable = document.querySelector('table tbody');
+                const newRow = document.createElement('tr');
+                newRow.className = 'user-item';
+                
+                // Get color and icon based on role
+                const roleStyles = {
+                    'Администратор': {bg: 'bg-indigo-100', icon: 'text-indigo-600', badge: 'role-admin'},
+                    'Менеджер': {bg: 'bg-purple-100', icon: 'text-purple-600', badge: 'role-manager'},
+                    'Разработчик': {bg: 'bg-pink-100', icon: 'text-pink-600', badge: 'role-developer'},
+                    'Наблюдатель': {bg: 'bg-green-100', icon: 'text-green-600', badge: 'role-viewer'},
+                    'Гость': {bg: 'bg-gray-100', icon: 'text-gray-600', badge: 'bg-gray-500 text-white'}
+                };
+                
+                const statusText = document.querySelector('input[type="checkbox"]').checked ? 'Ожидает подтверждения' : 'Активен';
+                const statusClass = document.querySelector('input[type="checkbox"]').checked ? 'status-pending' : 'status-active';
+                
+                newRow.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full ${roleStyles[role].bg} flex items-center justify-center">
+                                <i class="fas fa-user ${roleStyles[role].icon}"></i>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-sm font-medium text-gray-900">${firstName} ${lastName}</div>
+                                <div class="text-sm text-gray-500">${phone || '-'}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${email}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${roleStyles[role].badge}">
+                            ${role}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">
+                            ${statusText}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${document.querySelector('input[type="checkbox"]').checked ? '-' : new Date().toLocaleString('ru-RU')}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                        <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                usersTable.appendChild(newRow);
+                
+                // Clear form and close modal
+                document.getElementById('first-name').value = '';
+                document.getElementById('last-name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('phone').value = '';
+                userModal.classList.add('hidden');
+                
+                alert(`Пользователь ${firstName} ${lastName} успешно добавлен!`);
+            });
+            
+            // Role permissions management
+            const roleSelect = document.getElementById('role-select');
+            
+            roleSelect.addEventListener('change', function() {
+                const role = roleSelect.value;
+                
+                // Reset all checkboxes
+                const checkboxes = document.querySelectorAll('.checkbox-label input[type="checkbox"]');
+                checkboxes.forEach(checkbox => checkbox.checked = false);
+                
+                // Set permissions based on role
+                switch(role) {
+                    case 'Администратор':
+                        document.getElementById('permission-create').checked = true;
+                        document.getElementById('permission-edit').checked = true;
+                        document.getElementById('permission-delete').checked = true;
+                        document.getElementById('permission-approve').checked = true;
+                        document.getElementById('permission-settings').checked = true;
+                        document.getElementById('permission-users').checked = true;
+                        break;
+                    case 'Менеджер':
+                        document.getElementById('permission-create').checked = true;
+                        document.getElementById('permission-edit').checked = true;
+                        document.getElementById('permission-delete').checked = true;
+                        document.getElementById('permission-approve').checked = true;
+                        break;
+                    case 'Разработчик':
+                        document.getElementById('permission-create').checked = true;
+                        document.getElementById('permission-edit').checked = true;
+                        break;
+                    case 'Наблюдатель':
+                        document.getElementById('permission-create').checked = false;
+                        document.getElementById('permission-edit').checked = false;
+                        document.getElementById('permission-delete').checked = false;
+                        break;
+                    case 'Гость':
+                        document.getElementById('permission-create').checked = false;
+                        document.getElementById('permission-edit').checked = false;
+                        document.getElementById('permission-delete').checked = false;
+                        break;
+                }
+            });
+            
+            // Filter users by role
+            const userFilter = document.getElementById('user-filter');
+            userFilter.addEventListener('change', function() {
+                const filterValue = userFilter.value;
+                const rows = document.querySelectorAll('.user-item');
+                
+                rows.forEach(row => {
+                    const roleCell = row.querySelector('td:nth-child(3) span');
+                    if (!roleCell) return;
+                    
+                    const role = roleCell.textContent.trim().toLowerCase();
+                    if (filterValue === 'all' || role.includes(filterValue)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
+</body></html>

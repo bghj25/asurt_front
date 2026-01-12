@@ -1,0 +1,510 @@
+<!DOCTYPE html><html lang="ru"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Настройки | AСУРТ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        .requirement-item:hover {
+            background-color: #F3F4F6;
+        }
+        .status-draft { background-color: #E5E7EB; color: #4B5563; }
+        .status-review { background-color: #FEF3C7; color: #92400E; }
+        .status-approved { background-color: #D1FAE5; color: #065F46; }
+        .status-rejected { background-color: #FEE2E2; color: #92400E; }
+        .status-implemented { background-color: #DBEAFE; color: #1E40AF; }
+        .sidebar-link.active {
+            background-color: #E0E7FF;
+            color: #4F46E5;
+            border-left: 3px solid #4F46E5;
+        }
+        .sidebar-link.active:hover {
+            background-color: #E0E7FF;
+        }
+        .sidebar-link:hover {
+            background-color: #F3F4F6;
+        }
+        .project-color-preview {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <div class="hidden md:flex md:flex-shrink-0">
+            <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
+                <div class="flex items-center h-16 px-4 border-b border-gray-200">
+                    <i class="fas fa-tasks text-indigo-600 mr-2"></i>
+                    <span class="font-semibold text-gray-800">AСУРТ</span>
+                </div>
+                <div class="flex flex-col flex-grow px-4 overflow-y-auto">
+                    <nav class="flex-1 space-y-1 mt-6">
+                        <a href="repo.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                            <i class="fas fa-list-ul mr-3 text-gray-500 w-5 text-center"></i>
+                            Все требования
+                        </a>
+                
+                        <a href="analytics.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                            <i class="fas fa-chart-bar mr-3 text-gray-500 w-5 text-center"></i>
+                            Аналитика и отчеты
+                        </a>
+                
+                        <a href="users.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                            <i class="fas fa-users mr-3 text-gray-500 w-5 text-center"></i>
+                            Команда
+                        </a>
+                
+                        <a href="settings.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                            <i class="fas fa-cog mr-3 text-gray-500 w-5 text-center"></i>
+                            Настройки
+                        </a>
+                    </nav>
+
+                    <div class="mt-8">
+                        <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Проекты
+                        </h3>
+                        <div class="mt-2 space-y-1" id="projects-list">
+                            <!-- Projects will be dynamically added here -->
+                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
+                                <span class="w-2 h-2 mr-3 bg-green-500 rounded-full"></span>
+                                E-Commerce Platform
+                            </a>
+                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
+                                <span class="w-2 h-2 mr-3 bg-blue-500 rounded-full"></span>
+                                CRM System
+                            </a>
+                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
+                                <span class="w-2 h-2 mr-3 bg-purple-500 rounded-full"></span>
+                                Mobile App
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow-sm">
+                <div class="px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-16">
+                        <div class="flex items-center">
+                            <button class="md:hidden mr-2 text-gray-500">
+                                <i class="fas fa-bars"></i>
+                            </button>
+                            <div class="flex-shrink-0">
+                                <h1 class="text-lg font-semibold text-gray-900">Настройки системы</h1>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="relative mx-4">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="fas fa-search text-gray-400"></i>
+                                </div>
+                                <input id="search" name="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Поиск в настройках..." type="search">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+                <div class="max-w-7xl mx-auto">
+                    <div class="bg-white shadow rounded-lg overflow-hidden">
+                        <!-- Tabs -->
+                        <div class="border-b border-gray-200">
+                            <nav class="flex -mb-px">
+                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-indigo-500 font-medium text-sm text-indigo-600">
+                                    Общие настройки
+                                </a>
+                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    Настройки учетных записей
+                                </a>
+                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    Настройки уведомлений
+                                </a>
+                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    Интеграции
+                                </a>
+                            </nav>
+                        </div>
+                        
+                        <!-- Settings Content -->
+                        <div class="p-6">
+                            <div class="mb-8">
+                                <h2 class="text-lg leading-6 font-medium text-gray-900 mb-4">Управление проектами</h2>
+                                
+                                <!-- Projects Table -->
+                                <div class="mb-8">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h3 class="text-md font-medium text-gray-900">Текущие проекты</h3>
+                                        <button id="add-project-btn" class="ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            <i class="fas fa-plus mr-2"></i>Добавить проект
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                        <table class="min-w-full divide-y divide-gray-200">
+                                            <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Название
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Цвет
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Дата создания
+                                                    </th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Количество требований
+                                                    </th>
+                                                    <th scope="col" class="relative px-6 py-3">
+                                                        <span class="sr-only">Действия</span>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="bg-white divide-y divide-gray-200">
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        E-Commerce Platform
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        <span class="project-color-preview" style="background-color: #10B981;"></span> Зеленый
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        15.02.2025
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        127
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                        <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        CRM System
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        <span class="project-color-preview" style="background-color: #3B82F6;"></span> Синий
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        10.03.2025
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        84
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                        <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                        Mobile App
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        <span class="project-color-preview" style="background-color: #8B5CF6;"></span> Фиолетовый
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        25.04.2025
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                        42
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                                                        <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <!-- System Settings -->
+                                <h2 class="text-lg leading-6 font-medium text-gray-900 mb-4">Системные параметры</h2>
+                                <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+                                    <div class="px-4 py-5 sm:p-6">
+                                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                            <div class="sm:col-span-6">
+                                                <label for="system-name" class="block text-sm font-medium text-gray-700">Название системы</label>
+                                                <input type="text" name="system-name" id="system-name" value="AСУРТ" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                            </div>
+                                            
+                                            <div class="sm:col-span-6">
+                                                <label for="timezone" class="block text-sm font-medium text-gray-700">Часовой пояс</label>
+                                                <select id="timezone" name="timezone" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                    <option>Москва (UTC+3)</option>
+                                                    <option>Калининград (UTC+2)</option>
+                                                    <option>Самара (UTC+4)</option>
+                                                    <option>Екатеринбург (UTC+5)</option>
+                                                    <option>Омск (UTC+6)</option>
+                                                    <option>Красноярск (UTC+7)</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="sm:col-span-6">
+                                                <label for="date-format" class="block text-sm font-medium text-gray-700">Формат даты</label>
+                                                <select id="date-format" name="date-format" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                                    <option>DD.MM.YYYY</option>
+                                                    <option>YYYY-MM-DD</option>
+                                                    <option>MM/DD/YYYY</option>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="sm:col-span-6">
+                                                <label class="block text-sm font-medium text-gray-700">Уведомления</label>
+                                                <div class="mt-2 space-y-4">
+                                                    <div class="flex items-start">
+                                                        <div class="flex items-center h-5">
+                                                            <input id="email-notifications" name="email-notifications" type="checkbox" checked="" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                                        </div>
+                                                        <div class="ml-3 text-sm">
+                                                            <label for="email-notifications" class="font-medium text-gray-700">Email уведомления</label>
+                                                            <p class="text-gray-500">Получать уведомления по электронной почте</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex items-start">
+                                                        <div class="flex items-center h-5">
+                                                            <input id="push-notifications" name="push-notifications" type="checkbox" checked="" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                                        </div>
+                                                        <div class="ml-3 text-sm">
+                                                            <label for="push-notifications" class="font-medium text-gray-700">Push уведомления</label>
+                                                            <p class="text-gray-500">Получать push-уведомления в браузере</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                                        <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                            Сохранить изменения
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-white border-t border-gray-200 py-4">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                        <div class="mb-4 md:mb-0">
+                            © 2025 AСУРТ. Все права защищены.
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add Project Modal -->
+    <div id="add-project-modal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modal-title">
+                        Добавить новый проект
+                    </h3>
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-6">
+                            <label for="project-name" class="block text-sm font-medium text-gray-700">Название проекта</label>
+                            <input type="text" name="project-name" id="project-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Введите название проекта">
+                        </div>
+                        
+                        <div class="sm:col-span-6">
+                            <label for="project-description" class="block text-sm font-medium text-gray-700">Описание проекта</label>
+                            <textarea id="project-description" name="project-description" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="Краткое описание проекта (необязательно)"></textarea>
+                        </div>
+                        
+                        <div class="sm:col-span-6">
+                            <label class="block text-sm font-medium text-gray-700">Цвет проекта</label>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="project-color" value="bg-green-500" checked="" class="sr-only peer">
+                                    <span class="w-8 h-8 rounded-full bg-green-500 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-green-500"></span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="project-color" value="bg-blue-500" class="sr-only peer">
+                                    <span class="w-8 h-8 rounded-full bg-blue-500 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-blue-500"></span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="project-color" value="bg-purple-500" class="sr-only peer">
+                                    <span class="w-8 h-8 rounded-full bg-purple-500 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-purple-500"></span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="project-color" value="bg-red-500" class="sr-only peer">
+                                    <span class="w-8 h-8 rounded-full bg-red-500 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-red-500"></span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="project-color" value="bg-yellow-500" class="sr-only peer">
+                                    <span class="w-8 h-8 rounded-full bg-yellow-500 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-yellow-500"></span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="project-color" value="bg-indigo-500" class="sr-only peer">
+                                    <span class="w-8 h-8 rounded-full bg-indigo-500 peer-checked:ring-2 peer-checked:ring-offset-2 peer-checked:ring-indigo-500"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="sm:col-span-6">
+                            <label for="project-lead" class="block text-sm font-medium text-gray-700">Руководитель проекта</label>
+                            <select id="project-lead" name="project-lead" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option>Иван Петров</option>
+                                <option>Мария Сидорова</option>
+                                <option>Алексей Иванов</option>
+                                <option>Елена Смирнова</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="save-project-btn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Добавить проект
+                    </button>
+                    <button type="button" id="cancel-project-btn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const links = document.querySelectorAll('.sidebar-link');
+            const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
+
+            links.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            // Mobile menu toggle
+            const mobileMenuButton = document.querySelector('.md\\:hidden button');
+            const sidebar = document.querySelector('aside') || document.querySelector('.hidden.md\\:flex');
+
+            if (mobileMenuButton && sidebar) {
+                mobileMenuButton.addEventListener('click', function () {
+                    sidebar.classList.toggle('hidden');
+                });
+            }
+            
+            // Project modal functionality
+            const addProjectBtn = document.getElementById('add-project-btn');
+            const projectModal = document.getElementById('add-project-modal');
+            const cancelProjectBtn = document.getElementById('cancel-project-btn');
+            const saveProjectBtn = document.getElementById('save-project-btn');
+            
+            addProjectBtn.addEventListener('click', function() {
+                projectModal.classList.remove('hidden');
+            });
+            
+            cancelProjectBtn.addEventListener('click', function() {
+                projectModal.classList.add('hidden');
+            });
+            
+            saveProjectBtn.addEventListener('click', function() {
+                const projectName = document.getElementById('project-name').value;
+                const projectDescription = document.getElementById('project-description').value;
+                const projectColor = document.querySelector('input[name="project-color"]:checked').value;
+                const projectLead = document.getElementById('project-lead').value;
+                
+                if (!projectName) {
+                    alert('Пожалуйста, введите название проекта');
+                    return;
+                }
+                
+                // Get color name from value
+                const colorNames = {
+                    'bg-green-500': 'Зеленый',
+                    'bg-blue-500': 'Синий',
+                    'bg-purple-500': 'Фиолетовый',
+                    'bg-red-500': 'Красный',
+                    'bg-yellow-500': 'Желтый',
+                    'bg-indigo-500': 'Индиго'
+                };
+                const colorName = colorNames[projectColor];
+                
+                // Create new project in the table
+                const projectsTable = document.querySelector('table tbody');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        ${projectName}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span class="project-color-preview" style="background-color: ${getComputedColor(projectColor)};"></span> ${colorName}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${new Date().toLocaleDateString('ru-RU')}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        0
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
+                        <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                projectsTable.appendChild(newRow);
+                
+                // Add to sidebar projects list
+                const projectsList = document.getElementById('projects-list');
+                const newProjectLink = document.createElement('a');
+                newProjectLink.href = '#';
+                newProjectLink.className = 'flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50';
+                newProjectLink.innerHTML = `
+                    <span class="w-2 h-2 mr-3 rounded-full" style="background-color: ${getComputedColor(projectColor)};"></span>
+                    ${projectName}
+                `;
+                projectsList.appendChild(newProjectLink);
+                
+                // Clear form and close modal
+                document.getElementById('project-name').value = '';
+                document.getElementById('project-description').value = '';
+                projectModal.classList.add('hidden');
+                
+                alert(`Проект "${projectName}" успешно добавлен!`);
+            });
+            
+            // Helper function to get computed color from Tailwind class
+            function getComputedColor(tailwindClass) {
+                const colorMap = {
+                    'bg-green-500': '#10B981',
+                    'bg-blue-500': '#3B82F6',
+                    'bg-purple-500': '#8B5CF6',
+                    'bg-red-500': '#EF4444',
+                    'bg-yellow-500': '#F59E0B',
+                    'bg-indigo-500': '#6366F1'
+                };
+                return colorMap[tailwindClass] || '#6B7280';
+            }
+        });
+    </script>
+
+</body></html>
