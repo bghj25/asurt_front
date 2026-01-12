@@ -1,4 +1,7 @@
-<!DOCTYPE html><html lang="ru"><head>
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Репозиторий требований | AСУРТ</title>
@@ -8,27 +11,52 @@
         .sidebar {
             transition: all 0.3s ease;
         }
+
         .requirement-item:hover {
             background-color: #F3F4F6;
         }
-        .status-draft { background-color: #E5E7EB; color: #4B5563; }
-        .status-review { background-color: #FEF3C7; color: #92400E; }
-        .status-approved { background-color: #D1FAE5; color: #065F46; }
-        .status-rejected { background-color: #FEE2E2; color: #92400E; }
-        .status-implemented { background-color: #DBEAFE; color: #1E40AF; }
+
+        .status-draft {
+            background-color: #E5E7EB;
+            color: #4B5563;
+        }
+
+        .status-review {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-approved {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-rejected {
+            background-color: #FEE2E2;
+            color: #92400E;
+        }
+
+        .status-implemented {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
         .sidebar-link.active {
             background-color: #E0E7FF;
             color: #4F46E5;
             border-left: 3px solid #4F46E5;
         }
+
         .sidebar-link.active:hover {
             background-color: #E0E7FF;
         }
+
         .sidebar-link:hover {
             background-color: #F3F4F6;
         }
     </style>
 </head>
+
 <body class="bg-gray-50">
     <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
@@ -40,22 +68,26 @@
                 </div>
                 <div class="flex flex-col flex-grow px-4 overflow-y-auto">
                     <nav class="flex-1 space-y-1 mt-6">
-                        <a href="repo.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                        <a href="repo.html"
+                            class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
                             <i class="fas fa-list-ul mr-3 text-gray-500 w-5 text-center"></i>
                             Все требования
                         </a>
-                
-                        <a href="analytics.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+
+                        <a href="analytics.html"
+                            class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
                             <i class="fas fa-chart-bar mr-3 text-gray-500 w-5 text-center"></i>
                             Аналитика и отчеты
                         </a>
-                
-                        <a href="users.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+
+                        <a href="users.html"
+                            class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
                             <i class="fas fa-users mr-3 text-gray-500 w-5 text-center"></i>
                             Команда
                         </a>
-                
-                        <a href="settings.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+
+                        <a href="settings.html"
+                            class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
                             <i class="fas fa-cog mr-3 text-gray-500 w-5 text-center"></i>
                             Настройки
                         </a>
@@ -66,20 +98,33 @@
                             Проекты
                         </h3>
                         <div class="mt-2 space-y-1">
-                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
+                            <a href="#"
+                                class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
                                 <span class="w-2 h-2 mr-3 bg-green-500 rounded-full"></span>
                                 E-Commerce Platform
                             </a>
-                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
+                            <a href="#"
+                                class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
                                 <span class="w-2 h-2 mr-3 bg-blue-500 rounded-full"></span>
                                 CRM System
                             </a>
-                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
+                            <a href="#"
+                                class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
                                 <span class="w-2 h-2 mr-3 bg-purple-500 rounded-full"></span>
                                 Mobile App
                             </a>
                         </div>
                     </div>
+
+                    <!-- Logout -->
+                    <div class="mt-auto pt-6 border-t border-gray-200">
+                        <button id="logoutBtn"
+                            class="w-full flex items-center px-3 py-3 text-sm font-medium rounded-md text-red-600 hover:bg-red-50">
+                            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+                            Выйти
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -103,9 +148,12 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="fas fa-search text-gray-400"></i>
                                 </div>
-                                <input id="search" name="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Поиск требований..." type="search">
+                                <input id="search" name="search"
+                                    class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    placeholder="Поиск требований..." type="search">
                             </div>
-                            <button class="ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <button
+                                class="ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                 <i class="fas fa-plus mr-2"></i>Новое требование
                             </button>
                         </div>
@@ -121,7 +169,8 @@
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                             <div class="flex items-center space-x-4 mb-4 md:mb-0">
                                 <div class="relative">
-                                    <select class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                    <select
+                                        class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                                         <option>Все статусы</option>
                                         <option>Черновик</option>
                                         <option>На проверке</option>
@@ -129,39 +178,46 @@
                                         <option>Отклонен</option>
                                         <option>Реализован</option>
                                     </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                         <i class="fas fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="relative">
-                                    <select class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                    <select
+                                        class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                                         <option>Все проекты</option>
                                         <option>E-Commerce Platform</option>
                                         <option>CRM System</option>
                                         <option>Mobile App</option>
                                     </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                         <i class="fas fa-chevron-down"></i>
                                     </div>
                                 </div>
                                 <div class="relative">
-                                    <select class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                    <select
+                                        class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                                         <option>Все категории</option>
                                         <option>Функциональные</option>
                                         <option>Бизнес</option>
                                         <option>Пользовательские</option>
                                         <option>Системные</option>
                                     </select>
-                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                         <i class="fas fa-chevron-down"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-4">
-                                <button class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <button
+                                    class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <i class="fas fa-filter mr-2"></i>Фильтры
                                 </button>
-                                <button class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <button
+                                    class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <i class="fas fa-download mr-2"></i>Экспорт
                                 </button>
                             </div>
@@ -175,22 +231,28 @@
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             ID
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Название
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Проект
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Категория
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Статус
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col"
+                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Последнее обновление
                                         </th>
                                         <th scope="col" class="relative px-6 py-3">
@@ -217,7 +279,8 @@
                                             Функциональные
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-approved">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-approved">
                                                 Утвержден
                                             </span>
                                         </td>
@@ -225,12 +288,15 @@
                                             15.05.2025
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
-                                            <button class="text-green-600 hover:text-green-900 mr-3"><i class="fas fa-clone"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="text-green-600 hover:text-green-900 mr-3"><i
+                                                    class="fas fa-clone"></i></button>
+                                            <button class="text-red-600 hover:text-red-900"><i
+                                                    class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
-                                    
+
                                     <!-- Requirement 2 -->
                                     <tr class="requirement-item hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -246,7 +312,8 @@
                                             Бизнес
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-review">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-review">
                                                 На проверке
                                             </span>
                                         </td>
@@ -254,12 +321,15 @@
                                             14.05.2025
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button class="text Indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
-                                            <button class="text-green-600 hover:text-green-900 mr-3"><i class="fas fa-clone"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            <button class="text Indigo-600 hover:text-indigo-900 mr-3"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="text-green-600 hover:text-green-900 mr-3"><i
+                                                    class="fas fa-clone"></i></button>
+                                            <button class="text-red-600 hover:text-red-900"><i
+                                                    class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
-                                    
+
                                     <!-- Requirement 3 -->
                                     <tr class="requirement-item hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -275,7 +345,8 @@
                                             Функциональные
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-implemented">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-implemented">
                                                 Реализован
                                             </span>
                                         </td>
@@ -283,12 +354,15 @@
                                             10.05.2025
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
-                                            <button class="text-green-600 hover:text-green-900 mr-3"><i class="fas fa-clone"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="text-green-600 hover:text-green-900 mr-3"><i
+                                                    class="fas fa-clone"></i></button>
+                                            <button class="text-red-600 hover:text-red-900"><i
+                                                    class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
-                                    
+
                                     <!-- Requirement 4 -->
                                     <tr class="requirement-item hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -304,7 +378,8 @@
                                             Пользовательские
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-draft">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-draft">
                                                 Черновик
                                             </span>
                                         </td>
@@ -312,12 +387,15 @@
                                             08.05.2025
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
-                                            <button class="text-green-600 hover:text-green-900 mr-3"><i class="fas fa-clone"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="text-green-600 hover:text-green-900 mr-3"><i
+                                                    class="fas fa-clone"></i></button>
+                                            <button class="text-red-600 hover:text-red-900"><i
+                                                    class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
-                                    
+
                                     <!-- Requirement 5 -->
                                     <tr class="requirement-item hover:bg-gray-50">
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -333,7 +411,8 @@
                                             Системные
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-rejected">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-rejected">
                                                 Отклонен
                                             </span>
                                         </td>
@@ -341,17 +420,21 @@
                                             05.05.2025
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i class="fas fa-edit"></i></button>
-                                            <button class="text-green-600 hover:text-green-900 mr-3"><i class="fas fa-clone"></i></button>
-                                            <button class="text-red-600 hover:text-red-900"><i class="fas fa-trash"></i></button>
+                                            <button class="text-indigo-600 hover:text-indigo-900 mr-3"><i
+                                                    class="fas fa-edit"></i></button>
+                                            <button class="text-green-600 hover:text-green-900 mr-3"><i
+                                                    class="fas fa-clone"></i></button>
+                                            <button class="text-red-600 hover:text-red-900"><i
+                                                    class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        
+
                         <!-- Pagination -->
-                        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                        <div
+                            class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
                             <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                                 <div>
                                     <p class="text-sm text-gray-700">
@@ -365,21 +448,27 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                                        aria-label="Pagination">
+                                        <a href="#"
+                                            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
                                             <span class="sr-only">Previous</span>
                                             <i class="fas fa-chevron-left"></i>
                                         </a>
-                                        <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                        <a href="#" aria-current="page"
+                                            class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
                                             1
                                         </a>
-                                        <a href="#" class="bg-white border-gray-300 text-gray-505 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                        <a href="#"
+                                            class="bg-white border-gray-300 text-gray-505 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
                                             2
                                         </a>
-                                        <a href="#" class="bg-white border-gray-300 text-gray-505 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                                        <a href="#"
+                                            class="bg-white border-gray-300 text-gray-505 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
                                             3
                                         </a>
-                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-505 hover:bg-gray-50">
+                                        <a href="#"
+                                            class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-505 hover:bg-gray-50">
                                             <span class="sr-only">Next</span>
                                             <i class="fas fa-chevron-right"></i>
                                         </a>
@@ -405,11 +494,13 @@
     </div>
 
     <!-- New Requirement Modal (Hidden) -->
-    <div class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog"
+        aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modal-title">
                         Новое требование
@@ -417,67 +508,78 @@
                     <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                         <div class="sm:col-span-6">
                             <label for="title" class="block text-sm font-medium text-gray-700">Название</label>
-                            <input type="text" name="title" id="title" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            <input type="text" name="title" id="title"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                         </div>
-                        
+
                         <div class="sm:col-span-3">
                             <label for="project" class="block text-sm font-medium text-gray-700">Проект</label>
-                            <select id="project" name="project" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <select id="project" name="project"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                 <option>E-Commerce Platform</option>
                                 <option>CRM System</option>
                                 <option>Mobile App</option>
                             </select>
                         </div>
-                        
+
                         <div class="sm:col-span-3">
                             <label for="category" class="block text-sm font-medium text-gray-700">Категория</label>
-                            <select id="category" name="category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <select id="category" name="category"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                 <option>Функциональные</option>
                                 <option>Бизнес</option>
                                 <option>Пользовательские</option>
                                 <option>Системные</option>
                             </select>
                         </div>
-                        
+
                         <div class="sm:col-span-6">
                             <label for="description" class="block text-sm font-medium text-gray-700">Описание</label>
-                            <textarea id="description" name="description" rows="3" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
+                            <textarea id="description" name="description" rows="3"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"></textarea>
                         </div>
-                        
+
                         <div class="sm:col-span-3">
                             <label for="priority" class="block text-sm font-medium text-gray-700">Приоритет</label>
-                            <select id="priority" name="priority" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <select id="priority" name="priority"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                 <option>Высокий</option>
                                 <option>Средний</option>
                                 <option>Низкий</option>
                             </select>
                         </div>
-                        
+
                         <div class="sm:col-span-3">
                             <label for="status" class="block text-sm font-medium text-gray-700">Статус</label>
-                            <select id="status" name="status" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            <select id="status" name="status"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                 <option>Черновик</option>
                                 <option>На проверке</option>
                                 <option>Утвержден</option>
                             </select>
                         </div>
-                        
+
                         <div class="sm:col-span-6">
                             <label for="owners" class="block text-sm font-medium text-gray-700">Ответственные</label>
                             <div class="mt-1 flex rounded-md shadow-sm">
-                                <span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                                <span
+                                    class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                                     <i class="fas fa-user"></i>
                                 </span>
-                                <input type="text" name="owners" id="owners" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" placeholder="Выберите ответственных">
+                                <input type="text" name="owners" id="owners"
+                                    class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
+                                    placeholder="Выберите ответственных">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                    <button type="button"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
                         Сохранить
                     </button>
-                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                    <button type="button"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Отмена
                     </button>
                 </div>
@@ -487,7 +589,7 @@
 
     <script>
         // Modal toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const links = document.querySelectorAll('.sidebar-link');
             const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
 
@@ -500,20 +602,20 @@
             });
             const newReqBtn = document.querySelector('button[class*="bg-indigo-600"]:not(.modal)');
             const modal = document.querySelector('.fixed.z-10');
-            
-            newReqBtn.addEventListener('click', function() {
+
+            newReqBtn.addEventListener('click', function () {
                 modal.classList.toggle('hidden');
             });
-            
+
             // Close modal when clicking cancel or outside
-            document.addEventListener('click', function(e) {
-                if (e.target.textContent === 'Отмена' || 
-                    e.target.closest('.fixed.inset-0') && 
+            document.addEventListener('click', function (e) {
+                if (e.target.textContent === 'Отмена' ||
+                    e.target.closest('.fixed.inset-0') &&
                     !e.target.closest('.inline-block')) {
                     modal.classList.add('hidden');
                 }
             });
-            
+
             // Mobile menu toggle
             const mobileMenuButton = document.querySelector('.md\\:hidden button');
             const sidebar = document.querySelector('aside') || document.querySelector('.hidden.md\\:flex');
@@ -523,7 +625,40 @@
                     sidebar.classList.toggle('hidden');
                 });
             }
+
+        // ===== Logout =====
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async function () {
+                const token = localStorage.getItem('token');
+                const tokenType = localStorage.getItem('token_type') || 'Bearer';
+
+                try {
+                    // если бэка нет — запрос просто упадёт, мы это переживём
+                    await fetch('/auth/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `${tokenType} ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                } catch (e) {
+                    // ничего не делаем — важно выйти локально
+                    console.warn('Logout request failed (backend not ready)');
+                } finally {
+                    // всегда чистим локальное состояние
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('token_type');
+                    localStorage.removeItem('user');
+
+                    // редирект на главную
+                    window.location.href = 'main.html';
+                }
+            });
+        }
         });
     </script>
 
-</body></html>
+</body>
+
+</html>

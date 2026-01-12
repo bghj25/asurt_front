@@ -119,6 +119,15 @@
                             </a>
                         </div>
                     </div>
+                    <!-- Logout -->
+                    <div class="mt-auto pt-6 border-t border-gray-200">
+                        <button id="logoutBtn"
+                            class="w-full flex items-center px-3 py-3 text-sm font-medium rounded-md text-red-600 hover:bg-red-50">
+                            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+                            Выйти
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -988,6 +997,36 @@ html
             }
         });
 
+        // ===== Logout =====
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async function () {
+                const token = localStorage.getItem('token');
+                const tokenType = localStorage.getItem('token_type') || 'Bearer';
+
+                try {
+                    // если бэка нет — запрос просто упадёт, мы это переживём
+                    await fetch('/auth/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `${tokenType} ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                } catch (e) {
+                    // ничего не делаем — важно выйти локально
+                    console.warn('Logout request failed (backend not ready)');
+                } finally {
+                    // всегда чистим локальное состояние
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('token_type');
+                    localStorage.removeItem('user');
+
+                    // редирект на главную
+                    window.location.href = 'main.html';
+                }
+            });
+        }
     });
 </script>
 
