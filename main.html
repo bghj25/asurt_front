@@ -30,6 +30,37 @@
         .sidebar {
             transition: all 0.3s ease;
         }
+        
+        .google-btn {
+            background-color: #4285F4;
+            color: white;
+            border: 1px solid #4285F4;
+        }
+        
+        .google-btn:hover {
+            background-color: #357ae8;
+            border-color: #2f5bb7;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .divider span {
+            padding: 0 1rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
     </style>
 </head>
 
@@ -272,10 +303,11 @@
             </div>
         </div>
     </footer>
+    
     <!-- Login Modal (Hidden) -->
     <div id="loginModal" class="fixed inset-0 z-50 hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
         <!-- overlay -->
-        <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 bg-black/50" id="loginOverlay"></div>
 
         <!-- modal -->
         <div class="relative min-h-screen flex items-center justify-center p-4">
@@ -287,41 +319,52 @@
                     </button>
                 </div>
 
-                <form id="loginForm" class="px-6 py-5 space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1" for="loginEmail">Email</label>
-                        <input id="loginEmail" type="email" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="name@example.com" />
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1" for="loginPassword">Пароль</label>
-                        <input id="loginPassword" type="password" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="••••••••" />
-                    </div>
-
-                    <div class="flex items-center justify-between">
-                        <label class="flex items-center gap-2 text-sm text-gray-600">
-                            <input type="checkbox" class="h-4 w-4 text-indigo-600 border-gray-300 rounded" />
-                            Запомнить меня
-                        </label>
-                        <a href="#" class="text-sm text-indigo-600 hover:text-indigo-700">Забыли пароль?</a>
-                    </div>
-
-                    <button type="submit"
-                        class="w-full py-2.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">
-                        Войти
+                <div class="px-6 py-5 space-y-4">
+                    <!-- Кнопка Google OAuth через oauth2-proxy -->
+                    <button id="googleLoginBtn" type="button"
+                        class="w-full flex items-center justify-center gap-3 py-2.5 px-4 rounded-lg google-btn font-semibold hover:opacity-90 transition">
+                        <i class="fab fa-google"></i>
+                        <span>Войти через Google</span>
                     </button>
+                    
+                    <!-- Разделитель -->
+                    <div class="divider">
+                        <span>или</span>
+                    </div>
+                    
+                    <!-- Обычная форма входа (может не понадобиться если только OAuth) -->
+                    <div class="text-center text-sm text-gray-500">
+                        В данный момент доступен только вход через Google
+                    </div>
+                    
+                    <!-- Можно добавить форму позже при необходимости -->
+                    <!--
+                    <form id="loginForm" class="space-y-4 hidden">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1" for="loginEmail">Email</label>
+                            <input id="loginEmail" type="email" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                placeholder="name@example.com" />
+                        </div>
 
-                    <p class="text-xs text-gray-500 text-center">
-                        Нажимая «Войти», вы соглашаетесь с условиями использования.
-                    </p>
-                </form>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1" for="loginPassword">Пароль</label>
+                            <input id="loginPassword" type="password" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                placeholder="••••••••" />
+                        </div>
+
+                        <button type="submit"
+                            class="w-full py-2.5 rounded-lg bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition">
+                            Войти
+                        </button>
+                    </form>
+                    -->
+                </div>
             </div>
         </div>
     </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // ===== Mobile menu =====
@@ -348,17 +391,11 @@
             const loginModal = document.getElementById('loginModal');
             const loginOverlay = document.getElementById('loginOverlay');
             const closeLoginModal = document.getElementById('closeLoginModal');
-
-            const loginForm = document.getElementById('loginForm');
-            const loginError = document.getElementById('loginError');
-            const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+            const googleLoginBtn = document.getElementById('googleLoginBtn');
 
             function openLoginModal() {
                 loginModal.classList.remove('hidden');
                 document.body.classList.add('overflow-hidden');
-                loginError.classList.add('hidden');
-                loginError.textContent = '';
-                setTimeout(() => document.getElementById('loginUsername')?.focus(), 0);
             }
 
             function hideLoginModal() {
@@ -370,72 +407,69 @@
             closeLoginModal?.addEventListener('click', hideLoginModal);
             loginOverlay?.addEventListener('click', hideLoginModal);
 
+            // ===== Google OAuth редирект для oauth2-proxy =====
+            googleLoginBtn?.addEventListener('click', function() {
+                // Основной эндпоинт для oauth2-proxy
+                // Параметр rd (redirect) указывает куда вернуться после авторизации
+                // / - возврат на главную страницу
+                const oauthEndpoint = '/oauth2/start?rd=http://localhost/static/repo.html';
+                
+                console.log('Redirecting to OAuth2-Proxy:', oauthEndpoint);
+                
+                // Редирект на OAuth2-Proxy
+                window.location.href = oauthEndpoint;
+                
+                // OAuth2-Proxy сам перенаправит на Google, затем вернёт пользователя обратно
+                // После авторизации пользователь попадёт на главную страницу (rd=/)
+            });
+
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && !loginModal.classList.contains('hidden')) {
                     hideLoginModal();
                 }
             });
 
-            // ===== API login =====
-            loginForm?.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const username = document.getElementById('loginUsername')?.value.trim();
-                const password = document.getElementById('loginPassword')?.value;
-
-                if (!username || !password) return;
-
-                // UI: disable button while request is running
-                loginSubmitBtn.disabled = true;
-                loginSubmitBtn.textContent = 'Входим...';
-                loginError.classList.add('hidden');
-                loginError.textContent = '';
-
+            // ===== Проверка авторизации при загрузке =====
+            // Можно проверить, авторизован ли пользователь, отправив запрос к API
+            async function checkAuthStatus() {
                 try {
-                    const res = await fetch('/auth/login', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ username, password })
+                    const response = await fetch('/api/auth/status', {
+                        credentials: 'include' // Важно для передачи кук
                     });
-
-                    if (res.status === 401) {
-                        loginError.textContent = 'Неверные учетные данные';
-                        loginError.classList.remove('hidden');
-                        return;
+                    
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.authenticated) {
+                            // Пользователь авторизован
+                            console.log('Пользователь авторизован:', data.user);
+                            // Можно обновить UI (например, поменять кнопку "Войти" на "Выйти")
+                            updateUIForAuthenticatedUser(data.user);
+                        }
                     }
-
-                    if (res.status === 403) {
-                        loginError.textContent = 'Пользователь неактивен';
-                        loginError.classList.remove('hidden');
-                        return;
-                    }
-
-                    if (!res.ok) {
-                        loginError.textContent = `Ошибка входа: ${res.status}`;
-                        loginError.classList.remove('hidden');
-                        return;
-                    }
-
-                    // 200 OK -> { token, token_type, expires_in, user }
-                    const data = await res.json();
-
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('token_type', data.token_type || 'Bearer');
-                    localStorage.setItem('user', JSON.stringify(data.user));
-
-                    hideLoginModal();
-
-                    // после входа переходим на страницу репозиториев
-                    window.location.href = 'repo.html';
-                } catch (err) {
-                    console.error(err);
-                    loginError.textContent = 'Не удалось соединиться с сервером';
-                    loginError.classList.remove('hidden');
-                } finally {
-                    loginSubmitBtn.disabled = false;
-                    loginSubmitBtn.textContent = 'Войти';
+                } catch (error) {
+                    console.log('Ошибка проверки авторизации:', error);
                 }
-            });
+            }
+
+            function updateUIForAuthenticatedUser(user) {
+                // Обновляем кнопку входа
+                if (loginBtn) {
+                    loginBtn.textContent = 'Выйти';
+                    loginBtn.onclick = function() {
+                        // Редирект на выход из oauth2-proxy
+                        window.location.href = '/oauth2/sign_out';
+                    };
+                    
+                    // Можно добавить информацию о пользователе
+                    const userInfo = document.createElement('div');
+                    userInfo.className = 'ml-4 text-sm';
+                    userInfo.textContent = `Привет, ${user.name || user.email}`;
+                    loginBtn.parentNode.insertBefore(userInfo, loginBtn.nextSibling);
+                }
+            }
+
+            // Проверяем статус авторизации при загрузке страницы
+            checkAuthStatus();
         });
     </script>
 

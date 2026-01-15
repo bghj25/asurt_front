@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои проекты | AСУРТ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .role-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .role-owner {
+            background-color: #E0F2FE;
+            color: #0369A1;
+        }
+
+        .role-admin {
+            background-color: #F3E8FF;
+            color: #7C3AED;
+        }
+
+        .role-developer {
+            background-color: #DCFCE7;
+            color: #166534;
+        }
+
+        .role-analyst {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .role-tester {
+            background-color: #FCE7F3;
+            color: #BE185D;
+        }
+
+        .role-viewer {
+            background-color: #F1F5F9;
+            color: #475569;
+        }
+
+        .status-active {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-draft {
+            background-color: #E5E7EB;
+            color: #4B5563;
+        }
+
+        .status-inactive {
+            background-color: #FEE2E2;
+            color: #92400E;
+        }
+
+        .status-completed {
+            background-color: #DBEAFE;
+            color: #1E40AF;
+        }
+
+        .status-on-hold {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-planning {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .edit-mode .view-field {
+            display: none;
+        }
+
+        .edit-mode .edit-field {
+            display: block;
+        }
+
+        .view-mode .view-field {
+            display: block;
+        }
+
+        .view-mode .edit-field {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Main Content -->
+    <div class="flex flex-col h-screen overflow-hidden">
+        <!-- Top Navigation -->
+        <header class="bg-white shadow-sm">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-lg font-semibold text-gray-900">Мои проекты</h1>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <!-- Кнопка профиля -->
+                        <button id="profileBtn" 
+                                class="flex items-center space-x-2 p-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                            <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-user text-indigo-600"></i>
+                            </div>
+                            <span id="userLoginBtn" class="text-sm font-medium hidden md:inline">Загрузка...</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        
+                        <!-- Кнопка выхода -->
+                        <button id="logoutTopBtn"
+                                class="flex items-center space-x-2 p-2 text-gray-700 hover:text-red-600 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="text-sm font-medium hidden md:inline">Выйти</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+            <div class="max-w-7xl mx-auto">
+                <!-- Header with Stats -->
+                <div class="mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-indigo-100 text-indigo-600 mr-4">
+                                    <i class="fas fa-project-diagram"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Всего проектов</p>
+                                    <p class="text-2xl font-semibold text-gray-800" id="totalProjects">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-green-100 text-green-600 mr-4">
+                                    <i class="fas fa-play-circle"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Активные</p>
+                                    <p class="text-2xl font-semibold text-gray-800" id="activeProjects">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-gray-100 text-gray-600 mr-4">
+                                    <i class="fas fa-file-lines"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Черновики</p>
+                                    <p class="text-2xl font-semibold text-gray-800" id="draftProjects">0</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <div class="flex items-center">
+                                <div class="p-3 rounded-full bg-red-100 text-red-600 mr-4">
+                                    <i class="fas fa-pause-circle"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Неактивные</p>
+                                    <p class="text-2xl font-semibold text-gray-800" id="inactiveProjects">0</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters and Actions -->
+                <div class="mb-6 bg-white p-4 rounded-lg shadow">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                            <div class="relative">
+                                <input type="text" id="searchProjects" 
+                                       class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" 
+                                       placeholder="Поиск проектов...">
+                                <div class="absolute left-3 top-2.5 text-gray-400">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <select id="filterRole"
+                                    class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                    <option value="">Все роли</option>
+                                    <option value="Владелец">Владелец</option>
+                                    <option value="Администратор">Администратор</option>
+                                    <option value="Разработчик">Разработчик</option>
+                                    <option value="Аналитик">Аналитик</option>
+                                    <option value="Тестировщик">Тестировщик</option>
+                                    <option value="Наблюдатель">Наблюдатель</option>
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <select id="filterStatus"
+                                    class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                    <option value="">Все статусы</option>
+                                    <option value="active">Активный</option>
+                                    <option value="draft">Черновик</option>
+                                    <option value="inactive">Неактивный</option>
+                                    <option value="completed">Завершен</option>
+                                    <option value="planning">Планирование</option>
+                                </select>
+                                <div
+                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                        <i class="fas fa-chevron-down"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <button id="newProjectBtn"
+                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
+                                <i class="fas fa-plus mr-2"></i>Новый проект
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="projectsGrid">
+                    <!-- Projects will be loaded here -->
+                    <div class="col-span-full text-center py-12 text-gray-500">
+                        <i class="fas fa-spinner fa-spin text-3xl mb-4"></i>
+                        <p>Загрузка проектов...</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t border-gray-200 py-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
+                    <div class="mb-4 md:mb-0">
+                        © 2025 AСУРТ. Все права защищены.
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Личные данные
+                        </h3>
+                        <div class="flex items-center space-x-2">
+                            <button type="button" id="editProfileBtn"
+                                class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-edit mr-2"></i>Редактировать
+                            </button>
+                            <button type="button" id="closeProfileModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="profileContent" class="space-y-6">
+                        <!-- Информация о пользователе -->
+                        <div class="flex items-center space-x-4">
+                            <div class="h-16 w-16 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-user text-indigo-600 text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-gray-900" id="userName">Загрузка...</h4>
+                                <p class="text-sm text-gray-500" id="userEmail">Загрузка...</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Форма редактирования (скрыта по умолчанию) -->
+                        <div id="editProfileForm" class="edit-field hidden space-y-4 border border-gray-200 rounded-lg p-4 bg-gray-50">
+                            <div>
+                                <label for="editLogin" class="block text-sm font-medium text-gray-700 mb-1">Логин</label>
+                                <input type="text" id="editLogin" name="login"
+                                    class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    placeholder="Введите новый логин">
+                                <p class="mt-1 text-xs text-gray-500">Логин должен быть уникальным</p>
+                            </div>
+                            
+                            <div>
+                                <label for="editName" class="block text-sm font-medium text-gray-700 mb-1">Имя</label>
+                                <input type="text" id="editName" name="name"
+                                    class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    placeholder="Введите ваше имя">
+                            </div>
+                            
+                            <div>
+                                <label for="editSurname" class="block text-sm font-medium text-gray-700 mb-1">Фамилия</label>
+                                <input type="text" id="editSurname" name="surname"
+                                    class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    placeholder="Введите вашу фамилию">
+                            </div>
+                            
+                            <div class="flex space-x-2 pt-2">
+                                <button type="button" id="saveProfileChangesBtn"
+                                    class="flex-1 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Сохранить
+                                </button>
+                                <button type="button" id="cancelEditBtn"
+                                    class="flex-1 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Отмена
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Просмотр данных (видимо по умолчанию) -->
+                        <div id="viewProfileInfo" class="view-field border-t border-gray-200 pt-4">
+                            <dl class="space-y-4">
+                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-500">Логин</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userLogin">Загрузка...</dd>
+                                </div>
+                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-500">Имя</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userFirstName">Загрузка...</dd>
+                                </div>
+                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-500">Фамилия</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userSurname">Загрузка...</dd>
+                                </div>
+                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-500">Email</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userEmailField">Загрузка...</dd>
+                                </div>
+                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-500">Статус</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userStatus">Загрузка...</dd>
+                                </div>
+                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
+                                    <dt class="text-sm font-medium text-gray-500">Дата регистрации</dt>
+                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userCreatedAt">Загрузка...</dd>
+                                </div>
+                            </dl>
+                        </div>
+                        
+                        <!-- Сообщения об успехе/ошибке -->
+                        <div id="profileMessage" class="hidden p-3 rounded-md"></div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6">
+                    <button id="closeProfileModalBtn2" type="button"
+                        class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Project Modal -->
+    <div id="newProjectModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                            Создание нового проекта
+                        </h3>
+                        <button type="button" id="closeNewProjectModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label for="projectName" class="block text-sm font-medium text-gray-700 mb-1">Название проекта</label>
+                            <input type="text" id="projectName" name="projectName"
+                                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="Введите название проекта">
+                        </div>
+                        
+                        <div>
+                            <label for="projectDescription" class="block text-sm font-medium text-gray-700 mb-1">Описание</label>
+                            <textarea id="projectDescription" name="projectDescription" rows="3"
+                                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="Опишите цели и задачи проекта"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="projectStatus" class="block text-sm font-medium text-gray-700 mb-1">Статус</label>
+                            <select id="projectStatus" name="projectStatus"
+                                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option value="draft">Черновик</option>
+                                <option value="active" selected>Активный</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ваша роль в проекте</label>
+                            <select id="projectRole" name="projectRole"
+                                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option value="Владелец">Владелец</option>
+                                <option value="Администратор">Администратор</option>
+                                <option value="Разработчик">Разработчик</option>
+                                <option value="Аналитик">Аналитик</option>
+                                <option value="Тестировщик">Тестировщик</option>
+                                <option value="Наблюдатель">Наблюдатель</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button id="saveNewProjectBtn" type="button"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                        Создать проект
+                    </button>
+                    <button id="closeNewProjectModalBtn2" type="button"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                        Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // =========================
+            // CONFIG
+            // =========================
+            const API_BASE = 'http://localhost/api';
+
+            // =========================
+            // DOM Elements
+            // =========================
+            const projectsGrid = document.getElementById('projectsGrid');
+            const searchProjects = document.getElementById('searchProjects');
+            const filterRole = document.getElementById('filterRole');
+            const filterStatus = document.getElementById('filterStatus');
+            const newProjectBtn = document.getElementById('newProjectBtn');
+            const profileBtn = document.getElementById('profileBtn');
+            const logoutTopBtn = document.getElementById('logoutTopBtn');
+            const userLoginBtn = document.getElementById('userLoginBtn');
+            const profileModal = document.getElementById('profileModal');
+            const newProjectModal = document.getElementById('newProjectModal');
+            
+            // Статистика
+            const totalProjects = document.getElementById('totalProjects');
+            const activeProjects = document.getElementById('activeProjects');
+            const draftProjects = document.getElementById('draftProjects');
+            const inactiveProjects = document.getElementById('inactiveProjects');
+
+            // Элементы для редактирования профиля
+            const editProfileBtn = document.getElementById('editProfileBtn');
+            const saveProfileChangesBtn = document.getElementById('saveProfileChangesBtn');
+            const cancelEditBtn = document.getElementById('cancelEditBtn');
+            const editProfileForm = document.getElementById('editProfileForm');
+            const viewProfileInfo = document.getElementById('viewProfileInfo');
+            const profileContent = document.getElementById('profileContent');
+            const profileMessage = document.getElementById('profileMessage');
+
+            // Поля формы редактирования
+            const editLogin = document.getElementById('editLogin');
+            const editName = document.getElementById('editName');
+            const editSurname = document.getElementById('editSurname');
+
+            // Текущий пользователь и проекты
+            let currentUser = null;
+            let userProjects = []; // Список проектов пользователя с ролями
+            let projectsDetails = {}; // Детальная информация о проектах
+
+            // =========================
+            // Helper Functions
+            // =========================
+            
+            /**
+             * Форматирует дату в удобочитаемый вид
+             */
+            function formatDateTime(dateString) {
+                if (!dateString) return 'Не указано';
+                
+                try {
+                    const date = new Date(dateString);
+                    
+                    if (isNaN(date.getTime())) {
+                        return 'Неверный формат даты';
+                    }
+                    
+                    const options = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    };
+                    
+                    return date.toLocaleDateString('ru-RU', options);
+                } catch (error) {
+                    console.error('Error formatting date:', error, dateString);
+                    return 'Ошибка формата даты';
+                }
+            }
+
+            /**
+             * Форматирует дату в кратком формате
+             */
+            function formatDateShort(dateString) {
+                if (!dateString) return 'Не указано';
+                
+                try {
+                    const date = new Date(dateString);
+                    
+                    if (isNaN(date.getTime())) {
+                        return 'Неверный формат';
+                    }
+                    
+                    const options = {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    };
+                    
+                    return date.toLocaleDateString('ru-RU', options);
+                } catch (error) {
+                    return 'Ошибка даты';
+                }
+            }
+
+            /**
+             * Получает класс CSS для статуса проекта
+             */
+            function getStatusClass(status) {
+                const classes = {
+                    'active': 'status-active',
+                    'draft': 'status-draft',
+                    'inactive': 'status-inactive',
+                    'completed': 'status-completed',
+                    'on-hold': 'status-on-hold',
+                    'planning': 'status-planning'
+                };
+                return classes[status] || 'status-active';
+            }
+
+            /**
+             * Получает русское название статуса
+             */
+            function getStatusText(status) {
+                const texts = {
+                    'active': 'Активный',
+                    'draft': 'Черновик',
+                    'inactive': 'Неактивный',
+                    'completed': 'Завершен',
+                    'on-hold': 'На паузе',
+                    'planning': 'Планирование'
+                };
+                return texts[status] || status;
+            }
+
+            /**
+             * Получает класс CSS для роли
+             */
+            function getRoleClass(roleName) {
+                const classes = {
+                    'Владелец': 'role-owner',
+                    'Администратор': 'role-admin',
+                    'Разработчик': 'role-developer',
+                    'Аналитик': 'role-analyst',
+                    'Тестировщик': 'role-tester',
+                    'Наблюдатель': 'role-viewer'
+                };
+                return classes[roleName] || 'role-viewer';
+            }
+
+            // =========================
+            // API Helper
+            // =========================
+            async function apiRequest(path, options = {}) {
+                console.log(`[API] Request to: ${API_BASE}${path}`);
+                
+                try {
+                    const response = await fetch(`${API_BASE}${path}`, {
+                        ...options,
+                        credentials: 'include',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            ...(options.headers || {})
+                        }
+                    });
+
+                    console.log(`[API] Response status: ${response.status} ${response.statusText}`);
+
+                    if (response.status === 401) {
+                        throw new Error('Не авторизован. Пожалуйста, войдите в систему.');
+                    }
+
+                    if (response.status === 403) {
+                        throw new Error('Недостаточно прав доступа.');
+                    }
+
+                    if (!response.ok) {
+                        const errorData = await response.json().catch(() => ({}));
+                        const errorMessage = errorData.detail?.error || 
+                                            errorData.error || 
+                                            `Ошибка ${response.status}`;
+                        throw new Error(errorMessage);
+                    }
+
+                    return await response.json();
+
+                } catch (error) {
+                    console.error('[API] Request failed:', error);
+                    throw error;
+                }
+            }
+
+            // =========================
+            // Load User Profile
+            // =========================
+            async function loadUserProfile() {
+                try {
+                    console.log('[Profile] Loading user profile...');
+                    
+                    // GET /api/users/me/profile
+                    const userData = await apiRequest('/users/me/profile');
+                    
+                    console.log('[Profile] User data received:', userData);
+                    
+                    // Сохраняем данные пользователя
+                    currentUser = userData;
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    
+                    // Обновляем текст на кнопке профиля
+                    if (userLoginBtn) {
+                        userLoginBtn.textContent = userData.login || userData.email || 'Профиль';
+                    }
+                    
+                    // Обновляем поля ввода для редактирования
+                    updateEditForm(userData);
+                    
+                    return userData;
+                    
+                } catch (error) {
+                    console.error('[Profile] Failed to load user profile:', error);
+                    
+                    // Fallback
+                    try {
+                        const savedUser = JSON.parse(localStorage.getItem('user') || '{}');
+                        if (userLoginBtn && (savedUser.login || savedUser.email)) {
+                            userLoginBtn.textContent = savedUser.login || savedUser.email.split('@')[0] || 'Профиль';
+                        }
+                        currentUser = savedUser;
+                        return savedUser;
+                    } catch (e) {
+                        console.error('[Profile] Failed to parse saved user:', e);
+                        if (userLoginBtn) {
+                            userLoginBtn.textContent = 'Профиль';
+                        }
+                        return null;
+                    }
+                }
+            }
+
+            // =========================
+            // Load User Projects
+            // =========================
+            async function loadUserProjects() {
+                try {
+                    console.log('[Projects] Loading user projects...');
+                    
+                    // GET /api/users/me/projects
+                    const response = await apiRequest('/users/me/projects');
+                    
+                    console.log('[Projects] User projects received:', response);
+                    
+                    userProjects = response.project_roles || [];
+                    
+                    // Загружаем детальную информацию о каждом проекте
+                    await loadProjectsDetails();
+                    
+                    // Обновляем статистику
+                    updateProjectsStats();
+                    
+                    // Рендерим проекты
+                    renderProjects();
+                    
+                    return userProjects;
+                    
+                } catch (error) {
+                    console.error('[Projects] Failed to load user projects:', error);
+                    userProjects = [];
+                    projectsDetails = {};
+                    
+                    // Показываем сообщение об ошибке
+                    if (projectsGrid) {
+                        projectsGrid.innerHTML = `
+                            <div class="col-span-full text-center py-12 text-gray-500">
+                                <i class="fas fa-exclamation-triangle text-3xl mb-4 text-red-500"></i>
+                                <p class="text-lg mb-2 text-red-600">Ошибка загрузки проектов</p>
+                                <p class="text-sm">${error.message}</p>
+                            </div>
+                        `;
+                    }
+                    
+                    return [];
+                }
+            }
+
+            // =========================
+            // Load Projects Details
+            // =========================
+            async function loadProjectsDetails() {
+                if (!userProjects.length) {
+                    projectsDetails = {};
+                    return;
+                }
+                
+                console.log('[Projects] Loading projects details...');
+                
+                projectsDetails = {};
+                
+                // Загружаем информацию о каждом проекте параллельно
+                const projectPromises = userProjects.map(async (projectRole) => {
+                    try {
+                        // GET /api/projects/{project_id}
+                        const projectDetail = await apiRequest(`/projects/${projectRole.project_id}`);
+                        projectsDetails[projectRole.project_id] = projectDetail;
+                    } catch (error) {
+                        console.error(`[Projects] Failed to load project ${projectRole.project_id}:`, error);
+                        // Создаем минимальную информацию о проекте
+                        projectsDetails[projectRole.project_id] = {
+                            id: projectRole.project_id,
+                            name: projectRole.project_name,
+                            description: 'Не удалось загрузить описание',
+                            status: 'unknown',
+                            created_at: null,
+                            updated_at: null
+                        };
+                    }
+                });
+                
+                await Promise.all(projectPromises);
+                console.log('[Projects] Projects details loaded:', projectsDetails);
+            }
+
+            // =========================
+            // Update Projects Statistics
+            // =========================
+            function updateProjectsStats() {
+                if (!totalProjects || !activeProjects || !draftProjects || !inactiveProjects) return;
+                
+                const total = userProjects.length;
+                
+                // Считаем проекты по статусам
+                let activeCount = 0;
+                let draftCount = 0;
+                let inactiveCount = 0;
+                
+                userProjects.forEach(projectRole => {
+                    const projectDetail = projectsDetails[projectRole.project_id];
+                    if (projectDetail) {
+                        const status = projectDetail.status || 'unknown';
+                        
+                        if (status === 'active') activeCount++;
+                        else if (status === 'draft') draftCount++;
+                        else if (status === 'inactive') inactiveCount++;
+                    }
+                });
+                
+                totalProjects.textContent = total;
+                activeProjects.textContent = activeCount;
+                draftProjects.textContent = draftCount;
+                inactiveProjects.textContent = inactiveCount;
+            }
+
+            // =========================
+            // Render Projects
+            // =========================
+            function renderProjects() {
+                if (!projectsGrid) return;
+                
+                if (!userProjects.length) {
+                    projectsGrid.innerHTML = `
+                        <div class="col-span-full text-center py-12 text-gray-500">
+                            <i class="fas fa-folder-open text-3xl mb-4"></i>
+                            <p class="text-lg mb-2">Проектов не найдено</p>
+                            <p class="text-sm">Вы пока не участвуете ни в одном проекте</p>
+                            <button id="createFirstProjectBtn" class="mt-4 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <i class="fas fa-plus mr-2"></i>Создать первый проект
+                            </button>
+                        </div>
+                    `;
+                    
+                    // Добавляем обработчик для кнопки создания проекта
+                    const createFirstProjectBtn = document.getElementById('createFirstProjectBtn');
+                    if (createFirstProjectBtn) {
+                        createFirstProjectBtn.addEventListener('click', function() {
+                            // Сбрасываем значения формы перед открытием
+                            document.getElementById('projectName').value = '';
+                            document.getElementById('projectDescription').value = '';
+                            document.getElementById('projectStatus').value = 'active';
+                            newProjectModal.classList.remove('hidden');
+                        });
+                    }
+                    
+                    return;
+                }
+
+                projectsGrid.innerHTML = '';
+                
+                // Фильтруем проекты
+                const filteredProjects = filterProjectsList();
+                
+                if (!filteredProjects.length) {
+                    projectsGrid.innerHTML = `
+                        <div class="col-span-full text-center py-12 text-gray-500">
+                            <i class="fas fa-search text-3xl mb-4"></i>
+                            <p class="text-lg mb-2">Проектов не найдено</p>
+                            <p class="text-sm">Попробуйте изменить параметры фильтрации</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                filteredProjects.forEach(projectRole => {
+                    const projectDetail = projectsDetails[projectRole.project_id];
+                    if (!projectDetail) return;
+                    
+                    const projectCard = document.createElement('div');
+                    projectCard.className = 'project-card bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg';
+                    
+                    // Форматируем даты
+                    const createdDate = formatDateShort(projectDetail.created_at);
+                    const updatedDate = formatDateShort(projectDetail.updated_at);
+                    
+                    projectCard.innerHTML = `
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-1">${projectDetail.name || projectRole.project_name}</h3>
+                                    <span class="${getRoleClass(projectRole.role_name)} role-badge">
+                                        ${projectRole.role_name}
+                                    </span>
+                                </div>
+                                <span class="px-2 py-1 text-xs font-medium rounded-full ${getStatusClass(projectDetail.status)}">
+                                    ${getStatusText(projectDetail.status)}
+                                </span>
+                            </div>
+                            
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-2">${projectDetail.description || 'Нет описания'}</p>
+                            
+                            <div class="space-y-3 mb-4">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">Создан:</span>
+                                    <span class="font-medium">${createdDate}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">Обновлен:</span>
+                                    <span class="font-medium">${updatedDate}</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-500">ID проекта:</span>
+                                    <span class="font-mono font-medium text-xs">${projectRole.project_id.substring(0, 8)}...</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between pt-4 border-t border-gray-100">
+                                <button class="text-indigo-600 hover:text-indigo-900 text-sm font-medium flex items-center transition-colors duration-200 view-project-btn" data-project-id="${projectRole.project_id}">
+                                    <i class="fas fa-eye mr-1"></i> Просмотр
+                                </button>
+                                <button class="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center transition-colors duration-200 edit-project-btn" data-project-id="${projectRole.project_id}">
+                                    <i class="fas fa-edit mr-1"></i> Редактировать
+                                </button>
+                                <button class="text-red-600 hover:text-red-900 text-sm font-medium flex items-center transition-colors duration-200 delete-project-btn" data-project-id="${projectRole.project_id}">
+                                    <i class="fas fa-trash mr-1"></i> Удалить
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    projectsGrid.appendChild(projectCard);
+                });
+                
+                // Добавляем обработчики событий для кнопок проектов
+                addProjectEventListeners();
+            }
+
+            // =========================
+            // Filter Projects List
+            // =========================
+            function filterProjectsList() {
+                const searchTerm = searchProjects ? searchProjects.value.toLowerCase() : '';
+                const roleFilter = filterRole ? filterRole.value : '';
+                const statusFilter = filterStatus ? filterStatus.value : '';
+                
+                return userProjects.filter(projectRole => {
+                    const projectDetail = projectsDetails[projectRole.project_id];
+                    if (!projectDetail) return false;
+                    
+                    // Проверяем поиск по названию
+                    const matchesSearch = searchTerm === '' || 
+                        (projectDetail.name && projectDetail.name.toLowerCase().includes(searchTerm)) ||
+                        (projectDetail.description && projectDetail.description.toLowerCase().includes(searchTerm));
+                    
+                    // Проверяем фильтр по роли
+                    const matchesRole = roleFilter === '' || projectRole.role_name === roleFilter;
+                    
+                    // Проверяем фильтр по статусу
+                    const matchesStatus = statusFilter === '' || projectDetail.status === statusFilter;
+                    
+                    return matchesSearch && matchesRole && matchesStatus;
+                });
+            }
+
+            // =========================
+            // Add Project Event Listeners
+            // =========================
+            function addProjectEventListeners() {
+                // Кнопки просмотра проекта
+                document.querySelectorAll('.view-project-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const projectId = this.getAttribute('data-project-id');
+                        console.log('[UI] View project clicked:', projectId);
+                        // Здесь можно добавить логику просмотра проекта
+                        alert(`Просмотр проекта ${projectId}`);
+                    });
+                });
+                
+                // Кнопки редактирования проекта
+                document.querySelectorAll('.edit-project-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const projectId = this.getAttribute('data-project-id');
+                        console.log('[UI] Edit project clicked:', projectId);
+                        // Здесь можно добавить логику редактирования проекта
+                        alert(`Редактирование проекта ${projectId}`);
+                    });
+                });
+                
+                // Кнопки удаления проекта
+                document.querySelectorAll('.delete-project-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const projectId = this.getAttribute('data-project-id');
+                        console.log('[UI] Delete project clicked:', projectId);
+                        
+                        if (confirm('Вы уверены, что хотите удалить этот проект?')) {
+                            // Здесь можно добавить логику удаления проекта
+                            alert(`Удаление проекта ${projectId}`);
+                        }
+                    });
+                });
+            }
+
+            // =========================
+            // Update Profile (PATCH)
+            // =========================
+            async function updateUserProfile(updateData) {
+                try {
+                    console.log('[Profile] Updating user profile with:', updateData);
+                    
+                    // PATCH /api/users/me/profile
+                    const response = await apiRequest('/users/me/profile', {
+                        method: 'PATCH',
+                        body: JSON.stringify(updateData)
+                    });
+                    
+                    console.log('[Profile] Update response:', response);
+                    
+                    // Обновляем текущего пользователя
+                    currentUser = response;
+                    localStorage.setItem('user', JSON.stringify(response));
+                    
+                    // Обновляем кнопку профиля
+                    if (userLoginBtn) {
+                        userLoginBtn.textContent = response.login || response.email || 'Профиль';
+                    }
+                    
+                    return response;
+                    
+                } catch (error) {
+                    console.error('[Profile] Failed to update user profile:', error);
+                    throw error;
+                }
+            }
+
+            // =========================
+            // Update Profile Modal
+            // =========================
+            function updateProfileModal(userData) {
+                if (!userData) {
+                    console.warn('[Profile] No user data to display');
+                    return;
+                }
+                
+                console.log('[Profile] Updating modal with:', userData);
+                
+                // Обновляем поля в модальном окне профиля
+                const userName = document.getElementById('userName');
+                const userEmail = document.getElementById('userEmail');
+                const userLogin = document.getElementById('userLogin');
+                const userFirstName = document.getElementById('userFirstName');
+                const userSurname = document.getElementById('userSurname');
+                const userEmailField = document.getElementById('userEmailField');
+                const userStatus = document.getElementById('userStatus');
+                const userCreatedAt = document.getElementById('userCreatedAt');
+                
+                if (userName) {
+                    const fullName = `${userData.name || ''} ${userData.surname || ''}`.trim();
+                    userName.textContent = fullName || userData.login || userData.email || 'Пользователь';
+                }
+                
+                if (userEmail) userEmail.textContent = userData.email || 'Не указан';
+                if (userEmailField) userEmailField.textContent = userData.email || 'Не указан';
+                if (userLogin) userLogin.textContent = userData.login || 'Не указан';
+                if (userFirstName) userFirstName.textContent = userData.name || 'Не указано';
+                if (userSurname) userSurname.textContent = userData.surname || 'Не указана';
+                
+                if (userStatus) {
+                    const statusMap = {
+                        'active': 'Активный',
+                        'inactive': 'Неактивный',
+                        'blocked': 'Заблокирован'
+                    };
+                    userStatus.textContent = statusMap[userData.status] || userData.status || 'Неизвестно';
+                }
+                
+                if (userCreatedAt) {
+                    // Форматируем дату регистрации
+                    userCreatedAt.textContent = formatDateTime(userData.created_at) || 'Не указано';
+                }
+            }
+
+            // =========================
+            // Update Edit Form
+            // =========================
+            function updateEditForm(userData) {
+                if (!userData) return;
+                
+                if (editLogin) editLogin.value = userData.login || '';
+                if (editName) editName.value = userData.name || '';
+                if (editSurname) editSurname.value = userData.surname || '';
+            }
+
+            // =========================
+            // Show/Hide Edit Mode
+            // =========================
+            function showEditMode() {
+                if (editProfileForm) editProfileForm.classList.remove('hidden');
+                if (viewProfileInfo) viewProfileInfo.classList.add('hidden');
+                if (profileContent) profileContent.classList.add('edit-mode');
+                if (profileContent) profileContent.classList.remove('view-mode');
+                
+                // Фокусируемся на первом поле
+                if (editLogin) editLogin.focus();
+            }
+
+            function showViewMode() {
+                if (editProfileForm) editProfileForm.classList.add('hidden');
+                if (viewProfileInfo) viewProfileInfo.classList.remove('hidden');
+                if (profileContent) profileContent.classList.remove('edit-mode');
+                if (profileContent) profileContent.classList.add('view-mode');
+                
+                // Скрываем сообщения
+                hideMessage();
+            }
+
+            // =========================
+            // Show/Hide Messages
+            // =========================
+            function showMessage(text, type = 'success') {
+                if (!profileMessage) return;
+                
+                profileMessage.textContent = text;
+                profileMessage.className = 'p-3 rounded-md';
+                
+                if (type === 'success') {
+                    profileMessage.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
+                } else if (type === 'error') {
+                    profileMessage.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
+                } else if (type === 'warning') {
+                    profileMessage.classList.add('bg-yellow-50', 'text-yellow-800', 'border', 'border-yellow-200');
+                }
+                
+                profileMessage.classList.remove('hidden');
+                
+                // Автоматически скрываем сообщение через 5 секунд
+                setTimeout(hideMessage, 5000);
+            }
+
+            function hideMessage() {
+                if (profileMessage) {
+                    profileMessage.classList.add('hidden');
+                    profileMessage.textContent = '';
+                }
+            }
+
+            // =========================
+            // Validate Edit Form
+            // =========================
+            function validateEditForm() {
+                const login = editLogin ? editLogin.value.trim() : '';
+                const name = editName ? editName.value.trim() : '';
+                const surname = editSurname ? editSurname.value.trim() : '';
+                
+                // Проверяем, что хотя бы одно поле изменилось
+                const originalLogin = currentUser?.login || '';
+                const originalName = currentUser?.name || '';
+                const originalSurname = currentUser?.surname || '';
+                
+                if (login === originalLogin && 
+                    name === originalName && 
+                    surname === originalSurname) {
+                    showMessage('Нет изменений для сохранения', 'warning');
+                    return false;
+                }
+                
+                // Проверяем логин (если изменен)
+                if (login !== originalLogin && login.length < 3) {
+                    showMessage('Логин должен содержать минимум 3 символа', 'error');
+                    if (editLogin) editLogin.focus();
+                    return false;
+                }
+                
+                return true;
+            }
+
+            // =========================
+            // Event Listeners - Profile
+            // =========================
+            if (editProfileBtn) {
+                editProfileBtn.addEventListener('click', function() {
+                    console.log('[UI] Edit profile button clicked');
+                    showEditMode();
+                });
+            }
+
+            if (cancelEditBtn) {
+                cancelEditBtn.addEventListener('click', function() {
+                    console.log('[UI] Cancel edit clicked');
+                    // Восстанавливаем оригинальные значения
+                    updateEditForm(currentUser);
+                    showViewMode();
+                });
+            }
+
+            if (saveProfileChangesBtn) {
+                saveProfileChangesBtn.addEventListener('click', async function() {
+                    console.log('[UI] Save profile changes clicked');
+                    
+                    if (!validateEditForm()) {
+                        return;
+                    }
+                    
+                    const login = editLogin ? editLogin.value.trim() : null;
+                    const name = editName ? editName.value.trim() : null;
+                    const surname = editSurname ? editSurname.value.trim() : null;
+                    
+                    // Подготавливаем данные для отправки
+                    const updateData = {};
+                    
+                    if (login !== currentUser?.login) {
+                        updateData.login = login || '';
+                    }
+                    
+                    if (name !== currentUser?.name) {
+                        updateData.name = name || '';
+                    }
+                    
+                    if (surname !== currentUser?.surname) {
+                        updateData.surname = surname || '';
+                    }
+                    
+                    // Проверяем, есть ли изменения
+                    if (Object.keys(updateData).length === 0) {
+                        showMessage('Нет изменений для сохранения', 'warning');
+                        return;
+                    }
+                    
+                    try {
+                        // Отключаем кнопку на время запроса
+                        saveProfileChangesBtn.disabled = true;
+                        saveProfileChangesBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Сохранение...';
+                        
+                        // Отправляем PATCH запрос
+                        const updatedUser = await updateUserProfile(updateData);
+                        
+                        // Обновляем модальное окно
+                        updateProfileModal(updatedUser);
+                        
+                        // Показываем сообщение об успехе
+                        showMessage('Данные успешно обновлены!', 'success');
+                        
+                        // Возвращаемся в режим просмотра
+                        setTimeout(() => {
+                            showViewMode();
+                        }, 1500);
+                        
+                    } catch (error) {
+                        console.error('[UI] Failed to save profile:', error);
+                        showMessage(`Ошибка: ${error.message}`, 'error');
+                    } finally {
+                        // Восстанавливаем кнопку
+                        saveProfileChangesBtn.disabled = false;
+                        saveProfileChangesBtn.innerHTML = 'Сохранить';
+                    }
+                });
+            }
+
+            // =========================
+            // Event Listeners - Projects
+            // =========================
+            if (searchProjects) {
+                searchProjects.addEventListener('input', function() {
+                    console.log('[UI] Search projects:', this.value);
+                    renderProjects();
+                });
+            }
+            
+            if (filterRole) {
+                filterRole.addEventListener('change', function() {
+                    console.log('[UI] Filter by role:', this.value);
+                    renderProjects();
+                });
+            }
+            
+            if (filterStatus) {
+                filterStatus.addEventListener('change', function() {
+                    console.log('[UI] Filter by status:', this.value);
+                    renderProjects();
+                });
+            }
+
+            // Profile Modal
+            if (profileBtn) {
+                profileBtn.addEventListener('click', async function() {
+                    console.log('[UI] Profile button clicked');
+                    
+                    // Загружаем профиль при открытии модального окна
+                    try {
+                        const userData = await loadUserProfile();
+                        updateProfileModal(userData);
+                        showViewMode(); // Показываем режим просмотра по умолчанию
+                        profileModal.classList.remove('hidden');
+                    } catch (error) {
+                        console.error('[UI] Failed to load profile:', error);
+                        showMessage('Не удалось загрузить профиль: ' + error.message, 'error');
+                        profileModal.classList.remove('hidden');
+                    }
+                });
+            }
+
+            // Close Profile Modal
+            const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
+            const closeProfileModalBtn2 = document.getElementById('closeProfileModalBtn2');
+            
+            if (closeProfileModalBtn) {
+                closeProfileModalBtn.addEventListener('click', function() {
+                    profileModal.classList.add('hidden');
+                    showViewMode(); // Сбрасываем в режим просмотра при закрытии
+                });
+            }
+            
+            if (closeProfileModalBtn2) {
+                closeProfileModalBtn2.addEventListener('click', function() {
+                    profileModal.classList.add('hidden');
+                    showViewMode(); // Сбрасываем в режим просмотра при закрытии
+                });
+            }
+
+            // New Project Modal
+            if (newProjectBtn) {
+                newProjectBtn.addEventListener('click', function() {
+                    newProjectModal.classList.remove('hidden');
+                });
+            }
+
+            // Close New Project Modal
+            const closeNewProjectModalBtn = document.getElementById('closeNewProjectModalBtn');
+            const closeNewProjectModalBtn2 = document.getElementById('closeNewProjectModalBtn2');
+            
+            if (closeNewProjectModalBtn) {
+                closeNewProjectModalBtn.addEventListener('click', function() {
+                    newProjectModal.classList.add('hidden');
+                });
+            }
+            
+            if (closeNewProjectModalBtn2) {
+                closeNewProjectModalBtn2.addEventListener('click', function() {
+                    newProjectModal.classList.add('hidden');
+                });
+            }
+
+            // Save New Project
+            // Save New Project
+            const saveNewProjectBtn = document.getElementById('saveNewProjectBtn');
+            if (saveNewProjectBtn) {
+                saveNewProjectBtn.addEventListener('click', async function() {
+                    const name = document.getElementById('projectName').value.trim();
+                    const description = document.getElementById('projectDescription').value.trim();
+                    const status = document.getElementById('projectStatus').value;
+                    
+                    if (!name) {
+                        alert('Введите название проекта');
+                        return;
+                    }
+                    
+                    try {
+                        // Показываем индикатор загрузки
+                        saveNewProjectBtn.disabled = true;
+                        saveNewProjectBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Создание...';
+                        
+                        // Подготавливаем данные для отправки
+                        const projectData = {
+                            name: name,
+                            description: description || null,
+                            status: status // active, draft, etc.
+                        };
+                        
+                        console.log('[Projects] Creating project:', projectData);
+                        
+                        // POST /api/project/
+                        const response = await apiRequest('/project/', {
+                            method: 'POST',
+                            body: JSON.stringify(projectData)
+                        });
+                        
+                        console.log('[Projects] Project created:', response);
+                        
+                        // Закрываем модальное окно
+                        newProjectModal.classList.add('hidden');
+                        
+                        // Сбрасываем форму
+                        document.getElementById('projectName').value = '';
+                        document.getElementById('projectDescription').value = '';
+                        document.getElementById('projectStatus').value = 'active';
+                        
+                        // Показываем сообщение об успехе
+                        alert('Проект успешно создан!');
+                        
+                        // После создания проекта:
+                        // 1. Обновляем список проектов пользователя
+                        await loadUserProjects();
+                        
+                        // 2. Обновляем статистику
+                        updateProjectsStats();
+                        
+                        // 3. Перерендериваем проекты
+                        renderProjects();
+                        
+                    } catch (error) {
+                        console.error('[Projects] Failed to create project:', error);
+                        alert('Ошибка при создании проекта: ' + error.message);
+                    } finally {
+                        // Восстанавливаем кнопку
+                        saveNewProjectBtn.disabled = false;
+                        saveNewProjectBtn.innerHTML = 'Создать проект';
+                    }
+                });
+            }
+
+            // Logout
+            if (logoutTopBtn) {
+                logoutTopBtn.addEventListener('click', function() {
+                    console.log('[UI] Logout clicked');
+                    
+                    // Очищаем localStorage
+                    localStorage.removeItem('user');
+                    currentUser = null;
+                    userProjects = [];
+                    projectsDetails = {};
+                    
+                    // Перенаправляем на OAuth2 logout
+                    window.location.href = '/oauth2/sign_out';
+                });
+            }
+
+            // Close modals on background click
+            if (profileModal) {
+                profileModal.addEventListener('click', function(e) {
+                    if (e.target === profileModal) {
+                        profileModal.classList.add('hidden');
+                        showViewMode(); // Сбрасываем в режим просмотра при закрытии
+                    }
+                });
+            }
+            
+            if (newProjectModal) {
+                newProjectModal.addEventListener('click', function(e) {
+                    if (e.target === newProjectModal) {
+                        newProjectModal.classList.add('hidden');
+                    }
+                });
+            }
+
+            // =========================
+            // INIT
+            // =========================
+            console.log('[App] Initializing...');
+            
+            // Загружаем профиль пользователя при загрузке страницы
+            loadUserProfile().then(userData => {
+                console.log('[App] User profile loaded:', userData);
+                if (userData) {
+                    updateProfileModal(userData);
+                    
+                    // Загружаем проекты пользователя
+                    loadUserProjects();
+                }
+            }).catch(error => {
+                console.error('[App] Failed to load user profile:', error);
+                // Все равно пытаемся загрузить проекты
+                loadUserProjects();
+            });
+            
+            console.log('[App] Page initialized successfully');
+        });
+    </script>
+
+</body>
+
+</html>
