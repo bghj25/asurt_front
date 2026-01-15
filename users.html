@@ -1,7 +1,9 @@
-<!DOCTYPE html><html lang="ru"><head>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Настройки учетных записей | AСУРТ</title>
+    <title>Управление командой | AСУРТ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -11,9 +13,11 @@
         .user-item:hover {
             background-color: #F3F4F6;
         }
-        .status-active { background-color: #D1FAE5; color: #065F46; }
-        .status-inactive { background-color: #FEE2E2; color: #92400E; }
-        .status-pending { background-color: #FEF3C7; color: #92400E; }
+        .role-owner { background-color: #8B5CF6; color: white; }
+        .role-manager { background-color: #3B82F6; color: white; }
+        .role-analyst { background-color: #10B981; color: white; }
+        .role-participant { background-color: #F59E0B; color: white; }
+        .role-reviewer { background-color: #EC4899; color: white; }
         .sidebar-link.active {
             background-color: #E0E7FF;
             color: #4F46E5;
@@ -22,15 +26,10 @@
         .sidebar-link:hover {
             background-color: #F3F4F6;
         }
-        .role-admin { background-color: #6366F1; color: white; }
-        .role-manager { background-color: #8B5CF6; color: white; }
-        .role-developer { background-color: #EC4899; color: white; }
-        .role-viewer { background-color: #10B981; color: white; }
-        .checkbox-label:has(input:checked) {
-            background-color: #E0E7FF;
-            border-color: #4F46E5;
-        }
         [x-cloak] { display: none !important; }
+        .actions-cell {
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -39,60 +38,33 @@
         <div class="hidden md:flex md:flex-shrink-0">
             <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
                 <div class="flex items-center h-16 px-4 border-b border-gray-200">
-                    <i class="fas fa-tasks text-indigo-600 mr-2"></i>
-                    <span class="font-semibold text-gray-800">AСУРТ</span>
+                    <a href="http://localhost" class="flex items-center hover:opacity-80 transition-opacity">
+                        <i class="fas fa-tasks text-indigo-600 mr-2"></i>
+                        <span class="font-semibold text-gray-800">AСУРТ</span>
+                    </a>
                 </div>
                 <div class="flex flex-col flex-grow px-4 overflow-y-auto">
                     <nav class="flex-1 space-y-1 mt-6">
-                        <a href="repo.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                        <a href="repo.html?project_id=${projectId}" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
                             <i class="fas fa-list-ul mr-3 text-gray-500 w-5 text-center"></i>
                             Все требования
                         </a>
                 
-                        <a href="analytics.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                        <a href="analytics.html?project_id=${projectId}" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
                             <i class="fas fa-chart-bar mr-3 text-gray-500 w-5 text-center"></i>
                             Аналитика и отчеты
                         </a>
                 
-                        <a href="users.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                        <a href="users.html?project_id=${projectId}" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
                             <i class="fas fa-users mr-3 text-gray-500 w-5 text-center"></i>
                             Команда
                         </a>
                 
-                        <a href="settings.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                        <a href="settings.html?project_id=${projectId}" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
                             <i class="fas fa-cog mr-3 text-gray-500 w-5 text-center"></i>
                             Настройки
                         </a>
                     </nav>
-
-                    <div class="mt-8">
-                        <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Проекты
-                        </h3>
-                        <div class="mt-2 space-y-1">
-                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
-                                <span class="w-2 h-2 mr-3 bg-green-500 rounded-full"></span>
-                                E-Commerce Platform
-                            </a>
-                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
-                                <span class="w-2 h-2 mr-3 bg-blue-500 rounded-full"></span>
-                                CRM System
-                            </a>
-                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
-                                <span class="w-2 h-2 mr-3 bg-purple-500 rounded-full"></span>
-                                Mobile App
-                            </a>
-                        </div>
-                    </div>
-                    <!-- Logout -->
-                    <div class="mt-auto pt-6 border-t border-gray-200">
-                        <button id="logoutBtn"
-                            class="w-full flex items-center px-3 py-3 text-sm font-medium rounded-md text-red-600 hover:bg-red-50">
-                            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
-                            Выйти
-                        </button>
-                    </div>
-
                 </div>
             </div>
         </div>
@@ -108,18 +80,18 @@
                                 <i class="fas fa-bars"></i>
                             </button>
                             <div class="flex-shrink-0">
-                                <h1 class="text-lg font-semibold text-gray-900">Управление учетными записями</h1>
+                                <h1 class="text-lg font-semibold text-gray-900">Управление командой</h1>
                             </div>
                         </div>
-                        <div class="flex items-center">
-                            <div class="relative mx-4">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-search text-gray-400"></i>
-                                </div>
-                                <input id="search-users" name="search-users" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Поиск пользователей..." type="search">
-                            </div>
-                            <button id="add-user-btn" class="ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <div class="flex items-center space-x-4">
+                            <button id="add-user-btn" class="ml-4 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" style="display: none;">
                                 <i class="fas fa-user-plus mr-2"></i>Добавить пользователя
+                            </button>
+                            <!-- Кнопка выхода -->
+                            <button id="logoutBtn"
+                                    class="flex items-center space-x-2 p-2 text-gray-700 hover:text-red-600 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span class="text-sm font-medium hidden md:inline">Выйти</span>
                             </button>
                         </div>
                     </div>
@@ -130,63 +102,42 @@
             <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
                 <div class="max-w-7xl mx-auto">
                     <div class="bg-white shadow rounded-lg overflow-hidden">
-                        <!-- Tabs -->
-                        <div class="border-b border-gray-200">
-                            <nav class="flex -mb-px">
-                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                                    Общие настройки
-                                </a>
-                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-indigo-500 font-medium text-sm text-indigo-600">
-                                    Настройки учетных записей
-                                </a>
-                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                                    Настройки уведомлений
-                                </a>
-                                <a href="#" class="w-1/4 py-4 px-1 text-center border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
-                                    Интеграции
-                                </a>
-                            </nav>
-                        </div>
-                        
-                        <!-- Settings Content -->
+                        <!-- Users Table -->
                         <div class="p-6">
-                            <div class="mb-8">
-                                <div class="flex justify-between items-center mb-6">
-                                    <h2 class="text-lg leading-6 font-medium text-gray-900">Управление пользователями</h2>
-                                    <div class="flex items-center">
-                                        <label for="user-filter" class="mr-2 text-sm text-gray-600">Фильтр по роли:</label>
-                                        <select id="user-filter" class="border border-gray-300 rounded-md px-3 py-1 text-sm">
-                                            <option value="all">Все роли</option>
-                                            <option value="admin">Администраторы</option>
-                                            <option value="manager">Менеджеры</option>
-                                            <option value="developer">Разработчики</option>
-                                            <option value="viewer">Наблюдатели</option>
-                                        </select>
-                                    </div>
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <h2 class="text-lg leading-6 font-medium text-gray-900">Пользователи проекта</h2>
+                                    <p class="mt-1 text-sm text-gray-500" id="permissions-info">Загрузка прав доступа...</p>
                                 </div>
-                                
-                                <!-- Users Table -->
-                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg mb-8">
+                                <div class="flex items-center">
+                                    <label for="role-filter" class="mr-2 text-sm text-gray-600">Фильтр по роли:</label>
+                                    <select id="role-filter" class="border border-gray-300 rounded-md px-3 py-1 text-sm">
+                                        <option value="all">Все роли</option>
+                                        <option value="Владелец проекта">Владельцы проекта</option>
+                                        <option value="Менеджер проекта">Менеджеры</option>
+                                        <option value="Аналитик">Аналитики</option>
+                                        <option value="Участник">Участники</option>
+                                        <option value="Рецензент">Рецензенты</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                <div class="overflow-x-auto">
                                     <table class="min-w-full divide-y divide-gray-200">
                                         <thead class="bg-gray-50">
                                             <tr>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Пользователь
+                                                    Имя
                                                 </th>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Email
+                                                    Почта
                                                 </th>
                                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                     Роль
                                                 </th>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Статус
-                                                </th>
-                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    Последний вход
-                                                </th>
-                                                <th scope="col" class="relative px-6 py-3">
-                                                    <span class="sr-only">Действия</span>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider actions-cell">
+                                                    Действия
                                                 </th>
                                             </tr>
                                         </thead>
@@ -194,95 +145,6 @@
                                             <!-- rows will be rendered by JS -->
                                         </tbody>
                                     </table>
-                                </div>
-                                
-                                <!-- Roles and Permissions -->
-                                <h2 class="text-lg leading-6 font-medium text-gray-900 mb-4">Роли и разрешения</h2>
-                                <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-8">
-                                    <div class="border-b border-gray-200">
-                                        <div class="px-4 py-5 sm:px-6 bg-gray-50">
-                                            <h3 class="text-lg leading-6 font-medium text-gray-900">Настройки прав доступа</h3>
-                                            <p class="mt-1 max-w-2xl text-sm text-gray-500">Управление разрешениями для разных ролей пользователей</p>
-                                        </div>
-                                        <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
-                                            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                                <div>
-                                                    <label class="block text-sm font-medium text-gray-700 mb-2">Выберите роль:</label>
-                                                    <select id="role-select" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                                        <option>Администратор</option>
-                                                        <option>Менеджер</option>
-                                                        <option>Разработчик</option>
-                                                        <option>Наблюдатель</option>
-                                                        <option>Гость</option>
-                                                    </select>
-                                                </div>
-                                                <div class="sm:col-span-2">
-                                                    <label class="block text-sm font-medium text-gray-700 mb-2">Разрешения:</label>
-                                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
-                                                            <div class="flex items-center h-5">
-                                                                <input id="permission-create" name="permission-create" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked="">
-                                                            </div>
-                                                            <div class="ml-3 text-sm">
-                                                                <label for="permission-create" class="font-medium text-gray-700">Создание требований</label>
-                                                                <p class="text-gray-500">Может создавать новые требования</p>
-                                                            </div>
-                                                        </label>
-                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
-                                                            <div class="flex items-center h-5">
-                                                                <input id="permission-edit" name="permission-edit" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked="">
-                                                            </div>
-                                                            <div class="ml-3 text-sm">
-                                                                <label for="permission-edit" class="font-medium text-gray-700">Редактирование требований</label>
-                                                                <p class="text-gray-500">Может изменять существующие требования</p>
-                                                            </div>
-                                                        </label>
-                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
-                                                            <div class="flex items-center h-5">
-                                                                <input id="permission-delete" name="permission-delete" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked="">
-                                                            </div>
-                                                            <div class="ml-3 text-sm">
-                                                                <label for="permission-delete" class="font-medium text-gray-700">Удаление требований</label>
-                                                                <p class="text-gray-500">Может удалять требования</p>
-                                                            </div>
-                                                        </label>
-                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
-                                                            <div class="flex items-center h-5">
-                                                                <input id="permission-approve" name="permission-approve" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                                                            </div>
-                                                            <div class="ml-3 text-sm">
-                                                                <label for="permission-approve" class="font-medium text-gray-700">Утверждение требований</label>
-                                                                <p class="text-gray-500">Может утверждать требования</p>
-                                                            </div>
-                                                        </label>
-                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
-                                                            <div class="flex items-center h-5">
-                                                                <input id="permission-settings" name="permission-settings" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                                                            </div>
-                                                            <div class="ml-3 text-sm">
-                                                                <label for="permission-settings" class="font-medium text-gray-700">Изменение настроек</label>
-                                                                <p class="text-gray-500">Может изменять системные настройки</p>
-                                                            </div>
-                                                        </label>
-                                                        <label class="checkbox-label flex items-start border border-gray-200 rounded-lg p-3 cursor-pointer">
-                                                            <div class="flex items-center h-5">
-                                                                <input id="permission-users" name="permission-users" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                                                            </div>
-                                                            <div class="ml-3 text-sm">
-                                                                <label for="permission-users" class="font-medium text-gray-700">Управление пользователями</label>
-                                                                <p class="text-gray-500">Может добавлять/редактировать пользователей</p>
-                                                            </div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                                            <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                                Сохранить изменения
-                                            </button>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -311,64 +173,30 @@
             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="modal-title">
-                        Добавить нового пользователя
+                        Добавить пользователя в проект
                     </h3>
                     <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                        <div class="sm:col-span-3">
-                            <label for="first-name" class="block text-sm font-medium text-gray-700">Имя</label>
-                            <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-
-                        <div class="sm:col-span-3">
-                            <label for="last-name" class="block text-sm font-medium text-gray-700">Фамилия</label>
-                            <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        <div class="sm:col-span-6">
+                            <label for="user-email" class="block text-sm font-medium text-gray-700">Email пользователя</label>
+                            <input type="email" id="user-email" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" placeholder="user@example.com">
+                            <p class="mt-2 text-sm text-gray-500">Введите email пользователя, которого хотите добавить в проект</p>
                         </div>
 
                         <div class="sm:col-span-6">
-                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                            <input type="email" name="email" id="email" autocomplete="email" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-
-                        <div class="sm:col-span-6">
-                            <label for="phone" class="block text-sm font-medium text-gray-700">Телефон</label>
-                            <input type="text" name="phone" id="phone" autocomplete="tel" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-                        </div>
-
-                        <div class="sm:col-span-6">
-                            <label for="user-role" class="block text-sm font-medium text-gray-700">Роль</label>
+                            <label for="user-role" class="block text-sm font-medium text-gray-700">Роль в проекте</label>
                             <select id="user-role" name="user-role" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                <option>Администратор</option>
-                                <option>Менеджер</option>
-                                <option>Разработчик</option>
-                                <option>Наблюдатель</option>
-                                <option>Гость</option>
+                                <option value="Владелец проекта">Владелец проекта</option>
+                                <option value="Менеджер проекта">Менеджер проекта</option>
+                                <option value="Аналитик">Аналитик</option>
+                                <option value="Участник">Участник</option>
+                                <option value="Рецензент">Рецензент</option>
                             </select>
-                        </div>
-
-                        <div class="sm:col-span-6">
-                            <label for="projects" class="block text-sm font-medium text-gray-700">Проекты</label>
-                            <select id="projects" name="projects" multiple="" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                <option selected="">E-Commerce Platform</option>
-                                <option>CRM System</option>
-                                <option>Mobile App</option>
-                            </select>
-                            <p class="mt-2 text-sm text-gray-500">Выберите проекты, к которым будет иметь доступ пользователь</p>
-                        </div>
-
-                        <div class="sm:col-span-6">
-                            <label class="block text-sm font-medium text-gray-700">Отправить приглашение</label>
-                            <div class="mt-2">
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded" checked="">
-                                    <span class="ml-2 text-sm text-gray-600">Отправить приглашение по электронной почте</span>
-                                </label>
-                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                     <button type="button" id="save-user-btn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Добавить пользователя
+                        Добавить
                     </button>
                     <button type="button" id="cancel-user-btn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Отмена
@@ -378,29 +206,105 @@
         </div>
     </div>
 
+    <!-- Change Role Modal -->
+    <div id="change-role-modal" class="fixed z-20 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="change-role-title">
+                        Изменить роль пользователя
+                    </h3>
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                        <div class="sm:col-span-6">
+                            <p class="text-sm text-gray-500 mb-4" id="change-role-user-info">
+                                <!-- User info will be inserted here -->
+                            </p>
+                            <label for="new-role" class="block text-sm font-medium text-gray-700">Новая роль</label>
+                            <select id="new-role" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option value="Владелец проекта">Владелец проекта</option>
+                                <option value="Менеджер проекта">Менеджер проекта</option>
+                                <option value="Аналитик">Аналитик</option>
+                                <option value="Участник">Участник</option>
+                                <option value="Рецензент">Рецензент</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" id="save-role-btn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Сохранить
+                    </button>
+                    <button type="button" id="cancel-role-btn" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-
         // =========================
         // CONFIG
         // =========================
-        // База API (из swagger есть http://localhost:8000/v1) :contentReference[oaicite:3]{index=3}
-        // Если у тебя бэк будет на другом адресе — поменяй ТОЛЬКО ЭТУ СТРОКУ.
-        const API_BASE = 'http://localhost:8000/v1';
+        const API_BASE = 'http://localhost/api';
+        
+        // Получаем project_id из URL
+        function getProjectIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('project_id');
+        }
+        
+        const projectId = getProjectIdFromUrl();
+        if (!projectId) {
+            alert('Project ID не найден в URL параметрах');
+            return;
+        }
 
         // =========================
-        // Sidebar active link (оставляем)
+        // Переменные для хранения данных
         // =========================
-        const links = document.querySelectorAll('.sidebar-link');
-        const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
-
-        links.forEach(link => {
-            if (link.getAttribute('href') === currentPage) link.classList.add('active');
-            else link.classList.remove('active');
-        });
+        let allUsers = []; // Сохраняем всех пользователей для фильтрации
+        let currentUserRole = null; // Роль текущего пользователя
+        let hasManagementPermissions = false; // Флаг наличия прав управления
 
         // =========================
-        // Mobile sidebar toggle (оставляем)
+        // Обновляем ссылки в сайдбаре с project_id
+        // =========================
+        function updateSidebarLinks() {
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            sidebarLinks.forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && !href.includes('project_id=')) {
+                    // Удаляем существующие параметры и добавляем project_id
+                    const url = new URL(href, window.location.origin);
+                    url.searchParams.set('project_id', projectId);
+                    link.setAttribute('href', url.pathname + url.search);
+                }
+            });
+        }
+
+        // =========================
+        // Sidebar active link
+        // =========================
+        function updateActiveSidebarLink() {
+            const links = document.querySelectorAll('.sidebar-link');
+            const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
+
+            links.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                if (linkHref && linkHref.includes(currentPage)) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // =========================
+        // Mobile sidebar toggle
         // =========================
         const mobileMenuButton = document.querySelector('.md\\:hidden button');
         const sidebar = document.querySelector('aside') || document.querySelector('.hidden.md\\:flex');
@@ -431,7 +335,6 @@
 
             const res = await fetch(url, { ...options, headers });
 
-            // Если токен протух/нет — отправляем на main.html (потом можно на страницу логина)
             if (res.status === 401) {
                 localStorage.removeItem('token');
                 localStorage.removeItem('token_type');
@@ -440,7 +343,6 @@
                 return;
             }
 
-            // Некоторые ответы могут быть без JSON
             const text = await res.text();
             let data = null;
             try { data = text ? JSON.parse(text) : null; } catch (e) { data = null; }
@@ -465,117 +367,220 @@
                 .replaceAll("'", '&#039;');
         }
 
-        // =========================
-        // UI: таблица пользователей
-        // =========================
-        const usersTbody = document.querySelector('table tbody');
-
-        // В swagger User НЕ содержит role/phone, только id/login/surname/name/email/status/datetime_created :contentReference[oaicite:4]{index=4}
-        // Поэтому роль храним локально (если юзера добавили через нашу форму).
-        function loadLocalRoles() {
-            try { return JSON.parse(localStorage.getItem('user_roles') || '{}'); } catch { return {}; }
-        }
-        function saveLocalRole(userId, roleName) {
-            const map = loadLocalRoles();
-            map[String(userId)] = roleName;
-            localStorage.setItem('user_roles', JSON.stringify(map));
-        }
-
-        function roleStyles(role) {
-            const styles = {
-                'Администратор': { bg: 'bg-indigo-100', icon: 'text-indigo-600', badge: 'role-admin' },
-                'Менеджер': { bg: 'bg-purple-100', icon: 'text-purple-600', badge: 'role-manager' },
-                'Разработчик': { bg: 'bg-pink-100', icon: 'text-pink-600', badge: 'role-developer' },
-                'Наблюдатель': { bg: 'bg-green-100', icon: 'text-green-600', badge: 'role-viewer' },
-                'Гость': { bg: 'bg-gray-100', icon: 'text-gray-600', badge: 'bg-gray-500 text-white' },
-                'Пользователь': { bg: 'bg-gray-100', icon: 'text-gray-600', badge: 'bg-gray-500 text-white' }
+        function getRoleClass(roleName) {
+            const classes = {
+                'Владелец проекта': 'role-owner',
+                'Менеджер проекта': 'role-manager',
+                'Аналитик': 'role-analyst',
+                'Участник': 'role-participant',
+                'Рецензент': 'role-reviewer'
             };
-            return styles[role] || styles['Пользователь'];
+            return classes[roleName] || 'role-participant';
         }
 
-        function statusBadge(status) {
-            if (status === 'active') {
-                return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-active">Активен</span>`;
+        // =========================
+        // Получение роли текущего пользователя
+        // =========================
+        async function getCurrentUserRole() {
+            try {
+                // GET /projects/{project_id}/role
+                const response = await apiFetch(`/projects/${projectId}/role`);
+                return response?.name || 'Участник';
+            } catch (error) {
+                console.error('Ошибка получения роли пользователя:', error);
+                return 'Участник';
             }
-            if (status === 'inactive') {
-                return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full status-inactive">Неактивен</span>`;
-            }
-            return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-700">—</span>`;
         }
 
-        function formatDate(dateStr) {
-            if (!dateStr) return '-';
-            const d = new Date(dateStr);
-            if (isNaN(d.getTime())) return '-';
-            return d.toLocaleString('ru-RU');
+        // =========================
+        // Проверка, имеет ли пользователь права на управление
+        // =========================
+        function checkManagementPermissions(roleName) {
+            const allowedRoles = ['Владелец проекта', 'Менеджер проекта'];
+            return allowedRoles.includes(roleName);
+        }
+
+        // =========================
+        // Обновление интерфейса на основе роли пользователя
+        // =========================
+        function updateUIForUserRole(roleName) {
+            hasManagementPermissions = checkManagementPermissions(roleName);
+            
+            // Обновляем видимость кнопки "Добавить пользователя"
+            const addUserBtn = document.getElementById('add-user-btn');
+            if (addUserBtn) {
+                if (hasManagementPermissions) {
+                    addUserBtn.style.display = '';
+                } else {
+                    addUserBtn.style.display = 'none';
+                }
+            }
+            
+            // Обновляем информационное сообщение
+            const permissionsInfo = document.getElementById('permissions-info');
+            if (permissionsInfo) {
+                if (hasManagementPermissions) {
+                    permissionsInfo.textContent = 'Вы можете управлять пользователями проекта';
+                    permissionsInfo.className = 'mt-1 text-sm text-green-500';
+                } else {
+                    permissionsInfo.textContent = 'Только владелец и менеджер могут управлять пользователями';
+                    permissionsInfo.className = 'mt-1 text-sm text-gray-500';
+                }
+            }
+            
+            // Сохраняем роль в localStorage
+            localStorage.setItem('currentProjectRole', roleName);
+        }
+
+        // =========================
+        // Загрузка пользователей проекта
+        // =========================
+        async function loadProjectUsers() {
+            try {
+                // GET /projects/{project_id}/users
+                const response = await apiFetch(`/projects/${projectId}/users`);
+                
+                if (response && response.users) {
+                    allUsers = response.users;
+                    renderUsers(allUsers);
+                    updateRoleFilter(allUsers);
+                } else {
+                    allUsers = [];
+                    renderUsers([]);
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки пользователей:', error);
+                alert(`Ошибка загрузки пользователей: ${error.message}`);
+                allUsers = [];
+                renderUsers([]);
+            }
+        }
+
+        function updateRoleFilter(users) {
+            const roleFilter = document.getElementById('role-filter');
+            if (!roleFilter) return;
+            
+            // Обновляем опцию "Все роли" с количеством
+            const allOption = roleFilter.querySelector('option[value="all"]');
+            if (allOption) {
+                allOption.textContent = `Все роли (${users.length})`;
+            }
+        }
+
+        function applyRoleFilter() {
+            const roleFilter = document.getElementById('role-filter');
+            if (!roleFilter) return;
+            
+            const selectedRole = roleFilter.value;
+            
+            if (selectedRole === 'all') {
+                renderUsers(allUsers);
+            } else {
+                const filteredUsers = allUsers.filter(user => 
+                    user.user_role_name === selectedRole
+                );
+                renderUsers(filteredUsers);
+            }
         }
 
         function renderUsers(users) {
+            const usersTbody = document.getElementById('usersTbody');
             if (!usersTbody) return;
 
-            const roleMap = loadLocalRoles();
             usersTbody.innerHTML = '';
 
-            users.forEach(u => {
-                const roleName = roleMap[String(u.id)] || 'Пользователь';
-                const rs = roleStyles(roleName);
+            if (users.length === 0) {
+                const currentFilter = document.getElementById('role-filter')?.value;
+                let message = 'В проекте пока нет пользователей';
+                
+                if (currentFilter && currentFilter !== 'all') {
+                    message = `Нет пользователей с ролью "${currentFilter}"`;
+                }
+                
+                usersTbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-sm text-gray-500">
+                            ${message}
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
 
-                const fullName = `${u.surname || ''} ${u.name || ''}`.trim() || (u.login || '-');
-                const secondary = u.login ? escapeHtml(u.login) : '-';
-
+            users.forEach(user => {
+                const roleClass = getRoleClass(user.user_role_name);
+                
                 const row = document.createElement('tr');
                 row.className = 'user-item';
-                row.dataset.role = roleName.toLowerCase(); // для фильтра
-
+                row.dataset.userId = user.user_id;
+                row.dataset.userRole = user.user_role_name;
+                
+                // Генерируем HTML для кнопок действий в зависимости от прав
+                let actionsHTML = '';
+                if (hasManagementPermissions) {
+                    actionsHTML = `
+                        <div class="flex space-x-2">
+                            <button class="text-indigo-600 hover:text-indigo-900 change-role-btn inline-flex items-center px-3 py-1 border border-indigo-300 rounded-md text-xs font-medium hover:bg-indigo-50" 
+                                    data-user-id="${user.user_id}" 
+                                    data-user-name="${escapeHtml(user.user_name)}"
+                                    data-user-email="${escapeHtml(user.user_email)}"
+                                    data-current-role="${user.user_role_name}">
+                                <i class="fas fa-edit mr-1"></i>Изменить роль
+                            </button>
+                            <button class="text-red-600 hover:text-red-900 remove-user-btn inline-flex items-center px-3 py-1 border border-red-300 rounded-md text-xs font-medium hover:bg-red-50" 
+                                    data-user-id="${user.user_id}" 
+                                    data-user-name="${escapeHtml(user.user_name)}">
+                                <i class="fas fa-trash mr-1"></i>Удалить
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    actionsHTML = `
+                        <div class="text-gray-400 text-xs italic">
+                            Только для владельца и менеджера
+                        </div>
+                    `;
+                }
+                
                 row.innerHTML = `
-        <td class="px-6 py-4 whitespace-nowrap">
-          <div class="flex items-center">
-            <div class="flex-shrink-0 h-10 w-10 rounded-full ${rs.bg} flex items-center justify-center">
-              <i class="fas fa-user ${rs.icon}"></i>
-            </div>
-            <div class="ml-4">
-              <div class="text-sm font-medium text-gray-900">${escapeHtml(fullName)}</div>
-              <div class="text-sm text-gray-500">${secondary}</div>
-            </div>
-          </div>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          ${escapeHtml(u.email || '-')}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap">
-          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${rs.badge}">
-            ${escapeHtml(roleName)}
-          </span>
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap">
-          ${statusBadge(u.status)}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-          ${formatDate(u.datetime_created)}
-        </td>
-        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-          <button class="text-indigo-600 hover:text-indigo-900 mr-3" title="Редактировать (позже)"><i class="fas fa-edit"></i></button>
-          <button class="text-red-600 hover:text-red-900" title="Удалить (позже)"><i class="fas fa-trash"></i></button>
-        </td>
-      `;
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${escapeHtml(user.user_name || '-')}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${escapeHtml(user.user_email || '-')}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${roleClass}">
+                            ${escapeHtml(user.user_role_name)}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium actions-cell">
+                        ${actionsHTML}
+                    </td>
+                `;
+                
                 usersTbody.appendChild(row);
             });
-        }
 
-        async function loadUsers({ page = 1, limit = 20, status = null } = {}) {
-            const params = new URLSearchParams();
-            params.set('page', String(page));
-            params.set('limit', String(limit));
-            if (status) params.set('status', status);
-
-            // GET /users доступен только админу, с bearerAuth :contentReference[oaicite:5]{index=5}
-            const resp = await apiFetch(`/users?${params.toString()}`, { method: 'GET' });
-            const users = (resp && resp.data) ? resp.data : [];
-            renderUsers(users);
+            // Добавляем обработчики для кнопок (только если есть права)
+            if (hasManagementPermissions) {
+                document.querySelectorAll('.change-role-btn').forEach(btn => {
+                    btn.addEventListener('click', handleChangeRole);
+                });
+                
+                document.querySelectorAll('.remove-user-btn').forEach(btn => {
+                    btn.addEventListener('click', handleRemoveUser);
+                });
+            }
         }
 
         // =========================
-        // Modal: открыть/закрыть
+        // Загрузка всех пользователей для добавления (не используется)
+        // =========================
+        // Эта функция больше не нужна, так как пользователь добавляется по email
+
+        // =========================
+        // Модальное окно: добавление пользователя
         // =========================
         const addUserBtn = document.getElementById('add-user-btn');
         const userModal = document.getElementById('add-user-modal');
@@ -584,6 +589,16 @@
 
         if (addUserBtn && userModal) {
             addUserBtn.addEventListener('click', function () {
+                // Проверяем права перед открытием модалки
+                if (!hasManagementPermissions) {
+                    alert('У вас недостаточно прав для добавления пользователей');
+                    return;
+                }
+                
+                // Очищаем поле email при открытии модалки
+                const emailInput = document.getElementById('user-email');
+                if (emailInput) emailInput.value = "";
+                
                 userModal.classList.remove('hidden');
             });
         }
@@ -591,132 +606,247 @@
         if (cancelUserBtn && userModal) {
             cancelUserBtn.addEventListener('click', function () {
                 userModal.classList.add('hidden');
+                // Сбрасываем форму
+                const emailInput = document.getElementById('user-email');
+                const roleSelect = document.getElementById('user-role');
+                if (emailInput) emailInput.value = "";
+                if (roleSelect) roleSelect.value = "Участник";
             });
         }
 
-        // =========================
-        // POST /users: добавить пользователя (через бэк)
-        // =========================
         if (saveUserBtn && userModal) {
             saveUserBtn.addEventListener('click', async function () {
-                const firstNameEl = document.getElementById('first-name');
-                const lastNameEl = document.getElementById('last-name');
-                const emailEl = document.getElementById('email');
-                const roleEl = document.getElementById('user-role');
-
-                const firstName = (firstNameEl?.value || '').trim();
-                const lastName = (lastNameEl?.value || '').trim();
-                const email = (emailEl?.value || '').trim();
-                const uiRole = (roleEl?.value || 'Пользователь').trim();
-
-                if (!firstName || !lastName || !email) {
-                    alert('Пожалуйста, заполните обязательные поля: Имя, Фамилия, Email');
+                // Проверяем права перед сохранением
+                if (!hasManagementPermissions) {
+                    alert('У вас недостаточно прав для добавления пользователей');
+                    userModal.classList.add('hidden');
                     return;
                 }
-
-                // В swagger для создания нужен login + name + surname + email (+ status опционально) :contentReference[oaicite:6]{index=6}
-                // В форме поля "login" нет — поэтому делаем login из email до @
-                const login = email.includes('@') ? email.split('@')[0] : email;
-
-                const payload = {
-                    status: 'active',
-                    login,
-                    name: firstName,
-                    surname: lastName,
-                    email
-                };
-
+                
+                const emailInput = document.getElementById('user-email');
+                const roleSelect = document.getElementById('user-role');
+                
+                const email = emailInput.value.trim();
+                const role = roleSelect.value;
+                
+                // Валидация email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                
+                if (!email) {
+                    alert('Пожалуйста, введите email пользователя');
+                    return;
+                }
+                
+                if (!emailRegex.test(email)) {
+                    alert('Пожалуйста, введите корректный email адрес');
+                    return;
+                }
+                
+                if (!role) {
+                    alert('Пожалуйста, выберите роль');
+                    return;
+                }
+                
                 try {
-                    // POST /users :contentReference[oaicite:7]{index=7}
-                    const created = await apiFetch('/users', {
-                        method: 'POST',
-                        body: JSON.stringify(payload)
-                    });
-
-                    // Сохраняем выбранную роль локально (в API роли в User нет) :contentReference[oaicite:8]{index=8}
-                    if (created && created.id != null) {
-                        saveLocalRole(created.id, uiRole);
-                    }
-
-                    // Закрываем модалку и чистим поля
-                    if (firstNameEl) firstNameEl.value = '';
-                    if (lastNameEl) lastNameEl.value = '';
-                    if (emailEl) emailEl.value = '';
+                    // POST /projects/{project_id}/users?new_project_user_email=email&new_role=role
+                    const response = await apiFetch(
+                        `/projects/${projectId}/users?new_project_user_email=${encodeURIComponent(email)}&new_role=${encodeURIComponent(role)}`,
+                        {
+                            method: 'POST'
+                        }
+                    );
+                    
                     userModal.classList.add('hidden');
-
-                    // Перегружаем список пользователей
-                    await loadUsers({ page: 1, limit: 20 });
-
-                    alert(`Пользователь ${firstName} ${lastName} успешно добавлен!`);
-                } catch (err) {
-                    if (err.status === 409) {
-                        alert('Пользователь с таким login уже существует (409).');
-                    } else if (err.status === 403) {
-                        alert('Нет прав доступа (403). Список/создание пользователей доступно только администратору.');
+                    // Сбрасываем форму
+                    if (emailInput) emailInput.value = "";
+                    if (roleSelect) roleSelect.value = "Участник";
+                    
+                    await loadProjectUsers();
+                    alert('Пользователь успешно добавлен в проект');
+                    
+                } catch (error) {
+                    if (error.status === 404) {
+                        alert('Пользователь или роль не найдены. Проверьте правильность email.');
+                    } else if (error.status === 409) {
+                        alert('Пользователь уже добавлен в проект');
                     } else {
-                        alert(`Ошибка при создании пользователя: ${err.message}`);
+                        alert(`Ошибка добавления пользователя: ${error.message}`);
                     }
                 }
             });
         }
 
         // =========================
-        // Filter (оставим, но сделаем нормальным)
+        // Модальное окно: изменение роли
         // =========================
-        const userFilter = document.getElementById('user-filter');
-        if (userFilter) {
-            userFilter.addEventListener('change', function () {
-                const filterValue = (userFilter.value || 'all').toLowerCase();
-                const rows = document.querySelectorAll('.user-item');
+        const changeRoleModal = document.getElementById('change-role-modal');
+        const cancelRoleBtn = document.getElementById('cancel-role-btn');
+        const saveRoleBtn = document.getElementById('save-role-btn');
+        let currentChangingUserId = null;
 
-                rows.forEach(row => {
-                    const rowRole = (row.dataset.role || '').toLowerCase();
-                    if (filterValue === 'all' || rowRole.includes(filterValue)) row.style.display = '';
-                    else row.style.display = 'none';
-                });
+        function handleChangeRole(event) {
+            // Проверяем права перед открытием модалки
+            if (!hasManagementPermissions) {
+                alert('У вас недостаточно прав для изменения ролей пользователей');
+                return;
+            }
+            
+            const userId = event.currentTarget.dataset.userId;
+            const userName = event.currentTarget.dataset.userName;
+            const userEmail = event.currentTarget.dataset.userEmail;
+            const currentRole = event.currentTarget.dataset.currentRole;
+            
+            currentChangingUserId = userId;
+            
+            const title = document.getElementById('change-role-title');
+            const userInfo = document.getElementById('change-role-user-info');
+            const newRoleSelect = document.getElementById('new-role');
+            
+            if (title) title.textContent = `Изменить роль пользователя`;
+            if (userInfo) userInfo.textContent = `${userName} (${userEmail})`;
+            if (newRoleSelect) newRoleSelect.value = currentRole;
+            
+            changeRoleModal.classList.remove('hidden');
+        }
+
+        if (cancelRoleBtn && changeRoleModal) {
+            cancelRoleBtn.addEventListener('click', function () {
+                changeRoleModal.classList.add('hidden');
+                currentChangingUserId = null;
+            });
+        }
+
+        if (saveRoleBtn && changeRoleModal) {
+            saveRoleBtn.addEventListener('click', async function () {
+                // Проверяем права перед сохранением
+                if (!hasManagementPermissions) {
+                    alert('У вас недостаточно прав для изменения ролей пользователей');
+                    changeRoleModal.classList.add('hidden');
+                    currentChangingUserId = null;
+                    return;
+                }
+                
+                if (!currentChangingUserId) return;
+                
+                const newRoleSelect = document.getElementById('new-role');
+                const newRole = newRoleSelect.value;
+                
+                try {
+                    // POST /projects/{project_id}/users/{user_id}/changerole
+                    // Используем query параметр new_role
+                    await apiFetch(`/projects/${projectId}/users/${currentChangingUserId}/changerole?new_role=${encodeURIComponent(newRole)}`, {
+                        method: 'POST'
+                    });
+                    
+                    changeRoleModal.classList.add('hidden');
+                    currentChangingUserId = null;
+                    await loadProjectUsers();
+                    alert('Роль пользователя успешно изменена');
+                    
+                } catch (error) {
+                    if (error.status === 404) {
+                        alert('Пользователь или роль не найдены');
+                    } else {
+                        alert(`Ошибка изменения роли: ${error.message}`);
+                    }
+                }
             });
         }
 
         // =========================
-        // Logout (оставляем)
+        // Удаление пользователя из проекта
+        // =========================
+        async function handleRemoveUser(event) {
+            // Проверяем права перед удалением
+            if (!hasManagementPermissions) {
+                alert('У вас недостаточно прав для удаления пользователей');
+                return;
+            }
+            
+            const userId = event.currentTarget.dataset.userId;
+            const userName = event.currentTarget.dataset.userName;
+            
+            if (!confirm(`Вы уверены, что хотите удалить пользователя "${userName}" из проекта?`)) {
+                return;
+            }
+            
+            try {
+                // DELETE /projects/{project_id}/users/{user_id}
+                await apiFetch(`/projects/${projectId}/users/${userId}`, {
+                    method: 'DELETE'
+                });
+                
+                await loadProjectUsers();
+                alert('Пользователь успешно удален из проекта');
+                
+            } catch (error) {
+                if (error.status === 404) {
+                    alert('Пользователь на проекте не найден');
+                } else {
+                    alert(`Ошибка удаления пользователя: ${error.message}`);
+                }
+            }
+        }
+
+        // =========================
+        // Logout
         // =========================
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
-            logoutBtn.addEventListener('click', async function () {
-                const token = localStorage.getItem('token');
-                const tokenType = localStorage.getItem('token_type') || 'Bearer';
-
-                try {
-                    // POST /auth/logout с bearerAuth :contentReference[oaicite:9]{index=9}
-                    await fetch(`${API_BASE}/auth/logout`, {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `${tokenType} ${token}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                } catch (e) {
-                    console.warn('Logout request failed (backend not ready)');
-                } finally {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('token_type');
-                    localStorage.removeItem('user');
-                    window.location.href = 'main.html';
-                }
+            logoutBtn.addEventListener('click', function() {
+                console.log('[UI] Logout clicked');
+                
+                // Очищаем localStorage
+                localStorage.removeItem('user');
+                localStorage.removeItem('currentProjectId');
+                localStorage.removeItem('currentProjectName');
+                localStorage.removeItem('currentProjectRole');
+                localStorage.removeItem('token');
+                localStorage.removeItem('token_type');
+                
+                // Перенаправляем на OAuth2 logout
+                window.location.href = '/oauth2/sign_out';
             });
         }
 
         // =========================
-        // INIT: загрузить пользователей при открытии страницы
+        // Фильтр по ролям
         // =========================
-        // GET /users :contentReference[oaicite:10]{index=10}
-        loadUsers({ page: 1, limit: 20 }).catch(err => {
-            console.warn('Failed to load users:', err);
-            alert(`Не удалось загрузить пользователей: ${err.message}`);
-        });
+        const roleFilter = document.getElementById('role-filter');
+        if (roleFilter) {
+            roleFilter.addEventListener('change', applyRoleFilter);
+        }
 
+        // =========================
+        // Основная функция инициализации
+        // =========================
+        async function initializePage() {
+            try {
+                // Обновляем ссылки в сайдбаре
+                updateSidebarLinks();
+                updateActiveSidebarLink();
+                
+                // Получаем роль текущего пользователя
+                currentUserRole = await getCurrentUserRole();
+                console.log('Текущая роль пользователя:', currentUserRole);
+                
+                // Обновляем интерфейс на основе роли
+                updateUIForUserRole(currentUserRole);
+                
+                // Загружаем пользователей проекта
+                await loadProjectUsers();
+                
+            } catch (error) {
+                console.error('Ошибка инициализации страницы:', error);
+                alert('Ошибка загрузки данных. Пожалуйста, обновите страницу.');
+            }
+        }
+
+        // =========================
+        // INIT: инициализация страницы
+        // =========================
+        initializePage();
     });
 </script>
 </body>
-
 </html>
