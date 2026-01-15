@@ -722,6 +722,26 @@
             // =========================
             
             /**
+             * Перенаправляет на страницу проекта (repo.html)
+             */
+            function goToProjectPage(projectId) {
+                console.log('[UI] Redirecting to project page:', projectId);
+                
+                // Сохраняем ID проекта в localStorage для использования на странице repo.html
+                localStorage.setItem('currentProjectId', projectId);
+                
+                // Получаем информацию о проекте для передачи
+                const projectDetail = projectsDetails[projectId];
+                if (projectDetail) {
+                    localStorage.setItem('currentProjectName', projectDetail.name || '');
+                    localStorage.setItem('currentProjectRole', userRoles[projectId] || '');
+                }
+                
+                // Перенаправляем на страницу repo.html с параметром project_id
+                window.location.href = `repo.html?project_id=${projectId}`;
+            }
+            
+            /**
              * Форматирует дату в удобочитаемый вид
              */
             function formatDateTime(dateString) {
@@ -2164,8 +2184,8 @@
                     btn.addEventListener('click', function() {
                         const projectId = this.getAttribute('data-project-id');
                         console.log('[UI] View project clicked:', projectId);
-                        // Здесь можно добавить логику просмотра проекта
-                        alert(`Просмотр проекта ${projectId}`);
+                        // Перенаправляем на страницу repo.html
+                        goToProjectPage(projectId);
                     });
                 });
                 
@@ -2623,6 +2643,9 @@
                     
                     // Очищаем localStorage
                     localStorage.removeItem('user');
+                    localStorage.removeItem('currentProjectId');
+                    localStorage.removeItem('currentProjectName');
+                    localStorage.removeItem('currentProjectRole');
                     currentUser = null;
                     userProjects = [];
                     projectsDetails = {};
