@@ -29,22 +29,22 @@
             color: #0369A1;
         }
 
-        .role-admin {
+        .role-manager {
             background-color: #F3E8FF;
             color: #7C3AED;
         }
 
-        .role-developer {
+        .role-analyst {
             background-color: #DCFCE7;
             color: #166534;
         }
 
-        .role-analyst {
+        .role-reviewer {
             background-color: #FEF3C7;
             color: #92400E;
         }
 
-        .role-tester {
+        .role-participant {
             background-color: #FCE7F3;
             color: #BE185D;
         }
@@ -64,23 +64,8 @@
             color: #4B5563;
         }
 
-        .status-inactive {
+        .status-archived {
             background-color: #FEE2E2;
-            color: #92400E;
-        }
-
-        .status-completed {
-            background-color: #DBEAFE;
-            color: #1E40AF;
-        }
-
-        .status-on-hold {
-            background-color: #FEF3C7;
-            color: #92400E;
-        }
-
-        .status-planning {
-            background-color: #FEF3C7;
             color: #92400E;
         }
 
@@ -99,6 +84,46 @@
         .view-mode .edit-field {
             display: none;
         }
+
+        .user-status-active {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .user-status-inactive {
+            background-color: #FEE2E2;
+            color: #92400E;
+        }
+
+        .user-admin-true {
+            background-color: #F3E8FF;
+            color: #7C3AED;
+        }
+
+        .user-admin-false {
+            background-color: #F1F5F9;
+            color: #475569;
+        }
+
+        .clickable-status {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .clickable-status:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        .clickable-role {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .clickable-role:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 
@@ -115,6 +140,13 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
+                        <!-- Кнопка панели администратора (только для админов) -->
+                        <button id="adminPanelBtn" 
+                                class="hidden flex items-center space-x-2 p-2 text-gray-700 hover:text-purple-600 hover:bg-gray-100 rounded-lg transition-colors duration-200">
+                            <i class="fas fa-cog"></i>
+                            <span class="text-sm font-medium hidden md:inline">Панель администратора</span>
+                        </button>
+                        
                         <!-- Кнопка профиля -->
                         <button id="profileBtn" 
                                 class="flex items-center space-x-2 p-2 text-gray-700 hover:text-indigo-600 hover:bg-gray-100 rounded-lg transition-colors duration-200">
@@ -181,8 +213,8 @@
                                     <i class="fas fa-pause-circle"></i>
                                 </div>
                                 <div>
-                                    <p class="text-sm text-gray-500">Неактивные</p>
-                                    <p class="text-2xl font-semibold text-gray-800" id="inactiveProjects">0</p>
+                                    <p class="text-sm text-gray-500">Архивные</p>
+                                    <p class="text-2xl font-semibold text-gray-800" id="archivedProjects">0</p>
                                 </div>
                             </div>
                         </div>
@@ -203,14 +235,13 @@
                             </div>
                             <div class="relative">
                                 <select id="filterRole"
-                                    class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                    class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500">
                                     <option value="">Все роли</option>
-                                    <option value="Владелец">Владелец</option>
-                                    <option value="Администратор">Администратор</option>
-                                    <option value="Разработчик">Разработчик</option>
+                                    <option value="Владелец проекта">Владелец проекта</option>
+                                    <option value="Менеджер проекта">Менеджер проекта</option>
                                     <option value="Аналитик">Аналитик</option>
-                                    <option value="Тестировщик">Тестировщик</option>
-                                    <option value="Наблюдатель">Наблюдатель</option>
+                                    <option value="Участник">Участник</option>
+                                    <option value="Рецензент">Рецензент</option>
                                 </select>
                                 <div
                                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -219,13 +250,11 @@
                             </div>
                             <div class="relative">
                                 <select id="filterStatus"
-                                    class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                    class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500">
                                     <option value="">Все статусы</option>
                                     <option value="active">Активный</option>
                                     <option value="draft">Черновик</option>
-                                    <option value="inactive">Неактивный</option>
-                                    <option value="completed">Завершен</option>
-                                    <option value="planning">Планирование</option>
+                                    <option value="archived">Архивный</option>
                                 </select>
                                 <div
                                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -272,108 +301,88 @@
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
             <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="flex items-start justify-between mb-4">
                         <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                            Личные данные
+                            Профиль пользователя
                         </h3>
-                        <div class="flex items-center space-x-2">
-                            <button type="button" id="editProfileBtn"
-                                class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                <i class="fas fa-edit mr-2"></i>Редактировать
-                            </button>
-                            <button type="button" id="closeProfileModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
+                        <button type="button" id="closeProfileModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                            <i class="fas fa-times"></i>
+                        </button>
                     </div>
                     
-                    <div id="profileContent" class="space-y-6">
-                        <!-- Информация о пользователе -->
+                    <div class="space-y-4">
+                        <!-- Сообщения профиля -->
+                        <div id="profileMessage" class="hidden p-3 rounded-md text-sm"></div>
+                        
                         <div class="flex items-center space-x-4">
                             <div class="h-16 w-16 rounded-full bg-indigo-100 flex items-center justify-center">
                                 <i class="fas fa-user text-indigo-600 text-2xl"></i>
                             </div>
                             <div>
-                                <h4 class="text-lg font-semibold text-gray-900" id="userName">Загрузка...</h4>
-                                <p class="text-sm text-gray-500" id="userEmail">Загрузка...</p>
+                                <h4 class="font-semibold text-gray-900 view-field" id="profileLogin">Загрузка...</h4>
+                                <div class="edit-field hidden">
+                                    <input type="text" id="editProfileLogin" class="block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Логин">
+                                </div>
+                                <p class="text-sm text-gray-500 view-field" id="profileEmail">Загрузка...</p>
+                                <div class="edit-field hidden">
+                                    <p class="text-sm text-gray-500 mt-1" id="staticProfileEmail">Загрузка...</p>
+                                </div>
                             </div>
                         </div>
                         
-                        <!-- Форма редактирования (скрыта по умолчанию) -->
-                        <div id="editProfileForm" class="edit-field hidden space-y-4 border border-gray-200 rounded-lg p-4 bg-gray-50">
-                            <div>
-                                <label for="editLogin" class="block text-sm font-medium text-gray-700 mb-1">Логин</label>
-                                <input type="text" id="editLogin" name="login"
-                                    class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    placeholder="Введите новый логин">
-                                <p class="mt-1 text-xs text-gray-500">Логин должен быть уникальным</p>
-                            </div>
-                            
-                            <div>
-                                <label for="editName" class="block text-sm font-medium text-gray-700 mb-1">Имя</label>
-                                <input type="text" id="editName" name="name"
-                                    class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    placeholder="Введите ваше имя">
-                            </div>
-                            
-                            <div>
-                                <label for="editSurname" class="block text-sm font-medium text-gray-700 mb-1">Фамилия</label>
-                                <input type="text" id="editSurname" name="surname"
-                                    class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                    placeholder="Введите вашу фамилию">
-                            </div>
-                            
-                            <div class="flex space-x-2 pt-2">
-                                <button type="button" id="saveProfileChangesBtn"
-                                    class="flex-1 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Сохранить
-                                </button>
-                                <button type="button" id="cancelEditBtn"
-                                    class="flex-1 inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Отмена
-                                </button>
+                        <div class="border-t border-gray-200 pt-4">
+                            <h5 class="text-sm font-medium text-gray-700 mb-2">Информация о пользователе</h5>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500">Логин:</span>
+                                    <span class="font-medium view-field" id="profileLoginInfo">Загрузка...</span>
+                                    <div class="edit-field hidden w-48">
+                                        <input type="text" id="editProfileLoginInfo" class="block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Новый логин">
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500">Имя:</span>
+                                    <span class="font-medium view-field" id="profileName">Загрузка...</span>
+                                    <div class="edit-field hidden w-48">
+                                        <input type="text" id="editProfileName" class="block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Имя">
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-500">Фамилия:</span>
+                                    <span class="font-medium view-field" id="profileSurname">Загрузка...</span>
+                                    <div class="edit-field hidden w-48">
+                                        <input type="text" id="editProfileSurname" class="block w-full border border-gray-300 rounded-md shadow-sm py-1 px-2 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Фамилия">
+                                    </div>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Email:</span>
+                                    <span class="font-medium" id="profileEmailInfo">Загрузка...</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-500">Дата регистрации:</span>
+                                    <span class="font-medium" id="profileCreatedAt">Загрузка...</span>
+                                </div>
                             </div>
                         </div>
-                        
-                        <!-- Просмотр данных (видимо по умолчанию) -->
-                        <div id="viewProfileInfo" class="view-field border-t border-gray-200 pt-4">
-                            <dl class="space-y-4">
-                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
-                                    <dt class="text-sm font-medium text-gray-500">Логин</dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userLogin">Загрузка...</dd>
-                                </div>
-                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
-                                    <dt class="text-sm font-medium text-gray-500">Имя</dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userFirstName">Загрузка...</dd>
-                                </div>
-                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
-                                    <dt class="text-sm font-medium text-gray-500">Фамилия</dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userSurname">Загрузка...</dd>
-                                </div>
-                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
-                                    <dt class="text-sm font-medium text-gray-500">Email</dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userEmailField">Загрузка...</dd>
-                                </div>
-                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
-                                    <dt class="text-sm font-medium text-gray-500">Статус</dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userStatus">Загрузка...</dd>
-                                </div>
-                                <div class="sm:grid sm:grid-cols-3 sm:gap-4">
-                                    <dt class="text-sm font-medium text-gray-500">Дата регистрации</dt>
-                                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2" id="userCreatedAt">Загрузка...</dd>
-                                </div>
-                            </dl>
-                        </div>
-                        
-                        <!-- Сообщения об успехе/ошибке -->
-                        <div id="profileMessage" class="hidden p-3 rounded-md"></div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6">
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button id="editProfileBtn" type="button"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                        <i class="fas fa-edit mr-2"></i>Редактировать
+                    </button>
+                    <button id="saveProfileBtn" type="button"
+                        class="hidden w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                        <i class="fas fa-save mr-2"></i>Сохранить
+                    </button>
+                    <button id="cancelEditProfileBtn" type="button"
+                        class="hidden w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                        Отмена
+                    </button>
                     <button id="closeProfileModalBtn2" type="button"
-                        class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200">
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
                         Закрыть
                     </button>
                 </div>
@@ -382,7 +391,7 @@
     </div>
 
     <!-- New Project Modal -->
-    <div id="newProjectModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title"
+    <div id="newProjectModal" class="fixed z-20 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title"
         role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -418,21 +427,9 @@
                             <label for="projectStatus" class="block text-sm font-medium text-gray-700 mb-1">Статус</label>
                             <select id="projectStatus" name="projectStatus"
                                 class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                <option value="draft">Черновик</option>
-                                <option value="active" selected>Активный</option>
-                            </select>
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ваша роль в проекте</label>
-                            <select id="projectRole" name="projectRole"
-                                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                <option value="Владелец">Владелец</option>
-                                <option value="Администратор">Администратор</option>
-                                <option value="Разработчик">Разработчик</option>
-                                <option value="Аналитик">Аналитик</option>
-                                <option value="Тестировщик">Тестировщик</option>
-                                <option value="Наблюдатель">Наблюдатель</option>
+                                <!-- Согласно ProjectCreateStatus: только active и draft -->
+                                <option value="active">Активный</option>
+                                <option value="draft" selected>Черновик</option>
                             </select>
                         </div>
                     </div>
@@ -445,6 +442,185 @@
                     <button id="closeNewProjectModalBtn2" type="button"
                         class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
                         Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Project Modal -->
+    <div id="editProjectModal" class="fixed z-30 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="editModalTitle">
+                            Редактирование проекта
+                        </h3>
+                        <button type="button" id="closeEditProjectModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <input type="hidden" id="editProjectId">
+                        <div>
+                            <label for="editProjectName" class="block text-sm font-medium text-gray-700 mb-1">Название проекта</label>
+                            <input type="text" id="editProjectName" name="editProjectName"
+                                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="Введите название проекта">
+                        </div>
+                        
+                        <div>
+                            <label for="editProjectDescription" class="block text-sm font-medium text-gray-700 mb-1">Описание</label>
+                            <textarea id="editProjectDescription" name="editProjectDescription" rows="3"
+                                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                placeholder="Опишите цели и задачи проекта"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label for="editProjectStatus" class="block text-sm font-medium text-gray-700 mb-1">Статус</label>
+                            <select id="editProjectStatus" name="editProjectStatus"
+                                class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <!-- Согласно ProjectUpdateStatus: только active и archived -->
+                                <option value="active">Активный</option>
+                                <option value="archived">Архивный</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Сообщение об ошибке -->
+                    <div id="editProjectMessage" class="hidden mt-4 p-3 rounded-md text-sm"></div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button id="saveEditProjectBtn" type="button"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                        Сохранить изменения
+                    </button>
+                    <button id="closeEditProjectModalBtn2" type="button"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                        Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminPanelModal" class="fixed z-40 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-7xl sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="adminModalTitle">
+                            Панель администратора
+                        </h3>
+                        <button type="button" id="closeAdminPanelModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors duration-200">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Фильтры для панели администратора -->
+                    <div class="mb-6 bg-gray-50 p-4 rounded-lg">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                            <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                                <!-- Убрано поле поиска пользователей -->
+                                <div class="relative">
+                                    <select id="adminFilterStatus"
+                                        class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                        <option value="">Все статусы</option>
+                                        <option value="active">Активные</option>
+                                        <option value="inactive">Неактивные</option>
+                                    </select>
+                                    <div
+                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                            <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                </div>
+                                <button id="adminApplyFiltersBtn"
+                                    class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                    Применить фильтры
+                                </button>
+                                <button id="adminResetFiltersBtn"
+                                    class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                    Сбросить фильтры
+                                </button>
+                            </div>
+                            <div class="flex items-center space-x-2 text-sm text-gray-600">
+                                <span>Пользователей на странице:</span>
+                                <select id="adminPageLimit"
+                                    class="border border-gray-300 rounded py-1 px-2 focus:outline-none focus:ring-1 focus:ring-purple-500">
+                                    <option value="10">10</option>
+                                    <option value="20" selected>20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Таблица пользователей -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Логин
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Email
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Статус
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Администратор
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Дата регистрации
+                                    </th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Действия
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUsersTableBody" class="bg-white divide-y divide-gray-200">
+                                <!-- Данные будут загружены через JS -->
+                                <tr>
+                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                        <i class="fas fa-spinner fa-spin text-lg mb-2"></i>
+                                        <p>Загрузка пользователей...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Пагинация -->
+                    <div class="mt-6 flex items-center justify-between">
+                        <div class="text-sm text-gray-700" id="adminPaginationInfo">
+                            Показано <span id="adminUsersFrom">0</span>-<span id="adminUsersTo">0</span> из <span id="adminUsersTotal">0</span> пользователей
+                        </div>
+                        <div class="flex space-x-2" id="adminPagination">
+                            <!-- Пагинация будет загружена через JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Сообщения админ панели -->
+                    <div id="adminPanelMessage" class="hidden mt-4 p-3 rounded-md text-sm"></div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button id="closeAdminPanelModalBtn2" type="button"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm transition-colors duration-200">
+                        Закрыть
                     </button>
                 </div>
             </div>
@@ -469,33 +645,77 @@
             const profileBtn = document.getElementById('profileBtn');
             const logoutTopBtn = document.getElementById('logoutTopBtn');
             const userLoginBtn = document.getElementById('userLoginBtn');
+            const adminPanelBtn = document.getElementById('adminPanelBtn');
             const profileModal = document.getElementById('profileModal');
             const newProjectModal = document.getElementById('newProjectModal');
+            const editProjectModal = document.getElementById('editProjectModal');
+            const adminPanelModal = document.getElementById('adminPanelModal');
+            
+            // Profile modal elements
+            const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
+            const closeProfileModalBtn2 = document.getElementById('closeProfileModalBtn2');
+            const editProfileBtn = document.getElementById('editProfileBtn');
+            const saveProfileBtn = document.getElementById('saveProfileBtn');
+            const cancelEditProfileBtn = document.getElementById('cancelEditProfileBtn');
+            const profileMessage = document.getElementById('profileMessage');
+            
+            // Profile fields
+            const profileLogin = document.getElementById('profileLogin');
+            const profileEmail = document.getElementById('profileEmail');
+            const profileLoginInfo = document.getElementById('profileLoginInfo');
+            const profileName = document.getElementById('profileName');
+            const profileSurname = document.getElementById('profileSurname');
+            const profileEmailInfo = document.getElementById('profileEmailInfo');
+            const profileCreatedAt = document.getElementById('profileCreatedAt');
+            
+            // Edit profile fields
+            const editProfileLogin = document.getElementById('editProfileLogin');
+            const editProfileLoginInfo = document.getElementById('editProfileLoginInfo');
+            const editProfileName = document.getElementById('editProfileName');
+            const editProfileSurname = document.getElementById('editProfileSurname');
+            const staticProfileEmail = document.getElementById('staticProfileEmail');
+            
+            // Admin panel elements
+            const closeAdminPanelModalBtn = document.getElementById('closeAdminPanelModalBtn');
+            const closeAdminPanelModalBtn2 = document.getElementById('closeAdminPanelModalBtn2');
+            const adminFilterStatus = document.getElementById('adminFilterStatus');
+            const adminApplyFiltersBtn = document.getElementById('adminApplyFiltersBtn');
+            const adminResetFiltersBtn = document.getElementById('adminResetFiltersBtn');
+            const adminPageLimit = document.getElementById('adminPageLimit');
+            const adminUsersTableBody = document.getElementById('adminUsersTableBody');
+            const adminPaginationInfo = document.getElementById('adminPaginationInfo');
+            const adminUsersFrom = document.getElementById('adminUsersFrom');
+            const adminUsersTo = document.getElementById('adminUsersTo');
+            const adminUsersTotal = document.getElementById('adminUsersTotal');
+            const adminPagination = document.getElementById('adminPagination');
+            const adminPanelMessage = document.getElementById('adminPanelMessage');
             
             // Статистика
             const totalProjects = document.getElementById('totalProjects');
             const activeProjects = document.getElementById('activeProjects');
             const draftProjects = document.getElementById('draftProjects');
-            const inactiveProjects = document.getElementById('inactiveProjects');
+            const archivedProjects = document.getElementById('archivedProjects');
 
-            // Элементы для редактирования профиля
-            const editProfileBtn = document.getElementById('editProfileBtn');
-            const saveProfileChangesBtn = document.getElementById('saveProfileChangesBtn');
-            const cancelEditBtn = document.getElementById('cancelEditBtn');
-            const editProfileForm = document.getElementById('editProfileForm');
-            const viewProfileInfo = document.getElementById('viewProfileInfo');
-            const profileContent = document.getElementById('profileContent');
-            const profileMessage = document.getElementById('profileMessage');
-
-            // Поля формы редактирования
-            const editLogin = document.getElementById('editLogin');
-            const editName = document.getElementById('editName');
-            const editSurname = document.getElementById('editSurname');
+            // Элементы редактирования проекта
+            const editProjectId = document.getElementById('editProjectId');
+            const editProjectName = document.getElementById('editProjectName');
+            const editProjectDescription = document.getElementById('editProjectDescription');
+            const editProjectStatus = document.getElementById('editProjectStatus');
+            const saveEditProjectBtn = document.getElementById('saveEditProjectBtn');
+            const editProjectMessage = document.getElementById('editProjectMessage');
 
             // Текущий пользователь и проекты
             let currentUser = null;
-            let userProjects = []; // Список проектов пользователя с ролями
+            let userProjects = []; // Список проектов пользователя
             let projectsDetails = {}; // Детальная информация о проектах
+            let userRoles = {}; // Роли пользователя на проектах
+
+            // Панель администратора
+            let adminCurrentPage = 1;
+            let adminCurrentLimit = 20;
+            let adminCurrentStatusFilter = '';
+            let adminTotalUsers = 0;
+            let adminTotalPages = 1;
 
             // =========================
             // Helper Functions
@@ -546,7 +766,10 @@
                     const options = {
                         year: 'numeric',
                         month: '2-digit',
-                        day: '2-digit'
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
                     };
                     
                     return date.toLocaleDateString('ru-RU', options);
@@ -562,10 +785,7 @@
                 const classes = {
                     'active': 'status-active',
                     'draft': 'status-draft',
-                    'inactive': 'status-inactive',
-                    'completed': 'status-completed',
-                    'on-hold': 'status-on-hold',
-                    'planning': 'status-planning'
+                    'archived': 'status-archived'
                 };
                 return classes[status] || 'status-active';
             }
@@ -577,10 +797,7 @@
                 const texts = {
                     'active': 'Активный',
                     'draft': 'Черновик',
-                    'inactive': 'Неактивный',
-                    'completed': 'Завершен',
-                    'on-hold': 'На паузе',
-                    'planning': 'Планирование'
+                    'archived': 'Архивный'
                 };
                 return texts[status] || status;
             }
@@ -590,14 +807,331 @@
              */
             function getRoleClass(roleName) {
                 const classes = {
-                    'Владелец': 'role-owner',
-                    'Администратор': 'role-admin',
-                    'Разработчик': 'role-developer',
+                    'Владелец проекта': 'role-owner',
+                    'Менеджер проекта': 'role-manager',
                     'Аналитик': 'role-analyst',
-                    'Тестировщик': 'role-tester',
-                    'Наблюдатель': 'role-viewer'
+                    'Участник': 'role-reviewer',
+                    'Рецензент': 'role-participant'
                 };
                 return classes[roleName] || 'role-viewer';
+            }
+
+            /**
+             * Получает сокращенное название роли для отображения
+             */
+            function getShortRoleName(roleName) {
+                const shortNames = {
+                    'Владелец проекта': 'Владелец проекта',
+                    'Менеджер проекта': 'Менеджер проекта',
+                    'Аналитик': 'Аналитик',
+                    'Участник': 'Участник',
+                    'Рецензент': 'Рецензент'
+                };
+                return shortNames[roleName] || roleName;
+            }
+
+            /**
+             * Получает класс CSS для статуса пользователя
+             */
+            function getUserStatusClass(status) {
+                const classes = {
+                    'active': 'user-status-active',
+                    'inactive': 'user-status-inactive'
+                };
+                return classes[status] || 'user-status-inactive';
+            }
+
+            /**
+             * Получает русское название статуса пользователя
+             */
+            function getUserStatusText(status) {
+                const texts = {
+                    'active': 'Активен',
+                    'inactive': 'Неактивен'
+                };
+                return texts[status] || status;
+            }
+
+            /**
+             * Получает русское название статуса админа
+             */
+            function getAdminStatusText(isAdmin) {
+                return isAdmin ? 'Администратор' : 'Пользователь';
+            }
+
+            /**
+             * Получает класс CSS для роли админа
+             */
+            function getAdminRoleClass(isAdmin) {
+                return isAdmin ? 'user-admin-true' : 'user-admin-false';
+            }
+
+            /**
+             * Конвертирует русский текст статуса в английский для API
+             */
+            function statusTextToApi(statusText) {
+                const mapping = {
+                    'Активен': 'active',
+                    'Неактивен': 'inactive'
+                };
+                return mapping[statusText] || statusText;
+            }
+
+            /**
+             * Конвертирует английский статус API в русский текст
+             */
+            function apiStatusToText(apiStatus) {
+                const mapping = {
+                    'active': 'Активен',
+                    'inactive': 'Неактивен'
+                };
+                return mapping[apiStatus] || apiStatus;
+            }
+
+            /**
+             * Конвертирует значение фильтра в формат API
+             */
+            function filterStatusToApi(filterValue) {
+                const mapping = {
+                    'active': 'ACTIVE',
+                    'inactive': 'INACTIVE'
+                };
+                return mapping[filterValue] || filterValue;
+            }
+
+            /**
+             * Проверяет, может ли пользователь редактировать проект
+             */
+            function canEditProject(roleName) {
+                return roleName === 'Владелец проекта' || roleName === 'Менеджер проекта';
+            }
+
+            /**
+             * Проверяет, может ли пользователь удалить проект
+             */
+            function canDeleteProject(roleName) {
+                return roleName === 'Владелец проекта';
+            }
+
+            /**
+             * Показывает сообщение в модальном окне редактирования
+             */
+            function showEditMessage(text, type = 'success') {
+                if (!editProjectMessage) return;
+                
+                editProjectMessage.textContent = text;
+                editProjectMessage.className = 'mt-4 p-3 rounded-md text-sm';
+                
+                if (type === 'success') {
+                    editProjectMessage.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
+                } else if (type === 'error') {
+                    editProjectMessage.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
+                } else if (type === 'warning') {
+                    editProjectMessage.classList.add('bg-yellow-50', 'text-yellow-800', 'border', 'border-yellow-200');
+                }
+                
+                editProjectMessage.classList.remove('hidden');
+                
+                // Автоматически скрываем сообщение через 5 секунд
+                setTimeout(() => {
+                    editProjectMessage.classList.add('hidden');
+                }, 5000);
+            }
+
+            /**
+             * Скрывает сообщение в модальном окне редактирования
+             */
+            function hideEditMessage() {
+                if (editProjectMessage) {
+                    editProjectMessage.classList.add('hidden');
+                    editProjectMessage.textContent = '';
+                }
+            }
+
+            /**
+             * Показывает сообщение в профильной модалке
+             */
+            function showProfileMessage(text, type = 'success') {
+                if (!profileMessage) return;
+                
+                profileMessage.textContent = text;
+                profileMessage.className = 'p-3 rounded-md text-sm';
+                
+                if (type === 'success') {
+                    profileMessage.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
+                } else if (type === 'error') {
+                    profileMessage.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
+                } else if (type === 'warning') {
+                    profileMessage.classList.add('bg-yellow-50', 'text-yellow-800', 'border', 'border-yellow-200');
+                }
+                
+                profileMessage.classList.remove('hidden');
+                
+                // Автоматически скрываем сообщение через 5 секунд
+                setTimeout(() => {
+                    profileMessage.classList.add('hidden');
+                }, 5000);
+            }
+
+            /**
+             * Скрывает сообщение в профильной модалке
+             */
+            function hideProfileMessage() {
+                if (profileMessage) {
+                    profileMessage.classList.add('hidden');
+                    profileMessage.textContent = '';
+                }
+            }
+
+            /**
+             * Показывает сообщение в панели администратора
+             */
+            function showAdminMessage(text, type = 'success') {
+                if (!adminPanelMessage) return;
+                
+                adminPanelMessage.textContent = text;
+                adminPanelMessage.className = 'mt-4 p-3 rounded-md text-sm';
+                
+                if (type === 'success') {
+                    adminPanelMessage.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
+                } else if (type === 'error') {
+                    adminPanelMessage.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
+                } else if (type === 'warning') {
+                    adminPanelMessage.classList.add('bg-yellow-50', 'text-yellow-800', 'border', 'border-yellow-200');
+                }
+                
+                adminPanelMessage.classList.remove('hidden');
+                
+                // Автоматически скрываем сообщение через 5 секунд
+                setTimeout(() => {
+                    adminPanelMessage.classList.add('hidden');
+                }, 5000);
+            }
+
+            /**
+             * Скрывает сообщение в панели администратора
+             */
+            function hideAdminMessage() {
+                if (adminPanelMessage) {
+                    adminPanelMessage.classList.add('hidden');
+                    adminPanelMessage.textContent = '';
+                }
+            }
+
+            /**
+             * Обновляет данные в профильной модалке
+             */
+            function updateProfileModal(userData) {
+                if (!userData || Object.keys(userData).length === 0) {
+                    if (profileLogin) profileLogin.textContent = 'Неизвестный пользователь';
+                    if (profileEmail) profileEmail.textContent = 'Нет данных';
+                    if (profileLoginInfo) profileLoginInfo.textContent = 'Нет данных';
+                    if (profileName) profileName.textContent = 'Нет данных';
+                    if (profileSurname) profileSurname.textContent = 'Нет данных';
+                    if (profileEmailInfo) profileEmailInfo.textContent = 'Нет данных';
+                    if (profileCreatedAt) profileCreatedAt.textContent = 'Нет данных';
+                    return;
+                }
+                
+                if (profileLogin) {
+                    profileLogin.textContent = userData.login || userData.email?.split('@')[0] || 'Пользователь';
+                }
+                
+                if (profileEmail) {
+                    profileEmail.textContent = userData.email || 'Email не указан';
+                }
+                
+                if (profileLoginInfo) {
+                    profileLoginInfo.textContent = userData.login || 'Не указан';
+                }
+                
+                if (profileName) {
+                    profileName.textContent = userData.name || 'Не указано';
+                }
+                
+                if (profileSurname) {
+                    profileSurname.textContent = userData.surname || 'Не указано';
+                }
+                
+                if (profileEmailInfo) {
+                    profileEmailInfo.textContent = userData.email || 'Не указан';
+                }
+                
+                if (profileCreatedAt) {
+                    if (userData.created_at) {
+                        profileCreatedAt.textContent = formatDateTime(userData.created_at);
+                    } else {
+                        profileCreatedAt.textContent = 'Неизвестно';
+                    }
+                }
+                
+                // Обновляем поля редактирования
+                if (editProfileLogin) {
+                    editProfileLogin.value = userData.login || '';
+                }
+                
+                if (editProfileLoginInfo) {
+                    editProfileLoginInfo.value = userData.login || '';
+                }
+                
+                if (editProfileName) {
+                    editProfileName.value = userData.name || '';
+                }
+                
+                if (editProfileSurname) {
+                    editProfileSurname.value = userData.surname || '';
+                }
+                
+                if (staticProfileEmail) {
+                    staticProfileEmail.textContent = userData.email || 'Email не указан';
+                }
+            }
+
+            /**
+             * Включает режим редактирования профиля
+             */
+            function enableProfileEditMode() {
+                // Показываем поля редактирования
+                document.querySelectorAll('.view-field').forEach(el => {
+                    el.style.display = 'none';
+                });
+                document.querySelectorAll('.edit-field').forEach(el => {
+                    el.style.display = 'block';
+                });
+                
+                // Меняем кнопки
+                editProfileBtn.classList.add('hidden');
+                saveProfileBtn.classList.remove('hidden');
+                cancelEditProfileBtn.classList.remove('hidden');
+                
+                // Скрываем сообщения
+                hideProfileMessage();
+            }
+
+            /**
+             * Отключает режим редактирования профиля
+             */
+            function disableProfileEditMode() {
+                // Показываем поля просмотра
+                document.querySelectorAll('.view-field').forEach(el => {
+                    el.style.display = 'block';
+                });
+                document.querySelectorAll('.edit-field').forEach(el => {
+                    el.style.display = 'none';
+                });
+                
+                // Меняем кнопки
+                editProfileBtn.classList.remove('hidden');
+                saveProfileBtn.classList.add('hidden');
+                cancelEditProfileBtn.classList.add('hidden');
+                
+                // Скрываем сообщения
+                hideProfileMessage();
+                
+                // Восстанавливаем оригинальные значения
+                if (currentUser) {
+                    updateProfileModal(currentUser);
+                }
             }
 
             // =========================
@@ -635,6 +1169,11 @@
                         throw new Error(errorMessage);
                     }
 
+                    // Для DELETE запросов с кодом 204 No Content
+                    if (response.status === 204) {
+                        return null;
+                    }
+
                     return await response.json();
 
                 } catch (error) {
@@ -661,11 +1200,16 @@
                     
                     // Обновляем текст на кнопке профиля
                     if (userLoginBtn) {
-                        userLoginBtn.textContent = userData.login || userData.email || 'Профиль';
+                        userLoginBtn.textContent = userData.login || userData.email?.split('@')[0] || 'Профиль';
                     }
                     
-                    // Обновляем поля ввода для редактирования
-                    updateEditForm(userData);
+                    // Показываем кнопку панели администратора, если пользователь админ
+                    if (adminPanelBtn && userData.is_admin === true) {
+                        adminPanelBtn.classList.remove('hidden');
+                    }
+                    
+                    // Обновляем данные в профильной модалке
+                    updateProfileModal(userData);
                     
                     return userData;
                     
@@ -675,10 +1219,21 @@
                     // Fallback
                     try {
                         const savedUser = JSON.parse(localStorage.getItem('user') || '{}');
+                        
                         if (userLoginBtn && (savedUser.login || savedUser.email)) {
                             userLoginBtn.textContent = savedUser.login || savedUser.email.split('@')[0] || 'Профиль';
                         }
+                        
+                        // Показываем кнопку панели администратора, если пользователь админ
+                        if (adminPanelBtn && savedUser.is_admin === true) {
+                            adminPanelBtn.classList.remove('hidden');
+                        }
+                        
                         currentUser = savedUser;
+                        
+                        // Обновляем модалку с сохраненными данными
+                        updateProfileModal(savedUser);
+                        
                         return savedUser;
                     } catch (e) {
                         console.error('[Profile] Failed to parse saved user:', e);
@@ -691,21 +1246,606 @@
             }
 
             // =========================
+            // Save User Profile
+            // =========================
+            async function saveUserProfile() {
+                const login = editProfileLoginInfo.value.trim();
+                const name = editProfileName.value.trim();
+                const surname = editProfileSurname.value.trim();
+                
+                if (!login) {
+                    showProfileMessage('Логин не может быть пустым', 'error');
+                    return;
+                }
+                
+                // Проверяем, изменились ли данные
+                const hasChanges = 
+                    login !== (currentUser?.login || '') ||
+                    name !== (currentUser?.name || '') ||
+                    surname !== (currentUser?.surname || '');
+                
+                if (!hasChanges) {
+                    showProfileMessage('Данные не были изменены', 'warning');
+                    disableProfileEditMode();
+                    return;
+                }
+                
+                try {
+                    // Показываем индикатор загрузки
+                    saveProfileBtn.disabled = true;
+                    saveProfileBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Сохранение...';
+                    
+                    // Подготавливаем данные для отправки
+                    const updateData = {};
+                    
+                    if (login !== (currentUser?.login || '')) {
+                        updateData.login = login;
+                    }
+                    
+                    if (name !== (currentUser?.name || '')) {
+                        updateData.name = name;
+                    }
+                    
+                    if (surname !== (currentUser?.surname || '')) {
+                        updateData.surname = surname;
+                    }
+                    
+                    console.log('[Profile] Updating user profile:', updateData);
+                    
+                    // PATCH /api/users/me/profile
+                    const response = await apiRequest('/users/me/profile', {
+                        method: 'PATCH',
+                        body: JSON.stringify(updateData)
+                    });
+                    
+                    console.log('[Profile] User profile updated:', response);
+                    
+                    // Обновляем текущего пользователя
+                    currentUser = {
+                        ...currentUser,
+                        login: response.login || currentUser.login,
+                        name: response.name || currentUser.name,
+                        surname: response.surname || currentUser.surname
+                    };
+                    
+                    // Сохраняем в localStorage
+                    localStorage.setItem('user', JSON.stringify(currentUser));
+                    
+                    // Обновляем кнопку профиля в заголовке
+                    if (userLoginBtn) {
+                        userLoginBtn.textContent = currentUser.login || currentUser.email?.split('@')[0] || 'Профиль';
+                    }
+                    
+                    // Отключаем режим редактирования
+                    disableProfileEditMode();
+                    
+                    // Показываем сообщение об успехе
+                    showProfileMessage(response.message || 'Данные успешно обновлены!', 'success');
+                    
+                } catch (error) {
+                    console.error('[Profile] Failed to update user profile:', error);
+                    
+                    // Обрабатываем специфические ошибки от API
+                    try {
+                        // Пытаемся распарсить ошибку как JSON
+                        const errorData = JSON.parse(error.message);
+                        
+                        if (errorData.detail && errorData.detail.error === "Логин уже занят") {
+                            // Специфическая ошибка "логин занят"
+                            showProfileMessage(`Ошибка: ${errorData.detail.error} (${errorData.detail.detail})`, 'error');
+                        } else if (errorData.detail?.error) {
+                            showProfileMessage(`Ошибка: ${errorData.detail.error}`, 'error');
+                        } else if (errorData.error) {
+                            showProfileMessage(`Ошибка: ${errorData.error}`, 'error');
+                        } else {
+                            showProfileMessage(`Ошибка: ${error.message}`, 'error');
+                        }
+                    } catch (e) {
+                        // Если не удалось распарсить JSON, используем оригинальное сообщение
+                        showProfileMessage(`Ошибка: ${error.message}`, 'error');
+                    }
+                } finally {
+                    // Восстанавливаем кнопку
+                    saveProfileBtn.disabled = false;
+                    saveProfileBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Сохранить';
+                }
+            }
+
+            // =========================
+            // Load Admin Users
+            // =========================
+            async function loadAdminUsers() {
+                try {
+                    console.log('[Admin] Loading users...');
+                    
+                    // Формируем URL с параметрами
+                    let url = `/admin/users?page=${adminCurrentPage}&limit=${adminCurrentLimit}`;
+                    
+                    // Добавляем фильтр по статусу если выбран
+                    if (adminCurrentStatusFilter) {
+                        // Отправляем статус в ВЕРХНЕМ регистре, как ожидает API
+                        url += `&status=${adminCurrentStatusFilter.toLowerCase()}`;
+                    }
+                    
+                    console.log('[Admin] Loading users from:', url);
+                    
+                    // GET /api/admin/users
+                    const response = await apiRequest(url);
+                    
+                    console.log('[Admin] Users received:', response);
+                    
+                    // Обновляем данные
+                    adminTotalUsers = response.pagination.total;
+                    adminTotalPages = response.pagination.pages;
+                    
+                    // Рендерим таблицу
+                    renderAdminUsersTable(response.data);
+                    
+                    // Обновляем пагинацию
+                    updateAdminPagination();
+                    
+                    // Обновляем информацию о пагинации
+                    updateAdminPaginationInfo();
+                    
+                    return response.data;
+                    
+                } catch (error) {
+                    console.error('[Admin] Failed to load users:', error);
+                    
+                    // Показываем сообщение об ошибке
+                    showAdminMessage(`Ошибка загрузки пользователей: ${error.message}`, 'error');
+                    
+                    // Показываем сообщение в таблице
+                    adminUsersTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-red-500">
+                                <i class="fas fa-exclamation-triangle text-lg mb-2"></i>
+                                <p>Ошибка загрузки пользователей</p>
+                                <p class="text-sm">${error.message}</p>
+                            </td>
+                        </tr>
+                    `;
+                    
+                    return [];
+                }
+            }
+
+            /**
+             * Рендерим таблицу пользователей в панели администратора
+             */
+            function renderAdminUsersTable(users) {
+                if (!adminUsersTableBody) return;
+                
+                adminUsersTableBody.innerHTML = '';
+        
+                if (!users || users.length === 0) {
+                    adminUsersTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="px-6 py-4 text-center text-gray-500">
+                                <i class="fas fa-users text-lg mb-2"></i>
+                                <p>Пользователи не найдены</p>
+                                <p class="text-sm">Попробуйте изменить параметры фильтрации</p>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+                
+                adminUsersTableBody.innerHTML = '';
+                
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    
+                    // Форматируем дату регистрации
+                    const createdDate = formatDateShort(user.created_at);
+                    
+                    // Конвертируем английский статус API в русский текст
+                    const statusText = apiStatusToText(user.status);
+                    
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                                    <i class="fas fa-user text-gray-600"></i>
+                                </div>
+                                <div class="text-sm font-medium text-gray-900">${user.login || 'Не указан'}</div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">${user.email || 'Не указан'}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs font-medium rounded-full ${getUserStatusClass(user.status)} clickable-status" 
+                                  data-user-id="${user.id}" 
+                                  data-current-status="${user.status}"
+                                  title="Нажмите для изменения статуса">
+                                ${statusText}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs font-medium rounded-full ${getAdminRoleClass(user.is_admin)} clickable-role" 
+                                  data-user-id="${user.id}" 
+                                  data-current-role="${user.is_admin}"
+                                  title="Нажмите для изменения роли">
+                                ${getAdminStatusText(user.is_admin)}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            ${createdDate}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <button class="text-indigo-600 hover:text-indigo-900 view-user-btn" data-user-id="${user.id}">
+                                <i class="fas fa-eye mr-1"></i> Просмотр
+                            </button>
+                        </td>
+                    `;
+                    
+                    adminUsersTableBody.appendChild(row);
+                });
+                
+                // Добавляем обработчики событий для кнопок
+                addAdminUsersEventListeners();
+            }
+
+            /**
+             * Изменение статуса пользователя
+             */
+            async function changeUserStatus(userId, currentStatus) {
+                // currentStatus приходит из API в формате 'active' или 'inactive'
+                const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+                const newStatusText = apiStatusToText(newStatus);
+                
+                if (!confirm(`Вы уверены, что хотите изменить статус пользователя на "${newStatusText}"?`)) {
+                    return;
+                }
+                
+                try {
+                    console.log(`[Admin] Changing user status: ${userId} from ${currentStatus} to ${newStatus}`);
+                    
+                    // POST /api/admin/users/{user_id}/changestat
+                    // Отправляем новый статус в нижнем регистре, как ожидает API
+                    const response = await apiRequest(`/admin/users/${userId}/changestat?new_status=${newStatus}`, {
+                        method: 'POST'
+                    });
+                    
+                    console.log('[Admin] User status changed:', response);
+                    
+                    // Обновляем статус в таблице
+                    const statusElement = document.querySelector(`.clickable-status[data-user-id="${userId}"]`);
+                    if (statusElement) {
+                        const newStatusText = apiStatusToText(newStatus);
+                        statusElement.textContent = newStatusText;
+                        statusElement.className = `px-2 py-1 text-xs font-medium rounded-full ${getUserStatusClass(newStatus)} clickable-status`;
+                        statusElement.setAttribute('data-current-status', newStatus);
+                    }
+                    
+                    // Показываем сообщение об успехе
+                    showAdminMessage(`Статус пользователя успешно изменен на "${newStatusText}"`, 'success');
+                    
+                } catch (error) {
+                    console.error('[Admin] Failed to change user status:', error);
+                    showAdminMessage(`Ошибка при изменении статуса: ${error.message}`, 'error');
+                }
+            }
+
+            /**
+             * Изменение роли пользователя
+             */
+            async function changeUserRole(userId, currentIsAdmin) {
+                const newIsAdmin = !currentIsAdmin;
+                
+                if (!confirm(`Вы уверены, что хотите ${newIsAdmin ? 'сделать пользователя администратором' : 'забрать права администратора'}?`)) {
+                    return;
+                }
+                
+                try {
+                    console.log(`[Admin] Changing user role: ${userId} from ${currentIsAdmin} to ${newIsAdmin}`);
+                    
+                    // POST /api/admin/users/{user_id}/changerole
+                    const response = await apiRequest(`/admin/users/${userId}/changerole?is_admin=${newIsAdmin}`, {
+                        method: 'POST'
+                    });
+                    
+                    console.log('[Admin] User role changed:', response);
+                    
+                    // Обновляем роль в таблице
+                    const roleElement = document.querySelector(`.clickable-role[data-user-id="${userId}"]`);
+                    if (roleElement) {
+                        roleElement.textContent = getAdminStatusText(newIsAdmin);
+                        roleElement.className = `px-2 py-1 text-xs font-medium rounded-full ${getAdminRoleClass(newIsAdmin)} clickable-role`;
+                        roleElement.setAttribute('data-current-role', newIsAdmin);
+                    }
+                    
+                    // Показываем сообщение об успехе
+                    showAdminMessage(`Роль пользователя успешно изменена на "${getAdminStatusText(newIsAdmin)}"`, 'success');
+                    
+                } catch (error) {
+                    console.error('[Admin] Failed to change user role:', error);
+                    showAdminMessage(`Ошибка при изменении роли: ${error.message}`, 'error');
+                }
+            }
+
+            /**
+             * Обновляет информацию о пагинации
+             */
+            function updateAdminPaginationInfo() {
+                if (!adminPaginationInfo) return;
+                
+                const from = (adminCurrentPage - 1) * adminCurrentLimit + 1;
+                const to = Math.min(adminCurrentPage * adminCurrentLimit, adminTotalUsers);
+                
+                if (adminUsersFrom) adminUsersFrom.textContent = from;
+                if (adminUsersTo) adminUsersTo.textContent = to;
+                if (adminUsersTotal) adminUsersTotal.textContent = adminTotalUsers;
+            }
+
+            /**
+             * Обновляет пагинацию
+             */
+            function updateAdminPagination() {
+                if (!adminPagination) return;
+                
+                adminPagination.innerHTML = '';
+                
+                // Кнопка "Назад"
+                const prevButton = document.createElement('button');
+                prevButton.className = `px-3 py-1 rounded-md ${adminCurrentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'}`;
+                prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+                prevButton.disabled = adminCurrentPage === 1;
+                if (adminCurrentPage > 1) {
+                    prevButton.addEventListener('click', () => {
+                        adminCurrentPage--;
+                        loadAdminUsers();
+                    });
+                }
+                adminPagination.appendChild(prevButton);
+                
+                // Номера страниц
+                const maxPagesToShow = 5;
+                let startPage = Math.max(1, adminCurrentPage - Math.floor(maxPagesToShow / 2));
+                let endPage = Math.min(adminTotalPages, startPage + maxPagesToShow - 1);
+                
+                if (endPage - startPage + 1 < maxPagesToShow) {
+                    startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageButton = document.createElement('button');
+                    pageButton.className = `px-3 py-1 rounded-md mx-1 ${i === adminCurrentPage ? 'bg-purple-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'}`;
+                    pageButton.textContent = i;
+                    pageButton.addEventListener('click', () => {
+                        adminCurrentPage = i;
+                        loadAdminUsers();
+                    });
+                    adminPagination.appendChild(pageButton);
+                }
+                
+                // Кнопка "Вперед"
+                const nextButton = document.createElement('button');
+                nextButton.className = `px-3 py-1 rounded-md ${adminCurrentPage === adminTotalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300'}`;
+                nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+                nextButton.disabled = adminCurrentPage === adminTotalPages;
+                if (adminCurrentPage < adminTotalPages) {
+                    nextButton.addEventListener('click', () => {
+                        adminCurrentPage++;
+                        loadAdminUsers();
+                    });
+                }
+                adminPagination.appendChild(nextButton);
+            }
+
+            /**
+             * Добавляет обработчики событий для кнопок в таблице пользователей
+             */
+            function addAdminUsersEventListeners() {
+                // Кликабельные статусы
+                document.querySelectorAll('.clickable-status').forEach(status => {
+                    status.addEventListener('click', function() {
+                        const userId = this.getAttribute('data-user-id');
+                        const currentStatus = this.getAttribute('data-current-status');
+                        changeUserStatus(userId, currentStatus);
+                    });
+                });
+                
+                // Кликабельные роли
+                document.querySelectorAll('.clickable-role').forEach(role => {
+                    role.addEventListener('click', function() {
+                        const userId = this.getAttribute('data-user-id');
+                        const currentRole = this.getAttribute('data-current-role') === 'true';
+                        changeUserRole(userId, currentRole);
+                    });
+                });
+                
+                // Кнопки просмотра пользователя
+                document.querySelectorAll('.view-user-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const userId = this.getAttribute('data-user-id');
+                        console.log('[Admin] View user clicked:', userId);
+                        viewUserDetails(userId);
+                    });
+                });
+            }
+
+            /**
+             * Просмотр детальной информации о пользователе
+             */
+            async function viewUserDetails(userId) {
+                try {
+                    console.log('[Admin] Loading user details:', userId);
+                    
+                    // GET /api/admin/users/{user_id}
+                    const userData = await apiRequest(`/admin/users/${userId}`);
+                    
+                    console.log('[Admin] User details received:', userData);
+                    
+                    // Конвертируем английский статус API в русский текст
+                    const statusText = apiStatusToText(userData.status);
+                    
+                    // Форматируем данные для отображения
+                    const userInfo = `
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4">
+                                <div class="h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center">
+                                    <i class="fas fa-user text-gray-600 text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-900">${userData.login || 'Не указан'}</h4>
+                                    <p class="text-sm text-gray-500">${userData.email || 'Email не указан'}</p>
+                                </div>
+                            </div>
+                            
+                            <div class="border-t border-gray-200 pt-4">
+                                <h5 class="text-sm font-medium text-gray-700 mb-2">Информация о пользователе</h5>
+                                <div class="space-y-2 text-sm">
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Логин:</span>
+                                        <span class="font-medium">${userData.login || 'Не указан'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Имя:</span>
+                                        <span class="font-medium">${userData.name || 'Не указано'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Фамилия:</span>
+                                        <span class="font-medium">${userData.surname || 'Не указано'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Email:</span>
+                                        <span class="font-medium">${userData.email || 'Не указан'}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Статус:</span>
+                                        <span class="font-medium ${getUserStatusClass(userData.status)} px-2 py-1 rounded-full text-xs">
+                                            ${statusText}
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Администратор:</span>
+                                        <span class="font-medium ${getAdminRoleClass(userData.is_admin)} px-2 py-1 rounded-full text-xs">
+                                            ${getAdminStatusText(userData.is_admin)}
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Дата регистрации:</span>
+                                        <span class="font-medium">${formatDateTime(userData.created_at)}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span class="text-gray-500">Дата обновления:</span>
+                                        <span class="font-medium">${formatDateTime(userData.updated_at)}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            ${userData.project_roles && userData.project_roles.length > 0 ? `
+                            <div class="border-t border-gray-200 pt-4">
+                                <h5 class="text-sm font-medium text-gray-700 mb-2">Проекты пользователя</h5>
+                                <div class="space-y-2">
+                                    ${userData.project_roles.map(project => `
+                                    <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                        <div>
+                                            <span class="font-medium text-sm">${project.project_name || 'Неизвестный проект'}</span>
+                                            <span class="ml-2 text-xs text-gray-500">ID: ${project.project_id}</span>
+                                        </div>
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full ${getRoleClass(project.role_name)}">
+                                            ${project.role_name || 'Неизвестная роль'}
+                                        </span>
+                                    </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    
+                    // Показываем модальное окно с информацией о пользователе
+                    alertWithHTML('Детальная информация о пользователе', userInfo);
+                    
+                } catch (error) {
+                    console.error('[Admin] Failed to load user details:', error);
+                    alert(`Ошибка при загрузке информации о пользователе: ${error.message}`);
+                }
+            }
+
+            /**
+             * Показывает alert с HTML содержимым
+             */
+            function alertWithHTML(title, htmlContent) {
+                // Создаем модальное окно
+                const modal = document.createElement('div');
+                modal.className = 'fixed z-50 inset-0 overflow-y-auto';
+                modal.innerHTML = `
+                    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+                        <span class="hidden sm:inline-block sm:align-middle sm:h-screen">​</span>
+                        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <div class="flex items-start justify-between mb-4">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">${title}</h3>
+                                    <button type="button" class="text-gray-400 hover:text-gray-600 transition-colors duration-200 close-user-modal-btn">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="max-h-96 overflow-y-auto">
+                                    ${htmlContent}
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm close-user-modal-btn">
+                                    Закрыть
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // Добавляем обработчики закрытия
+                modal.querySelectorAll('.close-user-modal-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        document.body.removeChild(modal);
+                    });
+                });
+                
+                // Закрытие по клику на фон
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        document.body.removeChild(modal);
+                    }
+                });
+            }
+
+            /**
+             * Сбрасывает фильтры панели администратора
+             */
+            function resetAdminFilters() {
+                adminCurrentPage = 1;
+                adminCurrentStatusFilter = '';
+                
+                if (adminFilterStatus) adminFilterStatus.value = '';
+                if (adminPageLimit) adminPageLimit.value = '20';
+                
+                adminCurrentLimit = 20;
+                loadAdminUsers();
+            }
+
+            // =========================
             // Load User Projects
             // =========================
             async function loadUserProjects() {
                 try {
                     console.log('[Projects] Loading user projects...');
                     
-                    // GET /api/users/me/projects
+                    // Получаем проекты пользователя (предполагаем, что есть эндпоинт для получения проектов)
+                    // Если такого эндпоинта нет, возможно нужно использовать другой подход
                     const response = await apiRequest('/users/me/projects');
                     
                     console.log('[Projects] User projects received:', response);
                     
                     userProjects = response.project_roles || [];
                     
-                    // Загружаем детальную информацию о каждом проекте
-                    await loadProjectsDetails();
+                    // Загружаем детальную информацию о каждом проекте и роль пользователя
+                    await loadProjectsDetailsAndRoles();
                     
                     // Обновляем статистику
                     updateProjectsStats();
@@ -717,43 +1857,112 @@
                     
                 } catch (error) {
                     console.error('[Projects] Failed to load user projects:', error);
-                    userProjects = [];
-                    projectsDetails = {};
                     
-                    // Показываем сообщение об ошибке
-                    if (projectsGrid) {
-                        projectsGrid.innerHTML = `
-                            <div class="col-span-full text-center py-12 text-gray-500">
-                                <i class="fas fa-exclamation-triangle text-3xl mb-4 text-red-500"></i>
-                                <p class="text-lg mb-2 text-red-600">Ошибка загрузки проектов</p>
-                                <p class="text-sm">${error.message}</p>
-                            </div>
-                        `;
+                    // Если эндпоинт не работает, попробуем альтернативный подход
+                    try {
+                        await loadAllProjectsWithRoles();
+                        updateProjectsStats();
+                        renderProjects();
+                        return userProjects;
+                    } catch (fallbackError) {
+                        console.error('[Projects] Fallback also failed:', fallbackError);
+                        userProjects = [];
+                        projectsDetails = {};
+                        userRoles = {};
+                        
+                        // Показываем сообщение об ошибке
+                        if (projectsGrid) {
+                            projectsGrid.innerHTML = `
+                                <div class="col-span-full text-center py-12 text-gray-500">
+                                    <i class="fas fa-exclamation-triangle text-3xl mb-4 text-red-500"></i>
+                                    <p class="text-lg mb-2 text-red-600">Ошибка загрузки проектов</p>
+                                    <p class="text-sm">${error.message}</p>
+                                </div>
+                            `;
+                        }
+                        
+                        return [];
                     }
-                    
-                    return [];
                 }
             }
 
             // =========================
-            // Load Projects Details
+            // Альтернативный метод загрузки проектов
             // =========================
-            async function loadProjectsDetails() {
+            async function loadAllProjectsWithRoles() {
+                try {
+                    console.log('[Projects] Loading all projects with roles...');
+                    
+                    // Шаг 1: Получаем все проекты
+                    const allProjects = await apiRequest('/projects/');
+                    console.log('[Projects] All projects:', allProjects);
+                    
+                    userProjects = [];
+                    projectsDetails = {};
+                    userRoles = {};
+                    
+                    // Шаг 2: Для каждого проекта получаем роль пользователя
+                    const projectPromises = allProjects.map(async (project) => {
+                        try {
+                            // Сохраняем детали проекта
+                            projectsDetails[project.id] = project;
+                            
+                            // Получаем роль пользователя на проекте
+                            const roleResponse = await apiRequest(`/projects/${project.id}/role`);
+                            console.log(`[Projects] Role for project ${project.id}:`, roleResponse);
+                            
+                            // Сохраняем роль
+                            userRoles[project.id] = roleResponse;
+                            
+                            // Добавляем проект в список пользователя
+                            userProjects.push({
+                                project_id: project.id,
+                                project_name: project.name,
+                                role_name: roleResponse
+                            });
+                            
+                        } catch (roleError) {
+                            console.warn(`[Projects] Could not get role for project ${project.id}:`, roleError);
+                            // Если не удалось получить роль, возможно у пользователя нет доступа
+                            // Пропускаем этот проект
+                        }
+                    });
+                    
+                    await Promise.all(projectPromises);
+                    console.log('[Projects] Final user projects:', userProjects);
+                    
+                } catch (error) {
+                    console.error('[Projects] Failed to load all projects:', error);
+                    throw error;
+                }
+            }
+
+            // =========================
+            // Load Projects Details and Roles
+            // =========================
+            async function loadProjectsDetailsAndRoles() {
                 if (!userProjects.length) {
                     projectsDetails = {};
+                    userRoles = {};
                     return;
                 }
                 
-                console.log('[Projects] Loading projects details...');
+                console.log('[Projects] Loading projects details and roles...');
                 
                 projectsDetails = {};
+                userRoles = {};
                 
                 // Загружаем информацию о каждом проекте параллельно
                 const projectPromises = userProjects.map(async (projectRole) => {
                     try {
-                        // GET /api/projects/{project_id}
+                        // GET /api/projects/{project_id} - детали проекта
                         const projectDetail = await apiRequest(`/projects/${projectRole.project_id}`);
+                        console.log(`[Projects] Project ${projectRole.project_id} detail:`, projectDetail);
                         projectsDetails[projectRole.project_id] = projectDetail;
+                        
+                        // Сохраняем роль из ответа API
+                        userRoles[projectRole.project_id] = projectRole.role_name;
+                        
                     } catch (error) {
                         console.error(`[Projects] Failed to load project ${projectRole.project_id}:`, error);
                         // Создаем минимальную информацию о проекте
@@ -762,44 +1971,45 @@
                             name: projectRole.project_name,
                             description: 'Не удалось загрузить описание',
                             status: 'unknown',
-                            created_at: null,
-                            updated_at: null
+                            created_at: null
                         };
+                        userRoles[projectRole.project_id] = projectRole.role_name || 'Неизвестно';
                     }
                 });
                 
                 await Promise.all(projectPromises);
                 console.log('[Projects] Projects details loaded:', projectsDetails);
+                console.log('[Projects] User roles loaded:', userRoles);
             }
 
             // =========================
             // Update Projects Statistics
             // =========================
             function updateProjectsStats() {
-                if (!totalProjects || !activeProjects || !draftProjects || !inactiveProjects) return;
+                if (!totalProjects || !activeProjects || !draftProjects || !archivedProjects) return;
                 
                 const total = userProjects.length;
                 
                 // Считаем проекты по статусам
                 let activeCount = 0;
                 let draftCount = 0;
-                let inactiveCount = 0;
+                let archivedCount = 0;
                 
-                userProjects.forEach(projectRole => {
-                    const projectDetail = projectsDetails[projectRole.project_id];
+                userProjects.forEach(projectItem => {
+                    const projectDetail = projectsDetails[projectItem.project_id];
                     if (projectDetail) {
                         const status = projectDetail.status || 'unknown';
                         
                         if (status === 'active') activeCount++;
                         else if (status === 'draft') draftCount++;
-                        else if (status === 'inactive') inactiveCount++;
+                        else if (status === 'archived') archivedCount++;
                     }
                 });
                 
                 totalProjects.textContent = total;
                 activeProjects.textContent = activeCount;
                 draftProjects.textContent = draftCount;
-                inactiveProjects.textContent = inactiveCount;
+                archivedProjects.textContent = archivedCount;
             }
 
             // =========================
@@ -827,7 +2037,8 @@
                             // Сбрасываем значения формы перед открытием
                             document.getElementById('projectName').value = '';
                             document.getElementById('projectDescription').value = '';
-                            document.getElementById('projectStatus').value = 'active';
+                            // Статус по умолчанию - draft (согласно ProjectCreateStatus)
+                            document.getElementById('projectStatus').value = 'draft';
                             newProjectModal.classList.remove('hidden');
                         });
                     }
@@ -851,24 +2062,30 @@
                     return;
                 }
                 
-                filteredProjects.forEach(projectRole => {
-                    const projectDetail = projectsDetails[projectRole.project_id];
+                filteredProjects.forEach(projectItem => {
+                    const projectDetail = projectsDetails[projectItem.project_id];
                     if (!projectDetail) return;
+                    
+                    const userRole = userRoles[projectItem.project_id] || projectItem.role_name || 'Неизвестно';
+                    const shortRoleName = getShortRoleName(userRole);
                     
                     const projectCard = document.createElement('div');
                     projectCard.className = 'project-card bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg';
                     
-                    // Форматируем даты
+                    // Форматируем дату создания
                     const createdDate = formatDateShort(projectDetail.created_at);
-                    const updatedDate = formatDateShort(projectDetail.updated_at);
+                    
+                    // Определяем, какие кнопки показывать
+                    const canEdit = canEditProject(userRole);
+                    const canDelete = canDeleteProject(userRole);
                     
                     projectCard.innerHTML = `
                         <div class="p-6">
                             <div class="flex justify-between items-start mb-4">
                                 <div>
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-1">${projectDetail.name || projectRole.project_name}</h3>
-                                    <span class="${getRoleClass(projectRole.role_name)} role-badge">
-                                        ${projectRole.role_name}
+                                    <h3 class="text-lg font-semibold text-gray-900 mb-1">${projectDetail.name || projectItem.project_name}</h3>
+                                    <span class="${getRoleClass(userRole)} role-badge">
+                                        ${shortRoleName}
                                     </span>
                                 </div>
                                 <span class="px-2 py-1 text-xs font-medium rounded-full ${getStatusClass(projectDetail.status)}">
@@ -883,26 +2100,22 @@
                                     <span class="text-gray-500">Создан:</span>
                                     <span class="font-medium">${createdDate}</span>
                                 </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">Обновлен:</span>
-                                    <span class="font-medium">${updatedDate}</span>
-                                </div>
-                                <div class="flex justify-between text-sm">
-                                    <span class="text-gray-500">ID проекта:</span>
-                                    <span class="font-mono font-medium text-xs">${projectRole.project_id.substring(0, 8)}...</span>
-                                </div>
                             </div>
                             
                             <div class="flex justify-between pt-4 border-t border-gray-100">
-                                <button class="text-indigo-600 hover:text-indigo-900 text-sm font-medium flex items-center transition-colors duration-200 view-project-btn" data-project-id="${projectRole.project_id}">
+                                <button class="text-indigo-600 hover:text-indigo-900 text-sm font-medium flex items-center transition-colors duration-200 view-project-btn" data-project-id="${projectItem.project_id}">
                                     <i class="fas fa-eye mr-1"></i> Просмотр
                                 </button>
-                                <button class="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center transition-colors duration-200 edit-project-btn" data-project-id="${projectRole.project_id}">
+                                ${canEdit ? `
+                                <button class="text-gray-600 hover:text-gray-900 text-sm font-medium flex items-center transition-colors duration-200 edit-project-btn" data-project-id="${projectItem.project_id}">
                                     <i class="fas fa-edit mr-1"></i> Редактировать
                                 </button>
-                                <button class="text-red-600 hover:text-red-900 text-sm font-medium flex items-center transition-colors duration-200 delete-project-btn" data-project-id="${projectRole.project_id}">
+                                ` : ''}
+                                ${canDelete ? `
+                                <button class="text-red-600 hover:text-red-900 text-sm font-medium flex items-center transition-colors duration-200 delete-project-btn" data-project-id="${projectItem.project_id}">
                                     <i class="fas fa-trash mr-1"></i> Удалить
                                 </button>
+                                ` : ''}
                             </div>
                         </div>
                     `;
@@ -922,8 +2135,8 @@
                 const roleFilter = filterRole ? filterRole.value : '';
                 const statusFilter = filterStatus ? filterStatus.value : '';
                 
-                return userProjects.filter(projectRole => {
-                    const projectDetail = projectsDetails[projectRole.project_id];
+                return userProjects.filter(projectItem => {
+                    const projectDetail = projectsDetails[projectItem.project_id];
                     if (!projectDetail) return false;
                     
                     // Проверяем поиск по названию
@@ -932,7 +2145,8 @@
                         (projectDetail.description && projectDetail.description.toLowerCase().includes(searchTerm));
                     
                     // Проверяем фильтр по роли
-                    const matchesRole = roleFilter === '' || projectRole.role_name === roleFilter;
+                    const userRole = userRoles[projectItem.project_id] || projectItem.role_name || '';
+                    const matchesRole = roleFilter === '' || userRole === roleFilter;
                     
                     // Проверяем фильтр по статусу
                     const matchesStatus = statusFilter === '' || projectDetail.status === statusFilter;
@@ -960,8 +2174,7 @@
                     btn.addEventListener('click', function() {
                         const projectId = this.getAttribute('data-project-id');
                         console.log('[UI] Edit project clicked:', projectId);
-                        // Здесь можно добавить логику редактирования проекта
-                        alert(`Редактирование проекта ${projectId}`);
+                        openEditProjectModal(projectId);
                     });
                 });
                 
@@ -970,356 +2183,191 @@
                     btn.addEventListener('click', function() {
                         const projectId = this.getAttribute('data-project-id');
                         console.log('[UI] Delete project clicked:', projectId);
-                        
-                        if (confirm('Вы уверены, что хотите удалить этот проект?')) {
-                            // Здесь можно добавить логику удаления проекта
-                            alert(`Удаление проекта ${projectId}`);
-                        }
+                        deleteProject(projectId);
                     });
                 });
             }
 
             // =========================
-            // Update Profile (PATCH)
+            // Open Edit Project Modal
             // =========================
-            async function updateUserProfile(updateData) {
-                try {
-                    console.log('[Profile] Updating user profile with:', updateData);
-                    
-                    // PATCH /api/users/me/profile
-                    const response = await apiRequest('/users/me/profile', {
-                        method: 'PATCH',
-                        body: JSON.stringify(updateData)
-                    });
-                    
-                    console.log('[Profile] Update response:', response);
-                    
-                    // Обновляем текущего пользователя
-                    currentUser = response;
-                    localStorage.setItem('user', JSON.stringify(response));
-                    
-                    // Обновляем кнопку профиля
-                    if (userLoginBtn) {
-                        userLoginBtn.textContent = response.login || response.email || 'Профиль';
-                    }
-                    
-                    return response;
-                    
-                } catch (error) {
-                    console.error('[Profile] Failed to update user profile:', error);
-                    throw error;
-                }
-            }
-
-            // =========================
-            // Update Profile Modal
-            // =========================
-            function updateProfileModal(userData) {
-                if (!userData) {
-                    console.warn('[Profile] No user data to display');
+            function openEditProjectModal(projectId) {
+                const projectDetail = projectsDetails[projectId];
+                if (!projectDetail) {
+                    alert('Не удалось загрузить данные проекта');
                     return;
                 }
                 
-                console.log('[Profile] Updating modal with:', userData);
-                
-                // Обновляем поля в модальном окне профиля
-                const userName = document.getElementById('userName');
-                const userEmail = document.getElementById('userEmail');
-                const userLogin = document.getElementById('userLogin');
-                const userFirstName = document.getElementById('userFirstName');
-                const userSurname = document.getElementById('userSurname');
-                const userEmailField = document.getElementById('userEmailField');
-                const userStatus = document.getElementById('userStatus');
-                const userCreatedAt = document.getElementById('userCreatedAt');
-                
-                if (userName) {
-                    const fullName = `${userData.name || ''} ${userData.surname || ''}`.trim();
-                    userName.textContent = fullName || userData.login || userData.email || 'Пользователь';
+                // Проверяем права на редактирование
+                const userRole = userRoles[projectId];
+                if (!canEditProject(userRole)) {
+                    alert('У вас недостаточно прав для редактирования этого проекта');
+                    return;
                 }
                 
-                if (userEmail) userEmail.textContent = userData.email || 'Не указан';
-                if (userEmailField) userEmailField.textContent = userData.email || 'Не указан';
-                if (userLogin) userLogin.textContent = userData.login || 'Не указан';
-                if (userFirstName) userFirstName.textContent = userData.name || 'Не указано';
-                if (userSurname) userSurname.textContent = userData.surname || 'Не указана';
+                // Заполняем форму
+                editProjectId.value = projectId;
+                editProjectName.value = projectDetail.name || '';
+                editProjectDescription.value = projectDetail.description || '';
                 
-                if (userStatus) {
-                    const statusMap = {
-                        'active': 'Активный',
-                        'inactive': 'Неактивный',
-                        'blocked': 'Заблокирован'
-                    };
-                    userStatus.textContent = statusMap[userData.status] || userData.status || 'Неизвестно';
+                // Согласно ProjectUpdateStatus: только active и archived
+                // Но если текущий статус draft, оставляем его как draft (только для просмотра)
+                if (projectDetail.status === 'draft') {
+                    // Для черновиков показываем только draft (не редактируемый)
+                    editProjectStatus.innerHTML = `
+                        <option value="draft" selected>Черновик</option>
+                    `;
+                    editProjectStatus.disabled = true;
+                } else {
+                    // Для активных и архивных проектов - active и archived
+                    editProjectStatus.innerHTML = `
+                        <option value="active" ${projectDetail.status === 'active' ? 'selected' : ''}>Активный</option>
+                        <option value="archived" ${projectDetail.status === 'archived' ? 'selected' : ''}>Архивный</option>
+                    `;
+                    editProjectStatus.disabled = false;
                 }
-                
-                if (userCreatedAt) {
-                    // Форматируем дату регистрации
-                    userCreatedAt.textContent = formatDateTime(userData.created_at) || 'Не указано';
-                }
-            }
-
-            // =========================
-            // Update Edit Form
-            // =========================
-            function updateEditForm(userData) {
-                if (!userData) return;
-                
-                if (editLogin) editLogin.value = userData.login || '';
-                if (editName) editName.value = userData.name || '';
-                if (editSurname) editSurname.value = userData.surname || '';
-            }
-
-            // =========================
-            // Show/Hide Edit Mode
-            // =========================
-            function showEditMode() {
-                if (editProfileForm) editProfileForm.classList.remove('hidden');
-                if (viewProfileInfo) viewProfileInfo.classList.add('hidden');
-                if (profileContent) profileContent.classList.add('edit-mode');
-                if (profileContent) profileContent.classList.remove('view-mode');
-                
-                // Фокусируемся на первом поле
-                if (editLogin) editLogin.focus();
-            }
-
-            function showViewMode() {
-                if (editProfileForm) editProfileForm.classList.add('hidden');
-                if (viewProfileInfo) viewProfileInfo.classList.remove('hidden');
-                if (profileContent) profileContent.classList.remove('edit-mode');
-                if (profileContent) profileContent.classList.add('view-mode');
                 
                 // Скрываем сообщения
-                hideMessage();
+                hideEditMessage();
+                
+                // Открываем модальное окно
+                editProjectModal.classList.remove('hidden');
             }
 
             // =========================
-            // Show/Hide Messages
+            // Save Edited Project
             // =========================
-            function showMessage(text, type = 'success') {
-                if (!profileMessage) return;
+            async function saveEditedProject() {
+                const projectId = editProjectId.value;
+                const name = editProjectName.value.trim();
+                const description = editProjectDescription.value.trim();
+                const status = editProjectStatus.value;
                 
-                profileMessage.textContent = text;
-                profileMessage.className = 'p-3 rounded-md';
-                
-                if (type === 'success') {
-                    profileMessage.classList.add('bg-green-50', 'text-green-800', 'border', 'border-green-200');
-                } else if (type === 'error') {
-                    profileMessage.classList.add('bg-red-50', 'text-red-800', 'border', 'border-red-200');
-                } else if (type === 'warning') {
-                    profileMessage.classList.add('bg-yellow-50', 'text-yellow-800', 'border', 'border-yellow-200');
+                if (!projectId) {
+                    showEditMessage('Ошибка: ID проекта не указан', 'error');
+                    return;
                 }
                 
-                profileMessage.classList.remove('hidden');
-                
-                // Автоматически скрываем сообщение через 5 секунд
-                setTimeout(hideMessage, 5000);
-            }
-
-            function hideMessage() {
-                if (profileMessage) {
-                    profileMessage.classList.add('hidden');
-                    profileMessage.textContent = '';
-                }
-            }
-
-            // =========================
-            // Validate Edit Form
-            // =========================
-            function validateEditForm() {
-                const login = editLogin ? editLogin.value.trim() : '';
-                const name = editName ? editName.value.trim() : '';
-                const surname = editSurname ? editSurname.value.trim() : '';
-                
-                // Проверяем, что хотя бы одно поле изменилось
-                const originalLogin = currentUser?.login || '';
-                const originalName = currentUser?.name || '';
-                const originalSurname = currentUser?.surname || '';
-                
-                if (login === originalLogin && 
-                    name === originalName && 
-                    surname === originalSurname) {
-                    showMessage('Нет изменений для сохранения', 'warning');
-                    return false;
+                if (!name) {
+                    showEditMessage('Введите название проекта', 'error');
+                    return;
                 }
                 
-                // Проверяем логин (если изменен)
-                if (login !== originalLogin && login.length < 3) {
-                    showMessage('Логин должен содержать минимум 3 символа', 'error');
-                    if (editLogin) editLogin.focus();
-                    return false;
-                }
-                
-                return true;
-            }
-
-            // =========================
-            // Event Listeners - Profile
-            // =========================
-            if (editProfileBtn) {
-                editProfileBtn.addEventListener('click', function() {
-                    console.log('[UI] Edit profile button clicked');
-                    showEditMode();
-                });
-            }
-
-            if (cancelEditBtn) {
-                cancelEditBtn.addEventListener('click', function() {
-                    console.log('[UI] Cancel edit clicked');
-                    // Восстанавливаем оригинальные значения
-                    updateEditForm(currentUser);
-                    showViewMode();
-                });
-            }
-
-            if (saveProfileChangesBtn) {
-                saveProfileChangesBtn.addEventListener('click', async function() {
-                    console.log('[UI] Save profile changes clicked');
-                    
-                    if (!validateEditForm()) {
-                        return;
-                    }
-                    
-                    const login = editLogin ? editLogin.value.trim() : null;
-                    const name = editName ? editName.value.trim() : null;
-                    const surname = editSurname ? editSurname.value.trim() : null;
+                try {
+                    // Показываем индикатор загрузки
+                    saveEditProjectBtn.disabled = true;
+                    saveEditProjectBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Сохранение...';
                     
                     // Подготавливаем данные для отправки
-                    const updateData = {};
+                    const updateData = {
+                        name: name,
+                        description: description || null,
+                        status: status
+                    };
                     
-                    if (login !== currentUser?.login) {
-                        updateData.login = login || '';
+                    console.log('[Projects] Updating project:', projectId, updateData);
+                    
+                    // PUT /api/projects/{project_id}
+                    const response = await apiRequest(`/projects/${projectId}`, {
+                        method: 'PUT',
+                        body: JSON.stringify(updateData)
+                    });
+                    
+                    console.log('[Projects] Project updated:', response);
+                    
+                    // Обновляем данные проекта в локальном хранилище
+                    if (projectsDetails[projectId]) {
+                        projectsDetails[projectId].name = name;
+                        projectsDetails[projectId].description = description;
+                        projectsDetails[projectId].status = status;
                     }
                     
-                    if (name !== currentUser?.name) {
-                        updateData.name = name || '';
+                    // Обновляем список проектов пользователя
+                    const projectIndex = userProjects.findIndex(p => p.project_id === projectId);
+                    if (projectIndex !== -1) {
+                        userProjects[projectIndex].project_name = name;
                     }
                     
-                    if (surname !== currentUser?.surname) {
-                        updateData.surname = surname || '';
-                    }
+                    // Обновляем статистику
+                    updateProjectsStats();
                     
-                    // Проверяем, есть ли изменения
-                    if (Object.keys(updateData).length === 0) {
-                        showMessage('Нет изменений для сохранения', 'warning');
-                        return;
-                    }
+                    // Показываем сообщение об успехе
+                    showEditMessage('Проект успешно обновлен!', 'success');
                     
-                    try {
-                        // Отключаем кнопку на время запроса
-                        saveProfileChangesBtn.disabled = true;
-                        saveProfileChangesBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Сохранение...';
+                    // Через 1.5 секунды закрываем модальное окно и обновляем список
+                    setTimeout(async () => {
+                        editProjectModal.classList.add('hidden');
                         
-                        // Отправляем PATCH запрос
-                        const updatedUser = await updateUserProfile(updateData);
-                        
-                        // Обновляем модальное окно
-                        updateProfileModal(updatedUser);
-                        
-                        // Показываем сообщение об успехе
-                        showMessage('Данные успешно обновлены!', 'success');
-                        
-                        // Возвращаемся в режим просмотра
-                        setTimeout(() => {
-                            showViewMode();
-                        }, 1500);
-                        
-                    } catch (error) {
-                        console.error('[UI] Failed to save profile:', error);
-                        showMessage(`Ошибка: ${error.message}`, 'error');
-                    } finally {
-                        // Восстанавливаем кнопку
-                        saveProfileChangesBtn.disabled = false;
-                        saveProfileChangesBtn.innerHTML = 'Сохранить';
-                    }
-                });
+                        // Перерендерим проекты
+                        renderProjects();
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('[Projects] Failed to update project:', error);
+                    showEditMessage(`Ошибка: ${error.message}`, 'error');
+                } finally {
+                    // Восстанавливаем кнопку
+                    saveEditProjectBtn.disabled = false;
+                    saveEditProjectBtn.innerHTML = 'Сохранить изменения';
+                }
             }
 
             // =========================
-            // Event Listeners - Projects
+            // Delete Project
             // =========================
-            if (searchProjects) {
-                searchProjects.addEventListener('input', function() {
-                    console.log('[UI] Search projects:', this.value);
-                    renderProjects();
-                });
-            }
-            
-            if (filterRole) {
-                filterRole.addEventListener('change', function() {
-                    console.log('[UI] Filter by role:', this.value);
-                    renderProjects();
-                });
-            }
-            
-            if (filterStatus) {
-                filterStatus.addEventListener('change', function() {
-                    console.log('[UI] Filter by status:', this.value);
-                    renderProjects();
-                });
-            }
-
-            // Profile Modal
-            if (profileBtn) {
-                profileBtn.addEventListener('click', async function() {
-                    console.log('[UI] Profile button clicked');
+            async function deleteProject(projectId) {
+                const projectDetail = projectsDetails[projectId];
+                if (!projectDetail) {
+                    alert('Проект не найден');
+                    return;
+                }
+                
+                // Проверяем права на удаление
+                const userRole = userRoles[projectId];
+                if (!canDeleteProject(userRole)) {
+                    alert('Только владелец проекта может удалить его');
+                    return;
+                }
+                
+                // Подтверждение удаления
+                const projectName = projectDetail.name || 'Проект';
+                if (!confirm(`Вы уверены, что хотите удалить проект "${projectName}"? Это действие нельзя отменить.`)) {
+                    return;
+                }
+                
+                try {
+                    console.log('[Projects] Deleting project:', projectId);
                     
-                    // Загружаем профиль при открытии модального окна
-                    try {
-                        const userData = await loadUserProfile();
-                        updateProfileModal(userData);
-                        showViewMode(); // Показываем режим просмотра по умолчанию
-                        profileModal.classList.remove('hidden');
-                    } catch (error) {
-                        console.error('[UI] Failed to load profile:', error);
-                        showMessage('Не удалось загрузить профиль: ' + error.message, 'error');
-                        profileModal.classList.remove('hidden');
-                    }
-                });
+                    // DELETE /api/projects/{project_id}
+                    await apiRequest(`/projects/${projectId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    console.log('[Projects] Project deleted:', projectId);
+                    
+                    // Удаляем проект из локального хранилища
+                    delete projectsDetails[projectId];
+                    delete userRoles[projectId];
+                    userProjects = userProjects.filter(p => p.project_id !== projectId);
+                    
+                    // Обновляем статистику
+                    updateProjectsStats();
+                    
+                    // Перерендерим проекты
+                    renderProjects();
+                    
+                    // Показываем сообщение об успехе
+                    alert('Проект успешно удален!');
+                    
+                } catch (error) {
+                    console.error('[Projects] Failed to delete project:', error);
+                    alert(`Ошибка при удалении проекта: ${error.message}`);
+                }
             }
 
-            // Close Profile Modal
-            const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
-            const closeProfileModalBtn2 = document.getElementById('closeProfileModalBtn2');
-            
-            if (closeProfileModalBtn) {
-                closeProfileModalBtn.addEventListener('click', function() {
-                    profileModal.classList.add('hidden');
-                    showViewMode(); // Сбрасываем в режим просмотра при закрытии
-                });
-            }
-            
-            if (closeProfileModalBtn2) {
-                closeProfileModalBtn2.addEventListener('click', function() {
-                    profileModal.classList.add('hidden');
-                    showViewMode(); // Сбрасываем в режим просмотра при закрытии
-                });
-            }
-
-            // New Project Modal
-            if (newProjectBtn) {
-                newProjectBtn.addEventListener('click', function() {
-                    newProjectModal.classList.remove('hidden');
-                });
-            }
-
-            // Close New Project Modal
-            const closeNewProjectModalBtn = document.getElementById('closeNewProjectModalBtn');
-            const closeNewProjectModalBtn2 = document.getElementById('closeNewProjectModalBtn2');
-            
-            if (closeNewProjectModalBtn) {
-                closeNewProjectModalBtn.addEventListener('click', function() {
-                    newProjectModal.classList.add('hidden');
-                });
-            }
-            
-            if (closeNewProjectModalBtn2) {
-                closeNewProjectModalBtn2.addEventListener('click', function() {
-                    newProjectModal.classList.add('hidden');
-                });
-            }
-
+            // =========================
             // Save New Project
-            // Save New Project
+            // =========================
             const saveNewProjectBtn = document.getElementById('saveNewProjectBtn');
             if (saveNewProjectBtn) {
                 saveNewProjectBtn.addEventListener('click', async function() {
@@ -1341,13 +2389,13 @@
                         const projectData = {
                             name: name,
                             description: description || null,
-                            status: status // active, draft, etc.
+                            status: status
                         };
                         
                         console.log('[Projects] Creating project:', projectData);
                         
-                        // POST /api/project/
-                        const response = await apiRequest('/project/', {
+                        // POST /api/projects/
+                        const response = await apiRequest('/projects/', {
                             method: 'POST',
                             body: JSON.stringify(projectData)
                         });
@@ -1360,20 +2408,14 @@
                         // Сбрасываем форму
                         document.getElementById('projectName').value = '';
                         document.getElementById('projectDescription').value = '';
-                        document.getElementById('projectStatus').value = 'active';
+                        // Статус по умолчанию - draft
+                        document.getElementById('projectStatus').value = 'draft';
                         
                         // Показываем сообщение об успехе
                         alert('Проект успешно создан!');
                         
-                        // После создания проекта:
-                        // 1. Обновляем список проектов пользователя
+                        // После создания проекта перезагружаем список
                         await loadUserProjects();
-                        
-                        // 2. Обновляем статистику
-                        updateProjectsStats();
-                        
-                        // 3. Перерендериваем проекты
-                        renderProjects();
                         
                     } catch (error) {
                         console.error('[Projects] Failed to create project:', error);
@@ -1382,40 +2424,6 @@
                         // Восстанавливаем кнопку
                         saveNewProjectBtn.disabled = false;
                         saveNewProjectBtn.innerHTML = 'Создать проект';
-                    }
-                });
-            }
-
-            // Logout
-            if (logoutTopBtn) {
-                logoutTopBtn.addEventListener('click', function() {
-                    console.log('[UI] Logout clicked');
-                    
-                    // Очищаем localStorage
-                    localStorage.removeItem('user');
-                    currentUser = null;
-                    userProjects = [];
-                    projectsDetails = {};
-                    
-                    // Перенаправляем на OAuth2 logout
-                    window.location.href = '/oauth2/sign_out';
-                });
-            }
-
-            // Close modals on background click
-            if (profileModal) {
-                profileModal.addEventListener('click', function(e) {
-                    if (e.target === profileModal) {
-                        profileModal.classList.add('hidden');
-                        showViewMode(); // Сбрасываем в режим просмотра при закрытии
-                    }
-                });
-            }
-            
-            if (newProjectModal) {
-                newProjectModal.addEventListener('click', function(e) {
-                    if (e.target === newProjectModal) {
-                        newProjectModal.classList.add('hidden');
                     }
                 });
             }
@@ -1429,8 +2437,6 @@
             loadUserProfile().then(userData => {
                 console.log('[App] User profile loaded:', userData);
                 if (userData) {
-                    updateProfileModal(userData);
-                    
                     // Загружаем проекты пользователя
                     loadUserProjects();
                 }
@@ -1439,6 +2445,229 @@
                 // Все равно пытаемся загрузить проекты
                 loadUserProjects();
             });
+            
+            // Event Listeners
+            if (searchProjects) {
+                searchProjects.addEventListener('input', function() {
+                    console.log('[UI] Search projects:', this.value);
+                    renderProjects();
+                });
+            }
+            
+            if (filterRole) {
+                filterRole.addEventListener('change', function() {
+                    console.log('[UI] Filter by role:', this.value);
+                    renderProjects();
+                });
+            }
+            
+            if (filterStatus) {
+                filterStatus.addEventListener('change', function() {
+                    console.log('[UI] Filter by status:', this.value);
+                    renderProjects();
+                });
+            }
+
+            if (newProjectBtn) {
+                newProjectBtn.addEventListener('click', function() {
+                    // Сбрасываем форму перед открытием
+                    document.getElementById('projectName').value = '';
+                    document.getElementById('projectDescription').value = '';
+                    // Статус по умолчанию - draft
+                    document.getElementById('projectStatus').value = 'draft';
+                    newProjectModal.classList.remove('hidden');
+                });
+            }
+
+            // Profile Modal Listeners
+            if (profileBtn) {
+                profileBtn.addEventListener('click', function() {
+                    // Обновляем данные в модалке перед открытием
+                    if (currentUser) {
+                        updateProfileModal(currentUser);
+                    }
+                    // Гарантируем, что модалка в режиме просмотра
+                    disableProfileEditMode();
+                    profileModal.classList.remove('hidden');
+                });
+            }
+
+            // Admin Panel Listeners
+            if (adminPanelBtn) {
+                adminPanelBtn.addEventListener('click', function() {
+                    // Сбрасываем фильтры перед открытием
+                    resetAdminFilters();
+                    // Загружаем пользователей
+                    loadAdminUsers();
+                    // Показываем модальное окно
+                    adminPanelModal.classList.remove('hidden');
+                });
+            }
+
+            // Edit Profile Button
+            if (editProfileBtn) {
+                editProfileBtn.addEventListener('click', function() {
+                    enableProfileEditMode();
+                });
+            }
+
+            // Save Profile Button
+            if (saveProfileBtn) {
+                saveProfileBtn.addEventListener('click', saveUserProfile);
+            }
+
+            // Cancel Edit Profile Button
+            if (cancelEditProfileBtn) {
+                cancelEditProfileBtn.addEventListener('click', function() {
+                    disableProfileEditMode();
+                });
+            }
+
+            // Close Profile Modal
+            if (closeProfileModalBtn) {
+                closeProfileModalBtn.addEventListener('click', function() {
+                    profileModal.classList.add('hidden');
+                    disableProfileEditMode();
+                });
+            }
+            
+            if (closeProfileModalBtn2) {
+                closeProfileModalBtn2.addEventListener('click', function() {
+                    profileModal.classList.add('hidden');
+                    disableProfileEditMode();
+                });
+            }
+
+            // Admin Panel Filter Listeners
+            if (adminApplyFiltersBtn) {
+                adminApplyFiltersBtn.addEventListener('click', function() {
+                    adminCurrentPage = 1;
+                    adminCurrentStatusFilter = adminFilterStatus ? adminFilterStatus.value : '';
+                    loadAdminUsers();
+                });
+            }
+
+            if (adminResetFiltersBtn) {
+                adminResetFiltersBtn.addEventListener('click', function() {
+                    resetAdminFilters();
+                    loadAdminUsers();
+                });
+            }
+
+            if (adminPageLimit) {
+                adminPageLimit.addEventListener('change', function() {
+                    adminCurrentPage = 1;
+                    adminCurrentLimit = parseInt(this.value);
+                    loadAdminUsers();
+                });
+            }
+
+            // Close Admin Panel Modal
+            if (closeAdminPanelModalBtn) {
+                closeAdminPanelModalBtn.addEventListener('click', function() {
+                    adminPanelModal.classList.add('hidden');
+                    hideAdminMessage();
+                });
+            }
+            
+            if (closeAdminPanelModalBtn2) {
+                closeAdminPanelModalBtn2.addEventListener('click', function() {
+                    adminPanelModal.classList.add('hidden');
+                    hideAdminMessage();
+                });
+            }
+
+            // Close New Project Modal
+            const closeNewProjectModalBtn = document.getElementById('closeNewProjectModalBtn');
+            const closeNewProjectModalBtn2 = document.getElementById('closeNewProjectModalBtn2');
+            
+            if (closeNewProjectModalBtn) {
+                closeNewProjectModalBtn.addEventListener('click', function() {
+                    newProjectModal.classList.add('hidden');
+                });
+            }
+            
+            if (closeNewProjectModalBtn2) {
+                closeNewProjectModalBtn2.addEventListener('click', function() {
+                    newProjectModal.classList.add('hidden');
+                });
+            }
+
+            // Edit Project Modal Listeners
+            if (saveEditProjectBtn) {
+                saveEditProjectBtn.addEventListener('click', saveEditedProject);
+            }
+
+            // Close Edit Project Modal
+            const closeEditProjectModalBtn = document.getElementById('closeEditProjectModalBtn');
+            const closeEditProjectModalBtn2 = document.getElementById('closeEditProjectModalBtn2');
+            
+            if (closeEditProjectModalBtn) {
+                closeEditProjectModalBtn.addEventListener('click', function() {
+                    editProjectModal.classList.add('hidden');
+                    hideEditMessage();
+                });
+            }
+            
+            if (closeEditProjectModalBtn2) {
+                closeEditProjectModalBtn2.addEventListener('click', function() {
+                    editProjectModal.classList.add('hidden');
+                    hideEditMessage();
+                });
+            }
+
+            // Logout
+            if (logoutTopBtn) {
+                logoutTopBtn.addEventListener('click', function() {
+                    console.log('[UI] Logout clicked');
+                    
+                    // Очищаем localStorage
+                    localStorage.removeItem('user');
+                    currentUser = null;
+                    userProjects = [];
+                    projectsDetails = {};
+                    userRoles = {};
+                    
+                    // Перенаправляем на OAuth2 logout
+                    window.location.href = '/oauth2/sign_out';
+                });
+            }
+
+            // Close modals on background click
+            if (profileModal) {
+                profileModal.addEventListener('click', function(e) {
+                    if (e.target === profileModal) {
+                        profileModal.classList.add('hidden');
+                        disableProfileEditMode();
+                    }
+                });
+            }
+            
+            if (newProjectModal) {
+                newProjectModal.addEventListener('click', function(e) {
+                    if (e.target === newProjectModal) {
+                        newProjectModal.classList.add('hidden');
+                    }
+                });
+            }
+            
+            if (editProjectModal) {
+                editProjectModal.addEventListener('click', function(e) {
+                    if (e.target === editProjectModal) {
+                        editProjectModal.classList.add('hidden');
+                        hideEditMessage();
+                    }
+                });
+            }
+            
+            if (adminPanelModal) {
+                adminPanelModal.addEventListener('click', function(e) {
+                    if (e.target === adminPanelModal) {
+                        adminPanelModal.classList.add('hidden');
+                        hideAdminMessage();
+                    }
+                });
+            }
             
             console.log('[App] Page initialized successfully');
         });
