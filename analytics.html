@@ -71,9 +71,11 @@
         <div class="hidden md:flex md:flex-shrink-0">
             <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
                 <div class="flex items-center h-16 px-4 border-b border-gray-200">
-                    <i class="fas fa-cubes text-primary-600 mr-2 text-lg"></i>
-                    <span class="font-semibold text-gray-800 text-lg">АСУРТ</span>
-                </div>
+    <a href="index.html" class="flex items-center hover:opacity-80 transition-opacity">
+        <i class="fas fa-tasks text-indigo-600 mr-2"></i>
+        <span class="font-semibold text-gray-800">АСУРТ</span>
+    </a>
+</div>
                 <div class="flex flex-col flex-grow px-4 overflow-y-auto">
                 <nav class="flex-1 space-y-1 mt-6">
                     <a href="repo.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
@@ -98,25 +100,11 @@
                 </nav>
 
                     <div class="mt-8">
-                        <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                            Активные проекты
+                                                <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                            Проекты
                         </h3>
-                        <div class="mt-2 space-y-1">
-                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
-                                <span class="w-2.5 h-2.5 mr-3 bg-emerald-500 rounded-full"></span>
-                                E-Commerce Platform
-                                <span class="ml-auto bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">42</span>
-                            </a>
-                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
-                                <span class="w-2.5 h-2.5 mr-3 bg-blue-500 rounded-full"></span>
-                                CRM System
-                                <span class="ml-auto bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">28</span>
-                            </a>
-                            <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50">
-                                <span class="w-2.5 h-2.5 mr-3 bg-purple-500 rounded-full"></span>
-                                Mobile App
-                                <span class="ml-auto bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">15</span>
-                            </a>
+                                                <div class="mt-2 space-y-1" id="projects-list">
+                            <!-- projects will be rendered by JS -->
                         </div>
                     </div>
                     <!-- Logout -->
@@ -974,60 +962,236 @@ html
         </div>
     </footer>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
+  <script>
+        let currentRequirementId = null;
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('[Repo] Page loaded');
 
-        // ===== Mobile menu toggle =====
-        const mobileMenuButton = document.querySelector('.md\\:hidden button');
-        const sidebar = document.querySelector('aside');
+            // =========================
+            // CONFIG
+            // =========================
+            const API_BASE = 'http://localhost/api';
 
-        if (mobileMenuButton && sidebar) {
-            mobileMenuButton.addEventListener('click', function () {
-                sidebar.classList.toggle('hidden');
-            });
-        }
-
-        // ===== Sidebar active link =====
-        const links = document.querySelectorAll('.sidebar-link');
-        const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
-
-        links.forEach(link => {
-            if (link.getAttribute('href') === currentPage) {
-                link.classList.add('active');
+            // =========================
+            // Получаем project_id из URL
+            // =========================
+            function getProjectIdFromUrl() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('project_id');
             }
-        });
 
-        // ===== Logout =====
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', async function () {
-                const token = localStorage.getItem('token');
-                const tokenType = localStorage.getItem('token_type') || 'Bearer';
+            const projectId = getProjectIdFromUrl();
+            console.log('[Repo] Project ID from URL:', projectId);
+            let currentProject = null;
+            // ============= ОБНОВЛЕНИЕ ССЫЛОК В САЙДБАРЕ =============
+            function updateSidebarLinks() {
+                const sidebarLinks = document.querySelectorAll('.sidebar-link');
+                sidebarLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && !href.includes('project_id') && projectId) {
+                        const url = new URL(href, window.location.origin);
+                        url.searchParams.set('project_id', projectId);
+                        link.setAttribute('href', url.pathname + url.search);
+                    }
+                });
+            }
+
+            // Обновление активной ссылки
+            function updateActiveSidebarLink() {
+                const links = document.querySelectorAll('.sidebar-link');
+                const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
+
+                links.forEach(link => {
+                    const linkHref = link.getAttribute('href');
+                    if (linkHref && linkHref.includes(currentPage)) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            }
+
+            // Если нет project_id - показываем ошибку
+            if (!projectId) {
+                document.body.innerHTML = `
+            <div style="padding: 40px; text-align: center;">
+                <h1 style="color: red;">Ошибка: не указан ID проекта</h1>
+                <p>Project ID отсутствует в URL параметрах</p>
+                <a href="index.html" style="color: blue;">← Вернуться на главную</a>
+            </div>
+        `;
+                return;
+            }
+
+            // Показываем project_id в заголовке для отладки
+            const header = document.querySelector('header h1');
+            if (header) {
+                header.textContent = `Репозиторий требований (Проект: ${projectId})`;
+            }
+
+            // =========================
+            // Helper: API request
+            // =========================
+            async function apiRequest(path, options = {}) {
+                const base = API_BASE.replace(/\/$/, ''); // убираем слеш в конце API_BASE
+                const p = path.replace(/^\//, ''); // убираем слеш в начале path
+                const url = `${base}/${p}`;
+                console.log('[API] Request:', url);
+
+                const res = await fetch(url, {
+                    ...options,
+                    credentials: 'include',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        ...(options.headers || {})
+                    }
+                });
+
+                console.log('[API] Response status:', res.status);
+
+                if (res.status === 401) {
+                    alert('Необходима авторизация');
+                    window.location.href = '/oauth2/sign_in';
+                    return;
+                }
+
+                const text = await res.text();
+                console.log('[API] Response text:', text);
+
+                let data = null;
+                try {
+                    data = text ? JSON.parse(text) : null;
+                } catch (e) {
+                    console.error('[API] JSON parse error:', e);
+                    data = null;
+                }
+
+                if (!res.ok) {
+                    const msg = (data && (data.message || data.details || data.error)) || `HTTP ${res.status}`;
+                    throw new Error(msg);
+                }
+
+                return data;
+            }
+
+            // =========================
+            // Загрузка информации о проекте
+            // =========================
+            async function loadProject() {
+                console.log('[Repo] Loading project:', projectId);
+
+                const header = document.querySelector('header h1');
 
                 try {
-                    // если бэка нет — запрос просто упадёт, мы это переживём
-                    await fetch('/auth/logout', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `${tokenType} ${token}`,
-                            'Content-Type': 'application/json'
-                        }
-                    });
-                } catch (e) {
-                    // ничего не делаем — важно выйти локально
-                    console.warn('Logout request failed (backend not ready)');
-                } finally {
-                    // всегда чистим локальное состояние
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('token_type');
-                    localStorage.removeItem('user');
+                    const project = await apiRequest(`/projects/${projectId}`);
+                    console.log('[Repo] Project loaded:', project);
+                    currentProject = project;
+                    // Обновляем заголовок
+                    if (header && project.name) {
+                        header.textContent = `Проект: ${project.name}`;
+                    }
 
-                    // редирект на главную
-                    window.location.href = 'main.html';
+                    // Сохраняем для других страниц
+                    localStorage.setItem('currentProjectName', project.name || '');
+                    localStorage.setItem('currentProjectId', projectId);
+
+                    return project;
+
+                } catch (error) {
+                    console.error('[Repo] Failed to load project:', error);
+
+                    // Показываем ошибку в заголовке
+                    if (header) {
+                        header.textContent = `Ошибка загрузки проекта`;
+                    }
+
+                    if (error.status === 404) {
+                        alert('Проект не найден');
+                        window.location.href = 'index.html';
+                    } else if (error.status === 403) {
+                        alert('Нет доступа к проекту');
+                        window.location.href = 'index.html';
+                    }
+
+                    throw error;
                 }
-            });
-        }
-    });
-</script>
+            }
+
+
+            // =========================
+            // Logout
+            // =========================
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function () {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('currentProjectId');
+                    localStorage.removeItem('currentProjectName');
+                    localStorage.removeItem('currentProjectRole');
+                    currentUser = null;
+                    userProjects = [];
+                    projectsDetails = {};
+                    userRoles = {};
+                    window.location.href = '/main.html';
+                    // Перенаправляем на OAuth2 logout
+                    fetch('/oauth2/sign_out', { method: 'GET' }).catch(() => { });
+                });
+            }
+
+            // ============= ЗАГРУЗКА СПИСКА ПРОЕКТОВ ДЛЯ САЙДБАРА =============
+            async function loadProjectsForSidebar() {
+                const projectsList = document.getElementById('projects-list');
+                if (!projectsList) return;
+
+                try {
+                    // ✅ Используем эндпоинт для получения проектов пользователя
+                    const response = await apiRequest('users/me/projects');
+                    const projectRoles = response?.project_roles || [];
+
+                    console.log('[Sidebar] Loaded projects:', projectRoles.length);
+
+                    if (projectRoles.length === 0) {
+                        projectsList.innerHTML = '<p class="px-3 py-2 text-sm text-gray-500">Нет проектов</p>';
+                        return;
+                    }
+
+                    projectsList.innerHTML = '';
+
+                    projectRoles.forEach(item => {
+                        const link = document.createElement('a');
+                        link.href = `analytics.html?project_id=${item.project_id}`;  // ✅ Используй project_id
+                        link.className = 'flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100 transition-colors';
+
+                        // Подсветка текущего проекта
+                        if (item.project_id === projectId) {  // ✅ Используй project_id
+                            link.className = 'flex items-center px-3 py-2 text-sm font-medium rounded-md bg-indigo-50 text-indigo-600';
+                        }
+
+                        link.innerHTML = `
+        <i class="fas fa-folder mr-3 text-gray-400 w-5 text-center"></i>
+        <span class="truncate">${item.project_name}</span>
+    `;
+
+                        projectsList.appendChild(link);
+                    });
+
+                } catch (error) {
+                    console.error('[Sidebar] Failed to load projects:', error);
+                    projectsList.innerHTML = '<p class="px-3 py-2 text-sm text-red-500">Ошибка загрузки</p>';
+                }
+            }
+
+            // =========================
+            // INIT - просто загружаем требования
+            // =========================
+            console.log('[Repo] Starting initialization...');
+            updateSidebarLinks();      // ✅ Добавь эту строку
+            updateActiveSidebarLink(); // ✅ Добавь эту строку
+            loadProjectsForSidebar();
+
+        });
+    </script>
+
 
 </th></tr></thead></table></div></div></div></div></main></div></div></body></html>

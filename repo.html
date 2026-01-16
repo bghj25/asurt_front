@@ -63,8 +63,10 @@
         <div class="hidden md:flex md:flex-shrink-0">
             <div class="flex flex-col w-64 border-r border-gray-200 bg-white">
                 <div class="flex items-center h-16 px-4 border-b border-gray-200">
-                    <i class="fas fa-tasks text-indigo-600 mr-2"></i>
-                    <span class="font-semibold text-gray-800">AСУРТ</span>
+                    <a href="index.html" class="flex items-center hover:opacity-80 transition-opacity">
+                        <i class="fas fa-tasks text-indigo-600 mr-2"></i>
+                        <span class="font-semibold text-gray-800">АСУРТ</span>
+                    </a>
                 </div>
                 <div class="flex flex-col flex-grow px-4 overflow-y-auto">
                     <nav class="flex-1 space-y-1 mt-6">
@@ -155,24 +157,16 @@
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                             <div class="flex items-center space-x-4 mb-4 md:mb-0">
                                 <div class="relative">
-                                    <select
-                                        id="filterStatus" class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                                        <option value="">Все статусы</option>
-                                        <option value="draft">Черновик</option>
-                                        <option value="review">На проверке</option>
-                                        <option value="approved">Утвержден</option>
-                                        <option value="rejected">Отклонен</option>
-                                        <option value="completed">Реализован</option>
-                                    </select>
-                                    <div
-                                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                        <i class="fas fa-chevron-down"></i>
-                                    </div>
-                                </div>
-                                <div class="relative">
-                                    <select id="filterProject"
+                                    <select id="filterStatus"
                                         class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
-                                        <option value="">Все проекты</option>
+    <option value="">Все статусы</option>
+    <option value="draft">Черновик</option>
+    <option value="review">На проверке</option>
+    <option value="approved">Утвержден</option>
+    <option value="rejected">Отклонен</option>
+    <option value="implemented">Реализован</option>
+    <option value="verified">Проверен</option>
+    <option value="archived">Архивирован</option>
                                     </select>
                                     <div
                                         class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -180,8 +174,8 @@
                                     </div>
                                 </div>
                                 <div class="relative">
-                                    <select
-                                        id="filterType" class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+                                    <select id="filterType"
+                                        class="appearance-none bg-white border border-gray-300 text-gray-700 py-2 pl-3 pr-8 rounded leading-tight focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                                         <option value="">Все категории</option>
                                         <option value="functional">Функциональные</option>
                                         <option value="business">Бизнес</option>
@@ -194,10 +188,10 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-4">
-                                <button
-                                    class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    <i class="fas fa-filter mr-2"></i>Фильтры
-                                </button>
+                                <button id="clear-filters-btn" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+    <i class="fas fa-filter mr-2"></i>
+    Очистить фильтры
+</button>
                                 <button
                                     class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     <i class="fas fa-download mr-2"></i>Экспорт
@@ -282,23 +276,23 @@
                             <input type="text" name="title" id="title"
                                 class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
                         </div>
-
-                        <div class="sm:col-span-3">
-                            <label for="project" class="block text-sm font-medium text-gray-700">Проект</label>
-                            <select id="createProjectId" name="project"
-                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                <option value="">Выберите проект</option>
-                            </select>
-                        </div>
-
                         <div class="sm:col-span-3">
                             <label for="category" class="block text-sm font-medium text-gray-700">Категория</label>
                             <select id="category" name="category"
                                 class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                <option>Функциональные</option>
-                                <option>Бизнес</option>
-                                <option>Пользовательские</option>
-                                <option>Системные</option>
+                                <option value="functional">Функциональные</option>
+                                <option value="business">Бизнес</option>
+                                <option value="non-functional">Нефункциональные</option>
+                            </select>
+                        </div><!-- Родительское требование -->
+                        <div class="sm:col-span-3">
+                            <label for="parent-requirement" class="block text-sm font-medium text-gray-700 mb-1">
+                                Родительское требование (необязательно)
+                            </label>
+                            <select id="parent-requirement" name="parent-requirement"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option value="">-- Нет родителя --</option>
+                                <!-- Будет заполняться динамически -->
                             </select>
                         </div>
 
@@ -434,741 +428,1397 @@
             </div>
         </div>
     </div>
+
+    <!-- История версии - модалка просмотра -->
+    <div id="history-version-modal" class="fixed z-20 inset-0 overflow-y-auto hidden"
+        aria-labelledby="history-version-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="history-version-title">
+                            Версия от <span id="history-version-date"></span>
+                        </h3>
+                        <button type="button" id="close-history-version-btn" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="mb-2">
+                            <span class="text-xs text-gray-500">Автор: <span id="history-version-author"
+                                    class="font-medium"></span></span>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-md p-4 bg-gray-50 max-h-96 overflow-y-auto">
+                            <pre id="history-version-content"
+                                class="whitespace-pre-wrap text-sm text-gray-900 font-mono"></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button id="close-history-version-btn-2" type="button"
+                        class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:w-auto sm:text-sm">
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Requirement Modal -->
+    <div id="edit-requirement-modal" class="fixed z-10 inset-0 overflow-y-auto hidden"
+        aria-labelledby="edit-modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4" id="edit-modal-title">Редактировать
+                        требование</h3>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label for="edit-title" class="block text-sm font-medium text-gray-700">Название</label>
+                            <input type="text" id="edit-title"
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                        </div>
+
+                        <div>
+                            <label for="edit-category" class="block text-sm font-medium text-gray-700">Категория</label>
+                            <select id="edit-category"
+                                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                <option value="functional">Функциональные</option>
+                                <option value="business">Бизнес</option>
+                                <option value="non-functional">Нефункциональные</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button id="save-edit-requirement-btn" type="button"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Сохранить
+                    </button>
+                    <button id="cancel-edit-requirement-btn" type="button"
+                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Отмена
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Workflow Management Modal -->
+    <div id="workflow-modal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="workflow-title"
+        role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex items-start justify-between mb-4">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="workflow-title">
+                            Управление Workflow
+                        </h3>
+                        <button type="button" id="close-workflow-modal-btn" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="mt-4 space-y-4">
+                        <!-- Метаданные требования -->
+                        <div>
+                            <div class="text-xs text-gray-500 mb-1">Требование</div>
+                            <div id="workflowReqMeta" class="text-sm font-medium text-gray-900"></div>
+                        </div>
+
+                        <!-- Текущий статус -->
+                        <div class="bg-blue-50 border border-blue-200 rounded-md p-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <div class="text-xs text-blue-600 font-semibold uppercase mb-1">Текущий статус</div>
+                                    <div id="currentWorkflowStatus" class="text-lg font-bold text-blue-900"></div>
+                                </div>
+                                <div>
+                                    <div class="text-xs text-blue-600 mb-1">Приоритет</div>
+                                    <div id="currentWorkflowPriority" class="text-2xl font-bold text-blue-900"></div>
+                                </div>
+                            </div>
+                        </div>
+<!-- Смена статуса -->
+<div class="border border-gray-200 rounded-md p-4">
+    <label class="block text-sm font-medium text-gray-700 mb-2">
+        Изменить статус
+    </label>
+    <select id="newWorkflowStatus"
+        class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+        <option value="">-- Выберите новый статус --</option>
+        <option value="draft">Черновик</option>
+        <option value="review">На проверке</option>
+        <option value="approved">Утвержден</option>
+        <option value="rejected">Отклонен</option>
+        <option value="implemented">Реализован</option>
+        <option value="verified">Проверен</option>
+        <option value="archived">Архивирован</option>
+    </select>
+
+    <div class="mt-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Комментарий (необязательно)
+                                </label>
+                                <textarea id="workflowComment" rows="3"
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                    placeholder="Добавьте комментарий к изменению статуса..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- История изменений workflow -->
+                        <div class="border border-gray-200 rounded-md">
+                            <div
+                                class="px-4 py-2 bg-gray-50 text-sm font-medium text-gray-700 flex items-center justify-between">
+                                <span>История изменений статуса</span>
+                                <button id="refresh-workflow-history-btn"
+                                    class="text-indigo-600 hover:text-indigo-900 text-sm">
+                                    <i class="fas fa-sync-alt mr-1"></i> Обновить
+                                </button>
+                            </div>
+                            <div class="max-h-64 overflow-y-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-white">
+                                        <tr>
+                                            <th
+                                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Дата</th>
+                                            <th
+                                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Автор</th>
+                                            <th
+                                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Статус</th>
+                                            <th
+                                                class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Приоритет</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="workflowHistoryTbody" class="bg-white divide-y divide-gray-200">
+                                        <!-- history rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+                    <button id="save-workflow-btn" type="button"
+                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 sm:w-auto sm:text-sm">
+                        Сохранить изменения
+                    </button>
+                    <button id="close-workflow-modal-btn-2" type="button"
+                        class="w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 sm:w-auto sm:text-sm">
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
+        let currentRequirementId = null;
         document.addEventListener('DOMContentLoaded', function () {
+            console.log('[Repo] Page loaded');
 
             // =========================
             // CONFIG
             // =========================
-            const API_BASE = 'http://localhost:8000/v1'; // swagger servers :contentReference[oaicite:6]{index=6}
+            const API_BASE = 'http://localhost/api';
 
             // =========================
-            // Sidebar active link (оставляем)
+            // Получаем project_id из URL
             // =========================
-            const links = document.querySelectorAll('.sidebar-link');
-            const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
-            links.forEach(link => {
-                if (link.getAttribute('href') === currentPage) link.classList.add('active');
-                else link.classList.remove('active');
-            });
+            function getProjectIdFromUrl() {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get('project_id');
+            }
 
-            // =========================
-            // Mobile menu toggle (оставляем)
-            // =========================
-            const mobileMenuButton = document.querySelector('.md\\:hidden button');
-            const sidebar = document.querySelector('aside') || document.querySelector('.hidden.md\\:flex');
-            if (mobileMenuButton && sidebar) {
-                mobileMenuButton.addEventListener('click', function () {
-                    sidebar.classList.toggle('hidden');
+            const projectId = getProjectIdFromUrl();
+            console.log('[Repo] Project ID from URL:', projectId);
+            let currentProject = null;
+            // ============= ОБНОВЛЕНИЕ ССЫЛОК В САЙДБАРЕ =============
+            function updateSidebarLinks() {
+                const sidebarLinks = document.querySelectorAll('.sidebar-link');
+                sidebarLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && !href.includes('project_id') && projectId) {
+                        const url = new URL(href, window.location.origin);
+                        url.searchParams.set('project_id', projectId);
+                        link.setAttribute('href', url.pathname + url.search);
+                    }
                 });
             }
 
-            // =========================
-            // Helpers: auth + safe fetch
-            // =========================
-            function getAuthHeaders() {
-                const token = localStorage.getItem('token');
-                const tokenType = localStorage.getItem('token_type') || 'Bearer';
-                if (!token) return {};
-                return { 'Authorization': `${tokenType} ${token}` };
+            // Обновление активной ссылки
+            function updateActiveSidebarLink() {
+                const links = document.querySelectorAll('.sidebar-link');
+                const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
+
+                links.forEach(link => {
+                    const linkHref = link.getAttribute('href');
+                    if (linkHref && linkHref.includes(currentPage)) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
             }
 
-            function getCurrentUserId() {
-                try {
-                    const user = JSON.parse(localStorage.getItem('user') || 'null');
-                    return user && user.id ? user.id : null;
-                } catch {
-                    return null;
-                }
+            // Если нет project_id - показываем ошибку
+            if (!projectId) {
+                document.body.innerHTML = `
+            <div style="padding: 40px; text-align: center;">
+                <h1 style="color: red;">Ошибка: не указан ID проекта</h1>
+                <p>Project ID отсутствует в URL параметрах</p>
+                <a href="index.html" style="color: blue;">← Вернуться на главную</a>
+            </div>
+        `;
+                return;
             }
 
+            // Показываем project_id в заголовке для отладки
+            const header = document.querySelector('header h1');
+            if (header) {
+                header.textContent = `Репозиторий требований (Проект: ${projectId})`;
+            }
+
+            // =========================
+            // Helper: API request
+            // =========================
             async function apiRequest(path, options = {}) {
-                const res = await fetch(`${API_BASE}${path}`, {
+                const base = API_BASE.replace(/\/$/, ''); // убираем слеш в конце API_BASE
+                const p = path.replace(/^\//, ''); // убираем слеш в начале path
+                const url = `${base}/${p}`;
+                console.log('[API] Request:', url);
+
+                const res = await fetch(url, {
                     ...options,
+                    credentials: 'include',
                     headers: {
                         'Accept': 'application/json',
-                        ...(options.headers || {}),
-                        ...getAuthHeaders()
+                        'Content-Type': 'application/json',
+                        ...(options.headers || {})
                     }
                 });
 
-                // если токен умер — уходим на main.html
+                console.log('[API] Response status:', res.status);
+
                 if (res.status === 401) {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('token_type');
-                    localStorage.removeItem('user');
-                    window.location.href = 'main.html';
+                    alert('Необходима авторизация');
+                    window.location.href = '/oauth2/sign_in';
                     return;
                 }
 
                 const text = await res.text();
+                console.log('[API] Response text:', text);
+
                 let data = null;
-                try { data = text ? JSON.parse(text) : null; } catch { data = null; }
+                try {
+                    data = text ? JSON.parse(text) : null;
+                } catch (e) {
+                    console.error('[API] JSON parse error:', e);
+                    data = null;
+                }
 
                 if (!res.ok) {
                     const msg = (data && (data.message || data.details || data.error)) || `HTTP ${res.status}`;
-                    const err = new Error(msg);
-                    err.status = res.status;
-                    throw err;
+                    throw new Error(msg);
                 }
 
                 return data;
             }
 
-            function escapeHtml(str) {
-                return String(str ?? '')
-                    .replaceAll('&', '&amp;')
-                    .replaceAll('<', '&lt;')
-                    .replaceAll('>', '&gt;')
-                    .replaceAll('"', '&quot;')
-                    .replaceAll("'", '&#039;');
-            }
-
-            function formatDate(dateStr) {
-                if (!dateStr) return '-';
-                const d = new Date(dateStr);
-                if (isNaN(d.getTime())) return '-';
-                return d.toLocaleDateString('ru-RU');
-            }
-
             // =========================
-            // DOM refs (то что мы сделали в HTML шаге)
+            // Загрузка требований
             // =========================
-            const projectsList = document.getElementById('projects-list');
-            const filterProject = document.getElementById('filterProject');
-            const createProjectId = document.getElementById('createProjectId');
             const requirementsTbody = document.getElementById('requirementsTbody');
-            const refreshContentHistoryBtn = document.getElementById('refresh-content-history-btn');
-            const contentHistoryTbody = document.getElementById('contentHistoryTbody');
 
-            // Фильтры статус/тип: в HTML они могли остаться без id,
-            // поэтому делаем мягкий поиск по "Filters" блоку:
-            const filtersRoot = document.querySelector('main'); // ок для прототипа
-            const filterSelects = filtersRoot ? filtersRoot.querySelectorAll('select') : [];
-            // Ожидание по макету repo.html: 3 select подряд (status, project, category/type)
-            // project у нас уже точно по id, остальное — берём по позиции, но безопасно.
-            const filterStatus = document.getElementById('filterStatus');
-            const filterType = document.getElementById('filterType');
+            async function loadRequirements(filters = {}) {
+                console.log('Repo: Loading requirements for project:', projectId, 'filters:', filters);
 
-            // =========================
-            // Load projects -> sidebar + selects
-            // =========================
-            let projectsCache = []; // чтобы маппить project_id -> name
-
-            if (refreshContentHistoryBtn) {
-                refreshContentHistoryBtn.addEventListener('click', () => {
-                    if (!currentContentRequirementId) return;
-                    loadContentHistory(currentContentRequirementId).catch(err => alert(err.message || err));
-                });
-            }
-
-            function renderProjects(projects) {
-                projectsCache = projects;
-
-                // sidebar list
-                if (projectsList) {
-                    projectsList.innerHTML = '';
-                    projects.forEach(p => {
-                        const a = document.createElement('a');
-                        a.href = '#';
-                        a.className = 'flex items-center px-3 py-2 text-sm font-medium text-gray-600 rounded-md hover:bg-gray-50';
-                        a.dataset.projectId = p.id;
-
-                        const dot = document.createElement('span');
-                        dot.className = 'w-2 h-2 mr-3 rounded-full';
-                        dot.style.backgroundColor = '#10B981'; // прототип
-                        a.appendChild(dot);
-
-                        a.insertAdjacentText('beforeend', ` ${p.name}`);
-                        projectsList.appendChild(a);
-                    });
-                }
-
-                // filter select
-                if (filterProject) {
-                    // оставляем первую опцию "Все проекты"
-                    filterProject.innerHTML = '<option value="">Все проекты</option>';
-                    projects.forEach(p => {
-                        const opt = document.createElement('option');
-                        opt.value = p.id;
-                        opt.textContent = p.name;
-                        filterProject.appendChild(opt);
-                    });
-                }
-
-                // create modal select
-                if (createProjectId) {
-                    createProjectId.innerHTML = '<option value="">Выберите проект</option>';
-                    projects.forEach(p => {
-                        const opt = document.createElement('option');
-                        opt.value = p.id;
-                        opt.textContent = p.name;
-                        createProjectId.appendChild(opt);
-                    });
-                }
-            }
-
-            async function loadProjects() {
-                const userId = getCurrentUserId();
-                if (!userId) {
-                    // Это нормально, если логина ещё нет.
-                    console.warn('No user in localStorage => cannot call /projects (needs user_id)');
-                    renderProjects([]); // просто очистим списки
-                    return;
-                }
-
-                // GET /projects?user_id=... :contentReference[oaicite:7]{index=7}
-                const resp = await apiRequest(`/projects?user_id=${encodeURIComponent(userId)}`, { method: 'GET' });
-                const projects = resp && Array.isArray(resp.data) ? resp.data : [];
-                renderProjects(projects);
-            }
-
-            // =========================
-            // Load requirements -> table (с фильтрами)
-            // =========================
-            function projectNameById(projectId) {
-                const p = projectsCache.find(x => String(x.id) === String(projectId));
-                return p ? p.name : `Project #${projectId}`;
-            }
-
-            function renderRequirements(items) {
-                if (!requirementsTbody) return;
-
-                requirementsTbody.innerHTML = '';
-
-                // Таблица в HTML имеет 7 колонок:
-                // ID | Название | Проект | Категория | Статус | Последнее обновление | Действия
-                if (!items.length) {
-                    requirementsTbody.innerHTML = `
-      <tr>
-        <td class="px-6 py-6 text-sm text-gray-500" colspan="7">Требований нет</td>
-      </tr>
-    `;
-                    return;
-                }
-
-                items.forEach(r => {
-                    const status = r.workflow?.status || '-';
-                    const category = r.type || '-';
-                    const updatedAt = formatDate(r.updated_at || r.created_at);
-                    const projectName = projectNameById(r.project_id);
-
-                    const tr = document.createElement('tr');
-                    tr.className = 'hover:bg-gray-50 requirement-row';
-                    tr.dataset.requirementId = r.id;
-
-                    tr.innerHTML = `
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        ${escapeHtml(String(r.id))}
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-        ${escapeHtml(r.name)}
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        ${escapeHtml(projectName)}
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        ${escapeHtml(category)}
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        ${escapeHtml(status)}
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-        ${escapeHtml(updatedAt)}
-      </td>
-      <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-        <button class="text-indigo-600 hover:text-indigo-900 mr-3" data-action="edit" data-id="${r.id}">
-          <i class="fas fa-edit"></i>
-        </button>
-        <button class="text-red-600 hover:text-red-900" data-action="delete" data-id="${r.id}">
-          <i class="fas fa-trash"></i>
-        </button>
-        <button class="text-gray-600 hover:text-gray-900 ml-3" data-action="content" data-id="${r.id}">
-          <i class="fas fa-file-lines"></i>
-        </button>
-      </td>
-    `;
-
-                    requirementsTbody.appendChild(tr);
-                });
-            }
-
-
-            function buildRequirementsQuery() {
-                // GET /requirements supports: project_id, type, status, created_by, priority :contentReference[oaicite:9]{index=9}
-                const params = new URLSearchParams();
-
-                // project_id
-                if (filterProject && filterProject.value) params.set('project_id', filterProject.value);
-
-                // status (если select реально про статус)
-                if (filterStatus && filterStatus.value && filterStatus.value !== 'all' && filterStatus.value !== '') {
-                    // если в option стоят русские подписи — пока отправим value как есть
-                    params.set('status', filterStatus.value);
-                }
-
-                // type (если select реально про тип)
-                if (filterType && filterType.value && filterType.value !== 'all' && filterType.value !== '') {
-                    params.set('type', filterType.value);
-                }
-
-                return params.toString() ? `?${params.toString()}` : '';
-            }
-
-            async function loadRequirements() {
                 if (requirementsTbody) {
                     requirementsTbody.innerHTML = `
-            <tr><td class="px-6 py-6 text-sm text-gray-500" colspan="7">Загрузка...</td></tr>
-          `;
+          <tr>
+            <td colspan="7" class="px-6 py-6 text-sm text-gray-500 text-center">
+              <i class="fas fa-spinner fa-spin mr-2"></i>Загрузка...
+            </td>
+          </tr>`;
                 }
 
-                // GET /requirements :contentReference[oaicite:10]{index=10}
-                const query = buildRequirementsQuery();
-                const resp = await apiRequest(`/requirements${query}`, { method: 'GET' });
-                const items = resp && Array.isArray(resp.data) ? resp.data : [];
-                renderRequirements(items);
-            }
-
-            // =========================
-            // Requirement content history (GET /requirements/{id}/content/history)
-            // =========================
-            let currentContentRequirementId = null;
-
-            function renderContentHistory(items) {
-                if (!contentHistoryTbody) return;
-
-                contentHistoryTbody.innerHTML = '';
-
-                if (!items || !items.length) {
-                    contentHistoryTbody.innerHTML = `
-      <tr>
-        <td class="px-6 py-4 text-sm text-gray-500" colspan="3">Истории пока нет</td>
-      </tr>
-    `;
-                    return;
-                }
-
-                items.forEach(h => {
-                    const createdAt = formatDate(h.created_at);
-                    const userId = h.created_by_user_id ?? '-';
-                    const active = h.is_active ? 'Да' : 'Нет';
-
-                    // Можно показать кусок description_text (если есть)
-                    const desc = h.content?.description_text ? String(h.content.description_text) : '';
-                    const shortDesc = desc.length > 80 ? desc.slice(0, 80) + '…' : desc;
-
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-      <td class="px-6 py-3 text-sm text-gray-900">${escapeHtml(createdAt)}</td>
-      <td class="px-6 py-3 text-sm text-gray-700">${escapeHtml(String(userId))}</td>
-      <td class="px-6 py-3 text-sm text-gray-700">${escapeHtml(active)}</td>
-      <td class="px-6 py-3 text-sm text-gray-500">${escapeHtml(shortDesc)}</td>
-    `;
-                    contentHistoryTbody.appendChild(tr);
-                });
-            }
-
-            async function loadContentHistory(requirementId) {
-                if (!requirementId) return;
-
-                // GET /requirements/{requirement_id}/content/history?limit=10
-                const resp = await apiRequest(`/requirements/${encodeURIComponent(requirementId)}/content/history?limit=10`, {
-                    method: 'GET'
-                });
-
-                const items = resp && Array.isArray(resp.data) ? resp.data : [];
-                renderContentHistory(items);
-            }
-
-            // =========================
-            // Filters change -> reload (если есть)
-            // =========================
-            if (filterProject) filterProject.addEventListener('change', () => loadRequirements().catch(console.error));
-            if (filterStatus) filterStatus.addEventListener('change', () => loadRequirements().catch(console.error));
-            if (filterType) filterType.addEventListener('change', () => loadRequirements().catch(console.error));
-
-            // =========================
-            // Logout (оставляем)
-            // =========================
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', async function () {
-                    const token = localStorage.getItem('token');
-                    const tokenType = localStorage.getItem('token_type') || 'Bearer';
-
-                    try {
-                        // POST /auth/logout :contentReference[oaicite:11]{index=11}
-                        await fetch(`${API_BASE}/auth/logout`, {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': `${tokenType} ${token}`,
-                                'Content-Type': 'application/json'
-                            }
-                        });
-                    } catch (e) {
-                        console.warn('Logout request failed (backend not ready)');
-                    } finally {
-                        localStorage.removeItem('token');
-                        localStorage.removeItem('token_type');
-                        localStorage.removeItem('user');
-                        window.location.href = 'main.html';
-                    }
-                });
-            }
-            // =========================
-            // Delete requirement (DELETE /requirements/{id})
-            // =========================
-            if (requirementsTbody) {
-                requirementsTbody.addEventListener('click', async (e) => {
-                    const btn = e.target.closest('button[data-action="delete"]');
-                    if (!btn) return;
-
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    const id = btn.getAttribute('data-id');
-                    if (!id) return;
-
-                    const ok = confirm(`Удалить требование #${id}?`);
-                    if (!ok) return;
-
-                    try {
-                        // DELETE /requirements/{requirement_id} :contentReference[oaicite:0]{index=0}
-                        await apiRequest(`/requirements/${encodeURIComponent(id)}`, { method: 'DELETE' });
-
-                        // перезагрузим список
-                        await loadRequirements();
-                    } catch (err) {
-                        alert(`Ошибка удаления: ${err.message || err}`);
-                    }
-                });
-            }
-
-
-            // =========================
-            // Edit requirement (PUT /requirements/{id})
-            // =========================
-            let editingRequirementId = null;
-
-            const addRequirementModal = document.getElementById('add-requirement-modal');
-            const saveRequirementBtn = document.getElementById('save-requirement-btn');
-            const cancelRequirementBtn = document.getElementById('cancel-requirement-btn');
-
-            const titleEl = document.getElementById('title');
-            const descEl = document.getElementById('description');
-            const projectEl = document.getElementById('createProjectId');
-            const categoryEl = document.getElementById('category');
-
-            const addRequirementBtn = document.getElementById('add-requirement-btn');
-
-            if (addRequirementBtn) {
-                addRequirementBtn.addEventListener('click', () => {
-                    // режим "создание"
-                    editingRequirementId = null;
-
-                    // очистить поля (минимально)
-                    if (titleEl) titleEl.value = '';
-                    if (descEl) descEl.value = '';
-                    if (projectEl) projectEl.value = '';
-                    if (categoryEl) categoryEl.selectedIndex = 0;
-
-                    openRequirementModal();
-                });
-            }
-
-            function openRequirementModal() {
-                if (addRequirementModal) addRequirementModal.classList.remove('hidden');
-            }
-            function closeRequirementModal() {
-                if (addRequirementModal) addRequirementModal.classList.add('hidden');
-                editingRequirementId = null;
-            }
-
-            // закрытие по кнопке "Отмена"
-            if (cancelRequirementBtn) {
-                cancelRequirementBtn.addEventListener('click', closeRequirementModal);
-            }
-
-            // закрытие по клику на серый фон
-            if (addRequirementModal) {
-                addRequirementModal.addEventListener('click', (e) => {
-                    if (e.target === addRequirementModal) closeRequirementModal();
-                });
-            }
-
-            // маппинг category -> type (swagger enum: functional, non-functional, business)
-            function mapTypeFromCategory(v) {
-                const s = String(v || '').toLowerCase();
-                if (s.includes('функц')) return 'functional';
-                if (s.includes('бизнес')) return 'business';
-                if (s.includes('нефункц') || s.includes('non')) return 'non-functional';
-                if (s === 'functional' || s === 'business' || s === 'non-functional') return s;
-                return 'functional';
-            }
-
-            // клик по кнопке edit в таблице
-            if (requirementsTbody) {
-                requirementsTbody.addEventListener('click', async (e) => {
-                    const btn = e.target.closest('button[data-action="edit"]');
-                    if (!btn) return;
-
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    const id = btn.getAttribute('data-id');
-                    if (!id) return;
-
-                    try {
-                        // В swagger есть GET /requirements/{requirement_id} :contentReference[oaicite:0]{index=0}
-                        // Берём полные данные и заполняем модалку
-                        const r = await apiRequest(`/requirements/${encodeURIComponent(id)}`, { method: 'GET' });
-
-                        editingRequirementId = id;
-
-                        if (titleEl) titleEl.value = r?.name || '';
-                        // description берём из content.description_text если есть, иначе пусто
-                        if (descEl) descEl.value = r?.content?.description_text || r?.description_text || '';
-
-                        if (projectEl) projectEl.value = String(r?.project_id ?? '');
-                        if (categoryEl) categoryEl.value = r?.type || categoryEl.value;
-
-                        openRequirementModal();
-                    } catch (err) {
-                        alert(`Не удалось открыть требование для редактирования: ${err.message || err}`);
-                    }
-                });
-            }
-
-            // переопределяем "Сохранить" для режима редактирования
-            if (saveRequirementBtn) {
-                saveRequirementBtn.addEventListener('click', async () => {
-
-                    const name = titleEl ? titleEl.value.trim() : '';
-                    const description = descEl ? descEl.value.trim() : '';
-                    const projectIdRaw = projectEl ? projectEl.value : '';
-                    const type = mapTypeFromCategory(categoryEl ? categoryEl.value : '');
-
-                    if (!projectIdRaw) return alert('Выберите проект');
-                    if (!name) return alert('Введите название');
-                    if (!description) return alert('Введите описание');
-
-                    const payload = {
-                        project_id: Number(projectIdRaw),
-                        name,
-                        type,
-                        // чтобы пройти любые варианты swagger
-                        description_text: description,
-                        content: { description_text: description }
-                    };
-
-                    try {
-                        if (editingRequirementId) {
-                            // PUT /requirements/{id}
-                            await apiRequest(`/requirements/${encodeURIComponent(editingRequirementId)}`, {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(payload)
-                            });
-                            alert('Требование обновлено');
-                        } else {
-                            // POST /requirements
-                            await apiRequest('/requirements', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(payload)
-                            });
-                            alert('Требование создано');
-                        }
-
-                        closeRequirementModal();
-                        await loadRequirements();
-                    } catch (err) {
-                        alert(`Ошибка сохранения: ${err.message || err}`);
-                    }
-                });
-            }
-            // =========================
-            // Requirement content modal (GET /requirements/{id}/content)
-            // =========================
-
-            const contentModal = document.getElementById('requirement-content-modal');
-            const contentTextarea = document.getElementById('requirementContentTextarea');
-            const contentCloseBtn1 = document.getElementById('close-content-modal-btn');
-            const contentCloseBtn2 = document.getElementById('close-content-modal-btn-2');
-
-
-
-
-            function openContentModal() {
-                if (contentModal) contentModal.classList.remove('hidden');
-
-                // при открытии — сразу загрузим историю, если id уже известен
-                if (currentContentRequirementId) {
-                    if (contentHistoryTbody) {
-                        contentHistoryTbody.innerHTML = `
-        <tr><td class="px-4 py-3 text-sm text-gray-500" colspan="4">Загрузка...</td></tr>
-      `;
-                    }
-                    loadContentHistory(currentContentRequirementId).catch(err => {
-                        console.error(err);
-                        if (contentHistoryTbody) {
-                            contentHistoryTbody.innerHTML = `
-          <tr><td class="px-4 py-3 text-sm text-red-600" colspan="4">Ошибка загрузки истории</td></tr>
-        `;
-                        }
+                try {
+                    const params = new URLSearchParams({
+                        project_id: projectId,
+                        ...(filters.status && { status: filters.status }),
+                        ...(filters.type && { type: filters.type })
                     });
-                }
-            }
 
-            function closeContentModal() {
-                if (contentModal) contentModal.classList.add('hidden');
-                currentContentRequirementId = null;
-
-                if (contentTextarea) contentTextarea.value = '';
-                if (contentHistoryTbody) contentHistoryTbody.innerHTML = '';
-            }
-
-            // закрытие модалки
-            if (contentCloseBtn1) contentCloseBtn1.addEventListener('click', closeContentModal);
-            if (contentCloseBtn2) contentCloseBtn2.addEventListener('click', closeContentModal);
-
-            // закрытие по клику на фон
-            if (contentModal) {
-                contentModal.addEventListener('click', (e) => {
-                    if (e.target === contentModal) closeContentModal();
-                });
-            }
-
-            async function loadRequirementContent(requirementId) {
-                // GET /requirements/{requirement_id}/content :contentReference[oaicite:1]{index=1}
-                const data = await apiRequest(`/requirements/${encodeURIComponent(requirementId)}/content`, {
-                    method: 'GET'
-                });
-
-                // В swagger ответ = RequirementContent :contentReference[oaicite:2]{index=2}
-                // Обычно там есть текстовое поле. На всякий случай поддержим разные варианты.
-                const text =
-                    data?.description_text ??
-                    data?.content ??
-                    data?.text ??
-                    '';
-
-                if (contentTextarea) contentTextarea.value = text;
-            }
-            function renderContentHistory(items) {
-                if (!contentHistoryTbody) return;
-
-                contentHistoryTbody.innerHTML = '';
-
-                if (!items || !items.length) {
-                    contentHistoryTbody.innerHTML = `
-      <tr>
-        <td class="px-4 py-3 text-sm text-gray-500" colspan="4">Истории пока нет</td>
-      </tr>
-    `;
-                    return;
-                }
-
-                items.forEach(h => {
-                    const createdAt = formatDate(h.created_at);
-                    const userId = h.created_by_user_id ?? '-';
-                    const active = h.is_active ? 'Да' : 'Нет';
-
-                    const desc = h.content?.description_text ? String(h.content.description_text) : '';
-                    const shortDesc = desc.length > 80 ? desc.slice(0, 80) + '…' : desc;
-
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-      <td class="px-4 py-3 text-sm text-gray-900">${escapeHtml(createdAt)}</td>
-      <td class="px-4 py-3 text-sm text-gray-700">${escapeHtml(String(userId))}</td>
-      <td class="px-4 py-3 text-sm text-gray-700">${escapeHtml(active)}</td>
-      <td class="px-4 py-3 text-sm text-gray-500">${escapeHtml(shortDesc)}</td>
-    `;
-                    contentHistoryTbody.appendChild(tr);
-                });
-            }
-
-            async function loadContentHistory(requirementId) {
-                if (!requirementId) return;
-
-                // GET /requirements/{id}/content/history?limit=10
-                const resp = await apiRequest(
-                    `/requirements/${encodeURIComponent(requirementId)}/content/history?limit=10`,
-                    { method: 'GET' }
-                );
-
-                const items = resp && Array.isArray(resp.data) ? resp.data : [];
-                renderContentHistory(items);
-            }
-            // клик по кнопке "content" (иконка файла) в строке таблицы
-            if (requirementsTbody) {
-                requirementsTbody.addEventListener('click', async (e) => {
-                    const btn = e.target.closest('button[data-action="content"]');
-                    if (!btn) return;
-
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    const id = btn.getAttribute('data-id');
-                    if (!id) return;
-
-                    try {
-                        currentContentRequirementId = id;
-                        openContentModal();
-
-                        if (contentTextarea) contentTextarea.value = 'Загрузка...';
-                        await loadRequirementContent(id);
-                    } catch (err) {
-                        alert(`Не удалось загрузить содержимое: ${err.message || err}`);
-                        closeContentModal();
+                    console.log('Filter params:', Object.fromEntries(params));
+                    console.log('Full URL:', `requirements?${params.toString()}`);
+                    if (filters.status) {
+                        params.set('status', filters.status);
                     }
-                });
-            }
+                    if (filters.type) {
+                        params.set('type', filters.type);
+                    }
+                    // фильтр по проекту пока не трогаем – у тебя и так один projectid из URL
 
-            // =========================
-            // Save requirement content (PUT /requirements/{id}/content)
-            // =========================
-            const saveContentBtn = document.getElementById('save-content-btn');
+                    const resp = await apiRequest(`requirements?${params.toString()}`);
+                    console.log('Repo: Requirements response:', resp);
 
-            if (saveContentBtn) {
-                saveContentBtn.addEventListener('click', async () => {
-                    if (!currentContentRequirementId) {
-                        alert('Не выбрано требование для сохранения содержимого');
+                    const items = Array.isArray(resp?.data) ? resp.data : (Array.isArray(resp) ? resp : []);
+                    console.log('Repo: Requirements count:', items.length);
+
+                    if (!requirementsTbody) {
+                        console.error('Repo: Table body not found');
                         return;
                     }
 
-                    const text = contentTextarea ? contentTextarea.value : '';
+                    if (items.length === 0) {
+                        requirementsTbody.innerHTML = `
+              <tr>
+                <td colspan="7" class="px-6 py-6 text-sm text-gray-500 text-center">
+                  Требования не найдены
+                </td>
+              </tr>`;
+                        return;
+                    }
 
-                    try {
-                        await apiRequest(
-                            `/requirements/${encodeURIComponent(currentContentRequirementId)}/content`,
-                            {
-                                method: 'PUT',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    description_text: text
-                                })
-                            }
-                        );
 
-                        alert('Содержимое требования сохранено');
-                        closeContentModal();
-                    } catch (err) {
-                        alert(`Ошибка сохранения содержимого: ${err.message || err}`);
+                    // Отрисовка требований
+                    requirementsTbody.innerHTML = '';
+
+                    items.forEach((item, index) => {
+                        console.log(`[Repo] Requirement ${index}:`, item);
+
+                        const req = item.requirement || item;
+                        const content = item.content || {};
+                        const workflow = item.workflow || {};
+
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-gray-50';
+
+                        tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${String(req.id).substring(0, 8)}...
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        ${req.name || 'Без названия'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${currentProject?.name || 'Проект'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${req.type || '-'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${workflow.status || '-'}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${new Date(req.updated_at || req.created_at).toLocaleDateString('ru-RU')}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button class="text-indigo-600 hover:text-indigo-900">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                            <button class="text-green-600 hover:text-green-900 mr-3 js-workflow-req" title="Управление Workflow">
+        <i class="fas fa-exchange-alt"></i>
+    </button>
+                        <button class="text-blue-600 hover:text-blue-900 mr-3 js-edit-req" title="Редактировать"><i class="fas fa-pencil-alt"></i></button>
+                            <button class="text-red-600 hover:text-red-900 js-delete-req" title="Удалить">
+      <i class="fas fa-trash"></i>
+    </button>
+                    </td>
+                `;
+                        // Сохраняем данные требования в строку
+                        tr.dataset.reqId = req.id;
+                        tr._item = item; // сохраняем весь объект для быстрого доступа
+
+                        // Находим кнопку просмотра (глазик) и вешаем обработчик
+                        const viewBtn = tr.querySelector('button');
+                        if (viewBtn) {
+                            viewBtn.addEventListener('click', async (e) => {
+                                e.stopPropagation();
+                                await openRequirementContentModal(req.id, item);
+                            });
+                        }
+
+                        const editBtn = tr.querySelector('.js-edit-req');
+                        if (editBtn) {
+                            editBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                openEditRequirementModal(req.id, req.name, req.type);
+                            });
+                        }
+
+
+                        // Кнопка управления workflow
+                        const workflowBtn = tr.querySelector('.js-workflow-req');
+                        if (workflowBtn) {
+                            workflowBtn.addEventListener('click', async (e) => {
+                                e.stopPropagation();
+                                await openWorkflowModal(req.id, item);
+                            });
+                        }
+
+                        // Кнопка удаления
+                        const deleteBtn = tr.querySelector('.js-delete-req');
+                        if (deleteBtn) {
+                            deleteBtn.addEventListener('click', async (e) => {
+                                e.stopPropagation();
+                                await deleteRequirement(req.id, req.name);
+                            });
+                        }
+                        requirementsTbody.appendChild(tr);
+                    });
+
+                } catch (error) {
+                    console.error('Repo: Error loading requirements', error);
+                    if (requirementsTbody) {
+                        requirementsTbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="px-6 py-6 text-sm text-red-500 text-center">
+            ${error.message}
+          </td>
+        </tr>`;
+                    }
+                }
+            }
+
+
+
+
+            async function loadProjectsForFilter() {
+                try {
+                    const projects = await apiRequest('projects');
+                    const projectOptions = projects?.data || projects || [];
+
+                    if (filterProjectEl) {
+                        filterProjectEl.innerHTML = '<option value="">Все проекты</option>';
+                        projectOptions.forEach(project => {
+                            const option = document.createElement('option');
+                            option.value = project.id;
+                            option.textContent = project.name;
+                            filterProjectEl.appendChild(option);
+                        });
+                    }
+                } catch (err) {
+                    console.error('Failed to load projects for filter', err);
+                }
+            }
+
+            async function loadParentRequirementsForModal() {
+                try {
+                    const response = await apiRequest(`requirements?projectid=${projectId}`);
+                    const requirements = response?.data || [];
+
+                    const parentSelect = document.getElementById('parent-requirement');
+                    if (!parentSelect) return;
+
+                    // Очистить и добавить дефолтный вариант
+                    parentSelect.innerHTML = '<option value="">-- Нет родителя --</option>';
+
+                    // Добавить все требования проекта
+                    requirements.forEach(item => {
+                        const req = item.requirement || item;
+                        const option = document.createElement('option');
+                        option.value = req.id;
+                        option.textContent = `${req.name} (${req.type})`;
+                        parentSelect.appendChild(option);
+                    });
+                } catch (err) {
+                    console.error('Failed to load parent requirements', err);
+                }
+            }
+            // =========================
+            // Загрузка информации о проекте
+            // =========================
+            async function loadProject() {
+                console.log('[Repo] Loading project:', projectId);
+
+                const header = document.querySelector('header h1');
+
+                try {
+                    const project = await apiRequest(`/projects/${projectId}`);
+                    console.log('[Repo] Project loaded:', project);
+                    currentProject = project;
+                    // Обновляем заголовок
+                    if (header && project.name) {
+                        header.textContent = `Проект: ${project.name}`;
+                    }
+
+                    // Сохраняем для других страниц
+                    localStorage.setItem('currentProjectName', project.name || '');
+                    localStorage.setItem('currentProjectId', projectId);
+
+                    return project;
+
+                } catch (error) {
+                    console.error('[Repo] Failed to load project:', error);
+
+                    // Показываем ошибку в заголовке
+                    if (header) {
+                        header.textContent = `Ошибка загрузки проекта`;
+                    }
+
+                    if (error.status === 404) {
+                        alert('Проект не найден');
+                        window.location.href = 'index.html';
+                    } else if (error.status === 403) {
+                        alert('Нет доступа к проекту');
+                        window.location.href = 'index.html';
+                    }
+
+                    throw error;
+                }
+            }
+            // =========================
+            // Модалка: Новое требование
+            // =========================
+            const addRequirementBtn = document.getElementById('add-requirement-btn');
+            const addRequirementModal = document.getElementById('add-requirement-modal');
+            const cancelRequirementBtn = document.getElementById('cancel-requirement-btn');
+            const saveRequirementBtn = document.getElementById('save-requirement-btn');
+
+            // Поля формы
+            const titleEl = document.getElementById('title');
+            const descriptionEl = document.getElementById('description');
+            const categoryEl = document.getElementById('category');
+
+            // Открытие модалки
+            if (addRequirementBtn && addRequirementModal) {
+                addRequirementBtn.addEventListener('click', function () {
+                    console.log('[Repo] Opening new requirement modal');
+
+                    // Очищаем поля
+                    if (titleEl) titleEl.value = '';
+                    if (descriptionEl) descriptionEl.value = '';
+                    if (categoryEl) categoryEl.selectedIndex = 0;
+
+                    loadParentRequirementsForModal();
+
+                    // Показываем модалку
+                    addRequirementModal.classList.remove('hidden');
+                });
+            }
+
+            // Закрытие модалки
+            if (cancelRequirementBtn && addRequirementModal) {
+                cancelRequirementBtn.addEventListener('click', function () {
+                    console.log('[Repo] Closing requirement modal');
+                    addRequirementModal.classList.add('hidden');
+                });
+            }
+
+            // Закрытие по клику на фон
+            if (addRequirementModal) {
+                addRequirementModal.addEventListener('click', function (e) {
+                    if (e.target === addRequirementModal) {
+                        addRequirementModal.classList.add('hidden');
                     }
                 });
             }
-            // =========================
-            // INIT
-            // =========================
-            Promise.resolve()
-                .then(() => loadProjects())
-                .then(() => loadRequirements())
-                .catch(err => {
-                    if (err && err.status === 403) alert('403: нет прав доступа');
-                    else alert(`Ошибка: ${err.message || err}`);
-                });
 
+            // Функция маппинга категории в тип
+            function mapCategoryToType(category) {
+                return category || 'functional';
+            }
+
+            // Сохранение нового требования
+            if (saveRequirementBtn && addRequirementModal) {
+                saveRequirementBtn.addEventListener('click', async function () {
+                    console.log('[Repo] Saving new requirement');
+
+                    const name = titleEl ? titleEl.value.trim() : '';
+                    const description = descriptionEl ? descriptionEl.value.trim() : '';
+                    const category = categoryEl ? categoryEl.value : '';
+                    const parentId = document.getElementById('parent-requirement')?.value || null;
+
+                    if (!name) {
+                        alert('Введите название требования');
+                        return;
+                    }
+                    if (!description) {
+                        alert('Введите описание');
+                        return;
+                    }
+
+                    const type = mapCategoryToType(category);
+
+                    // ✅ ПРАВИЛЬНЫЙ payload с snake_case
+                    const payload = {
+                        project_id: projectId,
+                        name: name,
+                        type: type,
+                        description_text: description
+                    };
+
+                    if (parentId && parentId !== '') {
+                        payload.parent_id = parentId;
+                    }
+
+                    console.log('[Repo] Creating requirement', payload);
+
+                    try {
+                        saveRequirementBtn.disabled = true;
+                        saveRequirementBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Создание...';
+
+                        const response = await apiRequest('requirements', {
+                            method: 'POST',
+                            body: JSON.stringify(payload)
+                        });
+
+                        console.log('[Repo] Requirement created', response);
+
+                        addRequirementModal.classList.add('hidden');
+                        alert('Требование успешно создано!');
+                        await loadRequirements();
+                    } catch (error) {
+                        console.error('[Repo] Failed to create requirement', error);
+                        alert(error.message);
+                    } finally {
+                        saveRequirementBtn.disabled = false;
+                        saveRequirementBtn.textContent = 'Сохранить';
+                    }
+                });
+            }
+
+            // =========================
+            // Logout
+            // =========================
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function () {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('currentProjectId');
+                    localStorage.removeItem('currentProjectName');
+                    localStorage.removeItem('currentProjectRole');
+                    currentUser = null;
+                    userProjects = [];
+                    projectsDetails = {};
+                    userRoles = {};
+                    window.location.href = '/main.html';
+                    // Перенаправляем на OAuth2 logout
+                    fetch('/oauth2/sign_out', { method: 'GET' }).catch(() => { });
+                });
+            }
+            // ============= РАБОТА С МОДАЛКОЙ ПРОСМОТРА ТРЕБОВАНИЯ =============
+
+            const contentModal = document.getElementById('requirement-content-modal');
+            const contentTitle = document.getElementById('content-title');
+            const contentMeta = document.getElementById('contentReqMeta');
+            const contentTextarea = document.getElementById('requirementContentTextarea');
+            const contentHistoryTbody = document.getElementById('contentHistoryTbody');
+            const saveContentBtn = document.getElementById('save-content-btn');
+            const closeContentModalBtn = document.getElementById('close-content-modal-btn');
+            const closeContentModalBtn2 = document.getElementById('close-content-modal-btn-2');
+            const refreshContentHistoryBtn = document.getElementById('refresh-content-history-btn');
+
+            let currentRequirementId = null;
+
+            // Открытие модалки с данными требования
+            async function openRequirementContentModal(requirementId, itemFromList = null) {
+                console.log('[Opening requirement content modal]', requirementId);
+                console.log('[Item from list]', itemFromList);
+
+                currentRequirementId = requirementId;
+
+                try {
+                    const req = itemFromList.requirement || itemFromList;
+                    const content = itemFromList.content || null;
+                    const workflow = itemFromList.workflow || null;
+
+                    console.log('[Requirement]', req);
+                    console.log('[Content]', content);
+                    console.log('[Workflow]', workflow);
+                    console.log('[Parent ID check]', 'parent_id:', req.parent_id, 'parentid:', req.parentid); // ✅ ДОБАВЬ ЭТУ СТРОКУ
+                    console.log('[Content]', content);
+
+                    contentTitle.textContent = req.name;
+
+                    // ✅ Проверяем наличие родителя (parent_id или parentid)
+                    let parentInfo = '';
+                    const parentId = req.parent_id || req.parentid;
+
+                    if (parentId) {
+                        try {
+                            console.log('[Loading parent requirement]', parentId);
+                            const parentResp = await apiRequest(`requirements/${parentId}`);
+                            const parent = parentResp.requirement || parentResp;
+                            parentInfo = `
+                    <span class="mx-2">•</span>
+                    <span class="text-xs text-gray-500">
+                        Родитель: <span class="font-medium text-indigo-600">${parent.name}</span>
+                    </span>
+                `;
+                        } catch (err) {
+                            console.error('[Failed to load parent requirement]', err);
+                            // Если не удалось загрузить, показываем только ID
+                            parentInfo = `
+                    <span class="mx-2">•</span>
+                    <span class="text-xs text-gray-500">
+                        Родитель: <span class="font-medium text-gray-400">${String(parentId).substring(0, 8)}...</span>
+                    </span>
+                `;
+                        }
+                    }
+
+                    contentMeta.innerHTML = `
+            <span class="text-xs text-gray-500">ID: ${String(req.id).substring(0, 8)}...</span>
+            <span class="mx-2">•</span>
+            <span class="text-xs text-gray-500">${req.type || '-'}</span>
+            <span class="mx-2">•</span>
+            <span class="text-xs text-gray-500">${workflow?.status || '-'}</span>
+            ${parentInfo}
+        `;
+
+                    // descriptiontext
+                    contentTextarea.value = content?.description_text || '';
+
+                    await loadRequirementContentHistory(requirementId);
+
+                    contentModal.classList.remove('hidden');
+                } catch (err) {
+                    console.error('[Failed to load requirement content]', err);
+                    alert(err.message || err);
+                }
+            }
+
+
+            // Загрузка истории изменений содержимого
+            async function loadRequirementContentHistory(requirementId) {
+                console.log('Loading content history for', requirementId);
+
+                if (!contentHistoryTbody) return;
+
+                contentHistoryTbody.innerHTML = `
+    <tr><td colspan="3" class="px-4 py-2 text-sm text-gray-500 text-center">
+      <i class="fas fa-spinner fa-spin mr-2"></i>Загрузка истории...
+    </td></tr>`;
+
+                try {
+                    // ИСПРАВЛЕНО: /content/history вместо /content-history
+                    const resp = await apiRequest(`/requirements/${requirementId}/content/history`);
+
+                    const items = Array.isArray(resp.data) ? resp.data : (Array.isArray(resp) ? resp : []);
+
+                    console.log('Content history items', items.length);
+
+                    if (!items.length) {
+                        contentHistoryTbody.innerHTML = `
+        <tr><td colspan="3" class="px-4 py-2 text-sm text-gray-500 text-center">
+          История изменений пуста
+        </td></tr>`;
+                        return;
+                    }
+
+                    contentHistoryTbody.innerHTML = '';
+                    items.forEach((h) => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-gray-100 cursor-pointer'; // ✅ Добавили cursor-pointer
+                        tr.innerHTML = `
+        <td class="px-4 py-2 text-sm text-gray-500">
+          ${new Date(h.created_at).toLocaleString('ru-RU')}
+        </td>
+        <td class="px-4 py-2 text-sm text-gray-500">
+          ${h.created_by_user_id ? String(h.created_by_user_id).substring(0, 8) + '...' : 'Система'}
+        </td>
+        <td class="px-4 py-2 text-sm text-gray-500 truncate" style="max-width: 300px;">
+          ${h.description_text ? h.description_text.substring(0, 100) : '(пусто)'}
+        </td>`;
+
+                        tr.addEventListener('click', () => {
+                            openHistoryVersionModal(h);
+                        });
+                        contentHistoryTbody.appendChild(tr);
+                    });
+                } catch (err) {
+                    console.error('Failed to load content history', err);
+                    contentHistoryTbody.innerHTML = `
+      <tr><td colspan="3" class="px-4 py-2 text-sm text-red-500 text-center">
+        Ошибка загрузки истории: ${err.message || err}
+      </td></tr>`;
+                }
+            }
+
+
+
+
+            // Закрытие модалки
+            function closeContentModal() {
+                if (contentModal) {
+                    contentModal.classList.add('hidden');
+                }
+                currentRequirementId = null;
+            }
+
+            // Сохранение изменений содержимого
+            async function saveRequirementContent() {
+                if (!currentRequirementId) {
+                    alert('Нет активного требования');
+                    return;
+                }
+
+                // ВАЖНО: используем snake_case согласно swagger
+                const payload = {
+                    description_text: contentTextarea.value
+                };
+
+                console.log('Saving requirement content for ID:', currentRequirementId);
+                console.log('Payload:', payload);
+
+                try {
+                    saveContentBtn.disabled = true;
+                    saveContentBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Сохранение...';
+
+                    // ВАЖНО: метод PUT, не POST!
+                    const response = await apiRequest(`/requirements/${currentRequirementId}/content`, {
+                        method: 'PUT',
+                        body: JSON.stringify(payload)
+                    });
+
+                    console.log('Content saved:', response);
+
+                    alert('Содержимое успешно сохранено');
+
+                    // Перезагружаем историю
+                    await loadRequirementContentHistory(currentRequirementId);
+
+                } catch (err) {
+                    console.error('Failed to save content', err);
+                    alert('Ошибка сохранения: ' + (err.message || err));
+                } finally {
+                    saveContentBtn.disabled = false;
+                    saveContentBtn.textContent = 'Сохранить содержимое';
+                }
+            }
+
+            // Обработчики событий для модалки
+            if (closeContentModalBtn) {
+                closeContentModalBtn.addEventListener('click', closeContentModal);
+            }
+
+            if (closeContentModalBtn2) {
+                closeContentModalBtn2.addEventListener('click', closeContentModal);
+            }
+
+            if (contentModal) {
+                contentModal.addEventListener('click', (e) => {
+                    if (e.target === contentModal) {
+                        closeContentModal();
+                    }
+                });
+            }
+
+            if (saveContentBtn) {
+                saveContentBtn.addEventListener('click', saveRequirementContent);
+            }
+
+            if (refreshContentHistoryBtn) {
+                refreshContentHistoryBtn.addEventListener('click', async () => {
+                    if (currentRequirementId) {
+                        await loadRequirementContentHistory(currentRequirementId);
+                    }
+                });
+            }
+            async function deleteRequirement(requirementId, requirementName) {
+                if (!requirementId) return;
+
+                const confirmed = confirm(`Удалить требование "${requirementName}"? Это действие необратимо.`);
+                if (!confirmed) return;
+
+                try {
+                    console.log('Deleting requirement', requirementId);
+                    await apiRequest(`/requirements/${requirementId}`, {
+                        method: 'DELETE'
+                    });
+
+                    alert('Требование удалено');
+                    await loadRequirements(); // перерисовать таблицу
+                } catch (err) {
+                    console.error('Failed to delete requirement', err);
+                    alert('Ошибка удаления: ' + (err.message || err));
+                }
+            }
+            // ============= КОНЕЦ РАБОТЫ С МОДАЛКОЙ =============
+
+            // ============= WORKFLOW MANAGEMENT =============
+            const workflowModal = document.getElementById('workflow-modal');
+            const workflowReqMeta = document.getElementById('workflowReqMeta');
+            const currentWorkflowStatus = document.getElementById('currentWorkflowStatus');
+            const currentWorkflowPriority = document.getElementById('currentWorkflowPriority');
+            const newWorkflowStatus = document.getElementById('newWorkflowStatus');
+            const workflowComment = document.getElementById('workflowComment');
+            const workflowHistoryTbody = document.getElementById('workflowHistoryTbody');
+            const saveWorkflowBtn = document.getElementById('save-workflow-btn');
+            const closeWorkflowModalBtn = document.getElementById('close-workflow-modal-btn');
+            const closeWorkflowModalBtn2 = document.getElementById('close-workflow-modal-btn-2');
+            const refreshWorkflowHistoryBtn = document.getElementById('refresh-workflow-history-btn');
+
+            let currentWorkflowRequirementId = null;
+
+            // Открытие модалки workflow
+            async function openWorkflowModal(requirementId, itemFromList = null) {
+                console.log('[Workflow] Opening modal for requirement:', requirementId);
+
+                currentWorkflowRequirementId = requirementId;
+
+                try {
+                    const req = itemFromList.requirement || itemFromList;
+                    const workflow = itemFromList.workflow || {};
+
+                    console.log('[Workflow] Requirement:', req);
+                    console.log('[Workflow] Workflow:', workflow);
+
+                    // Заполняем метаданные
+                    workflowReqMeta.innerHTML = `
+            <span class="text-xs text-gray-500">ID: ${String(req.id).substring(0, 8)}...</span>
+            <span class="mx-2">•</span>
+            <span class="font-semibold">${req.name}</span>
+        `;
+                    // Текущий статус
+                    currentWorkflowStatus.textContent = workflow?.status || 'Не указан';
+
+                    // Приоритет может быть на разных уровнях - проверяем все варианты
+                    const priority = workflow?.priority || req.priority || itemFromList.priority || '-';
+                    currentWorkflowPriority.textContent = priority;
+
+                    // Добавляем отладку
+                    console.log('[Workflow] Priority value:', priority);
+                    console.log('[Workflow] Full workflow object:', workflow);
+
+                    // Очищаем поля
+                    newWorkflowStatus.value = '';
+                    workflowComment.value = '';
+
+                    // Загружаем историю
+                    await loadWorkflowHistory(requirementId);
+
+                    // Показываем модалку
+                    workflowModal.classList.remove('hidden');
+
+                } catch (error) {
+                    console.error('[Workflow] Failed to open modal:', error);
+                    alert('Ошибка открытия модалки: ' + error.message);
+                }
+            }
+
+            // Закрытие модалки
+            function closeWorkflowModal() {
+                if (workflowModal) {
+                    workflowModal.classList.add('hidden');
+                }
+                currentWorkflowRequirementId = null;
+            }
+
+            // Загрузка истории workflow
+            async function loadWorkflowHistory(requirementId) {
+                console.log('[Workflow] Loading history for:', requirementId);
+
+                if (!workflowHistoryTbody) return;
+
+                workflowHistoryTbody.innerHTML = `
+        <tr>
+            <td colspan="4" class="px-4 py-2 text-sm text-gray-500 text-center">
+                <i class="fas fa-spinner fa-spin mr-2"></i>Загрузка истории...
+            </td>
+        </tr>
+    `;
+
+                try {
+                    const resp = await apiRequest(`requirements/${requirementId}/workflow/history`);
+                    const items = Array.isArray(resp.data) ? resp.data : (Array.isArray(resp) ? resp : []);
+
+                    console.log('[Workflow] History items:', items.length);
+
+                    if (!items.length) {
+                        workflowHistoryTbody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="px-4 py-2 text-sm text-gray-500 text-center">
+                        История изменений пуста
+                    </td>
+                </tr>
+            `;
+                        return;
+                    }
+
+                    workflowHistoryTbody.innerHTML = '';
+                    items.forEach((h) => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'hover:bg-gray-100';
+                        tr.innerHTML = `
+                <td class="px-4 py-2 text-sm text-gray-500">
+                    ${new Date(h.created_at).toLocaleString('ru-RU')}
+                </td>
+                <td class="px-4 py-2 text-sm text-gray-500">
+                    ${h.created_by_user_id ? String(h.created_by_user_id).substring(0, 8) + '...' : 'Система'}
+                </td>
+                <td class="px-4 py-2 text-sm text-gray-500">
+                    ${h.status || '-'}
+                </td>
+                <td class="px-4 py-2 text-sm text-gray-500">
+                    ${h.priority || '-'}
+                </td>
+            `;
+                        workflowHistoryTbody.appendChild(tr);
+                    });
+
+                } catch (error) {
+                    console.error('[Workflow] Failed to load history:', error);
+                    workflowHistoryTbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="px-4 py-2 text-sm text-red-500 text-center">
+                    Ошибка загрузки: ${error.message}
+                </td>
+            </tr>
+        `;
+                }
+            }
+
+            // Сохранение изменений workflow
+            async function saveWorkflowChanges() {
+                if (!currentWorkflowRequirementId) {
+                    alert('Нет активного требования');
+                    return;
+                }
+
+                const newStatus = newWorkflowStatus.value;
+                const comment = workflowComment.value.trim();
+
+                if (!newStatus) {
+                    alert('Выберите новый статус');
+                    return;
+                }
+
+                const payload = {
+                    new_status: newStatus
+                };
+
+                if (comment) {
+                    payload.comment = comment;
+                }
+
+                console.log('[Workflow] Saving changes:', payload);
+
+                try {
+                    saveWorkflowBtn.disabled = true;
+                    saveWorkflowBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Сохранение...';
+
+                    const response = await apiRequest(`requirements/${currentWorkflowRequirementId}/workflow`, {
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                    });
+
+                    console.log('[Workflow] Saved:', response);
+
+                    alert('Статус успешно изменен!');
+
+                    // Перезагружаем историю
+                    await loadWorkflowHistory(currentWorkflowRequirementId);
+
+                    // Обновляем таблицу требований
+                    await loadRequirements();
+
+                    // Закрываем модалку
+                    closeWorkflowModal();
+
+                } catch (error) {
+                    console.error('[Workflow] Failed to save:', error);
+                    alert('Ошибка сохранения: ' + error.message);
+                } finally {
+                    saveWorkflowBtn.disabled = false;
+                    saveWorkflowBtn.textContent = 'Сохранить изменения';
+                }
+            }
+
+            // Обработчики событий для модалки workflow
+            if (closeWorkflowModalBtn) {
+                closeWorkflowModalBtn.addEventListener('click', closeWorkflowModal);
+            }
+
+            if (closeWorkflowModalBtn2) {
+                closeWorkflowModalBtn2.addEventListener('click', closeWorkflowModal);
+            }
+
+            if (workflowModal) {
+                workflowModal.addEventListener('click', (e) => {
+                    if (e.target === workflowModal) {
+                        closeWorkflowModal();
+                    }
+                });
+            }
+
+            if (saveWorkflowBtn) {
+                saveWorkflowBtn.addEventListener('click', saveWorkflowChanges);
+            }
+
+            if (refreshWorkflowHistoryBtn) {
+                refreshWorkflowHistoryBtn.addEventListener('click', async () => {
+                    if (currentWorkflowRequirementId) {
+                        await loadWorkflowHistory(currentWorkflowRequirementId);
+                    }
+                });
+            }
+
+
+            // ============= ФИЛЬТРЫ =============  
+            const filterStatusEl = document.getElementById('filterStatus');
+            const filterTypeEl = document.getElementById('filterType');
+            const clearFiltersBtn = document.getElementById('clear-filters-btn');
+            const exportBtn = document.querySelector('button:has(i.fa-download)'); // кнопка "Экспорт"
+
+            function getFilters() {
+                return {
+                    status: filterStatusEl?.value || '',
+                    type: filterTypeEl?.value || '',
+                };
+            }
+            // Применить фильтры
+            async function applyFilters() {
+                const filters = getFilters();
+                console.log('Applying filters:', filters);
+                await loadRequirements(filters);
+            }
+
+            // Сброс фильтров
+            function clearFilters() {
+                if (filterStatusEl) filterStatusEl.value = '';
+                if (filterTypeEl) filterTypeEl.value = '';
+                applyFilters();
+            }
+
+
+            // Обработчики
+            if (filterStatusEl) {
+                filterStatusEl.addEventListener('change', applyFilters);
+            }
+            if (filterTypeEl) {
+                filterTypeEl.addEventListener('change', applyFilters);
+            }
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', clearFilters);
+            }
+
+            if (exportBtn) {
+                exportBtn.addEventListener('click', () => {
+                    const filters = getFilters();
+                    const params = new URLSearchParams({
+                        projectid: projectId,
+                        ...(filters.status && { status: filters.status }),
+                        ...(filters.type && { type: filters.type }),
+                    });
+
+                    window.open(`${API_BASE}/requirements/export?${params.toString()}`, '_blank');
+                });
+            }
+
+
+            // ===== МОДАЛКА ПРОСМОТРА ВЕРСИИ ИСТОРИИ =====
+            const historyVersionModal = document.getElementById('history-version-modal');
+            const historyVersionDate = document.getElementById('history-version-date');
+            const historyVersionAuthor = document.getElementById('history-version-author');
+            const historyVersionContent = document.getElementById('history-version-content');
+            const closeHistoryVersionBtn = document.getElementById('close-history-version-btn');
+            const closeHistoryVersionBtn2 = document.getElementById('close-history-version-btn-2');
+
+            function openHistoryVersionModal(historyItem) {
+                if (!historyVersionModal) return;
+
+                // Форматируем дату
+                const date = new Date(historyItem.created_at).toLocaleString('ru-RU');
+                historyVersionDate.textContent = date;
+
+                // Автор (ID)
+                const authorId = historyItem.created_by_user_id
+                    ? String(historyItem.created_by_user_id).substring(0, 8) + '...'
+                    : 'Неизвестно';
+                historyVersionAuthor.textContent = authorId;
+
+                // Содержимое
+                historyVersionContent.textContent = historyItem.description_text || '(Нет содержимого)';
+
+                historyVersionModal.classList.remove('hidden');
+            }
+
+            function closeHistoryVersionModal() {
+                if (historyVersionModal) {
+                    historyVersionModal.classList.add('hidden');
+                }
+            }
+
+            if (closeHistoryVersionBtn) {
+                closeHistoryVersionBtn.addEventListener('click', closeHistoryVersionModal);
+            }
+            if (closeHistoryVersionBtn2) {
+                closeHistoryVersionBtn2.addEventListener('click', closeHistoryVersionModal);
+            }
+            if (historyVersionModal) {
+                historyVersionModal.addEventListener('click', (e) => {
+                    if (e.target === historyVersionModal) {
+                        closeHistoryVersionModal();
+                    }
+                });
+            }
+            // ============= РЕДАКТИРОВАНИЕ ТРЕБОВАНИЯ =============
+            const editRequirementModal = document.getElementById('edit-requirement-modal');
+            const editTitleEl = document.getElementById('edit-title');
+            const editCategoryEl = document.getElementById('edit-category');
+            const saveEditRequirementBtn = document.getElementById('save-edit-requirement-btn');
+            const cancelEditRequirementBtn = document.getElementById('cancel-edit-requirement-btn');
+
+            let currentEditRequirementId = null;
+
+            function openEditRequirementModal(requirementId, currentName, currentType) {
+                if (!editRequirementModal) return;
+
+                console.log('[Opening edit modal]', requirementId, currentName, currentType);
+
+                currentEditRequirementId = requirementId;
+                editTitleEl.value = currentName;
+                editCategoryEl.value = currentType;
+
+                editRequirementModal.classList.remove('hidden');
+            }
+
+            function closeEditRequirementModal() {
+                if (editRequirementModal) {
+                    editRequirementModal.classList.add('hidden');
+                    currentEditRequirementId = null;
+                }
+            }
+
+            if (cancelEditRequirementBtn) {
+                cancelEditRequirementBtn.addEventListener('click', closeEditRequirementModal);
+            }
+
+            if (editRequirementModal) {
+                editRequirementModal.addEventListener('click', (e) => {
+                    if (e.target === editRequirementModal) {
+                        closeEditRequirementModal();
+                    }
+                });
+            }
+
+            if (saveEditRequirementBtn) {
+                saveEditRequirementBtn.addEventListener('click', async () => {
+                    if (!currentEditRequirementId) return;
+
+                    const newName = editTitleEl.value.trim();
+                    const newType = editCategoryEl.value;
+
+                    if (!newName) {
+                        alert('Введите название требования');
+                        return;
+                    }
+
+                    const payload = {
+                        name: newName,
+                        type: newType
+                    };
+
+                    console.log('[Updating requirement]', currentEditRequirementId, payload);
+
+                    try {
+                        saveEditRequirementBtn.disabled = true;
+                        saveEditRequirementBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Сохранение...';
+
+                        await apiRequest(`requirements/${currentEditRequirementId}`, {
+                            method: 'PUT',
+                            body: JSON.stringify(payload)
+                        });
+
+                        alert('Требование обновлено!');
+                        closeEditRequirementModal();
+                        await loadRequirements();
+                    } catch (error) {
+                        console.error('[Failed to update requirement]', error);
+                        alert(error.message);
+                    } finally {
+                        saveEditRequirementBtn.disabled = false;
+                        saveEditRequirementBtn.textContent = 'Сохранить';
+                    }
+                });
+            }
+
+            // ============= ЗАГРУЗКА СПИСКА ПРОЕКТОВ ДЛЯ САЙДБАРА =============
+            async function loadProjectsForSidebar() {
+                const projectsList = document.getElementById('projects-list');
+                if (!projectsList) return;
+
+                try {
+                    // ✅ Используем эндпоинт для получения проектов пользователя
+                    const response = await apiRequest('users/me/projects');
+                    const projectRoles = response?.project_roles || [];
+
+                    console.log('[Sidebar] Loaded projects:', projectRoles.length);
+
+                    if (projectRoles.length === 0) {
+                        projectsList.innerHTML = '<p class="px-3 py-2 text-sm text-gray-500">Нет проектов</p>';
+                        return;
+                    }
+
+                    projectsList.innerHTML = '';
+
+                    projectRoles.forEach(item => {
+                        const link = document.createElement('a');
+                        link.href = `repo.html?project_id=${item.project_id}`;  // ✅ Используй project_id
+                        link.className = 'flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100 transition-colors';
+
+                        // Подсветка текущего проекта
+                        if (item.project_id === projectId) {  // ✅ Используй project_id
+                            link.className = 'flex items-center px-3 py-2 text-sm font-medium rounded-md bg-indigo-50 text-indigo-600';
+                        }
+
+                        link.innerHTML = `
+        <i class="fas fa-folder mr-3 text-gray-400 w-5 text-center"></i>
+        <span class="truncate">${item.project_name}</span>
+    `;
+
+                        projectsList.appendChild(link);
+                    });
+
+                } catch (error) {
+                    console.error('[Sidebar] Failed to load projects:', error);
+                    projectsList.innerHTML = '<p class="px-3 py-2 text-sm text-red-500">Ошибка загрузки</p>';
+                }
+            }
+
+            // =========================
+            // INIT - просто загружаем требования
+            // =========================
+            console.log('[Repo] Starting initialization...');
+            updateSidebarLinks();      // ✅ Добавь эту строку
+            updateActiveSidebarLink(); // ✅ Добавь эту строку
+
+            loadProject()
+                .then(() => {
+                    loadProjectsForFilter(); // ← добавить эту строку
+                    loadRequirements();
+                    loadProjectsForSidebar();
+                })
+                .catch(error => {
+                    console.error('Repo: Initialization error', error);
+                });
         });
     </script>
 

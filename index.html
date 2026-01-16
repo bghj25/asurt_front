@@ -2650,9 +2650,9 @@
                     userProjects = [];
                     projectsDetails = {};
                     userRoles = {};
-                    
+                     window.location.href = '/main.html';
                     // Перенаправляем на OAuth2 logout
-                    window.location.href = '/oauth2/sign_out';
+                         fetch('/oauth2/sign_out', { method: 'GET' }).catch(() => {});
                 });
             }
 

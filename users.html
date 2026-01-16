@@ -42,31 +42,46 @@
                         <i class="fas fa-tasks text-indigo-600 mr-2"></i>
                         <span class="font-semibold text-gray-800">AСУРТ</span>
                     </a>
-                </div>
-                <div class="flex flex-col flex-grow px-4 overflow-y-auto">
-                    <nav class="flex-1 space-y-1 mt-6">
-                        <a href="repo.html?project_id=${projectId}" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
-                            <i class="fas fa-list-ul mr-3 text-gray-500 w-5 text-center"></i>
-                            Все требования
-                        </a>
-                
-                        <a href="analytics.html?project_id=${projectId}" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
-                            <i class="fas fa-chart-bar mr-3 text-gray-500 w-5 text-center"></i>
-                            Аналитика и отчеты
-                        </a>
-                
-                        <a href="users.html?project_id=${projectId}" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
-                            <i class="fas fa-users mr-3 text-gray-500 w-5 text-center"></i>
-                            Команда
-                        </a>
-                
-                        <a href="settings.html?project_id=${projectId}" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
-                            <i class="fas fa-cog mr-3 text-gray-500 w-5 text-center"></i>
-                            Настройки
-                        </a>
-                    </nav>
+                    </div>
+                    <div class="flex flex-col flex-grow px-4 overflow-y-auto">
+                        <nav class="flex-1 space-y-1 mt-6">
+                            <a href="repo.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                                <i class="fas fa-list-ul mr-3 text-gray-500 w-5 text-center"></i>
+                                Все требования
+                            </a>
+                    
+                            <a href="analytics.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                                <i class="fas fa-chart-bar mr-3 text-gray-500 w-5 text-center"></i>
+                                Аналитика и отчеты
+                            </a>
+                    
+                            <a href="users.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                                <i class="fas fa-users mr-3 text-gray-500 w-5 text-center"></i>
+                                Команда
+                            </a>
+                    
+                            <a href="settings.html" class="flex items-center px-3 py-3 text-sm font-medium rounded-md sidebar-link">
+                                <i class="fas fa-cog mr-3 text-gray-500 w-5 text-center"></i>
+                                Настройки
+                            </a>
+                        </nav>
+
+                        <div class="mt-8">
+                <h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Проекты</h3>
+                <div class="mt-2 space-y-1" id="projects-list">
+                    <!-- projects will be rendered by JS -->
                 </div>
             </div>
+            
+            <!-- Logout -->
+            <div class="mt-auto pt-6 border-t border-gray-200">
+                <button id="logoutBtn" class="w-full flex items-center px-3 py-3 text-sm font-medium rounded-md text-red-600 hover:bg-red-50">
+                    <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+                    Выход
+                </button>
+            </div>
+                    </div>
+                    </div>
         </div>
 
         <!-- Main Content -->
@@ -344,8 +359,13 @@
             }
 
             const text = await res.text();
+            console.log('[apiFetch] Response text:', text); // ✅ Добавь этот лог
+    console.log('[apiFetch] Response status:', res.status); // ✅ И этот
             let data = null;
-            try { data = text ? JSON.parse(text) : null; } catch (e) { data = null; }
+            try { data = text ? JSON.parse(text) : null; } catch (e) { 
+                        console.error('[apiFetch] JSON parse error:', e);           // ✅ Добавь это
+        console.error('[apiFetch] Failed text:', text.substring(0, 500)); // ✅ И это
+        data = null; }
 
             if (!res.ok) {
                 const msg = (data && (data.details || data.message || data.error)) || `HTTP ${res.status}`;
@@ -803,9 +823,9 @@
                 localStorage.removeItem('currentProjectRole');
                 localStorage.removeItem('token');
                 localStorage.removeItem('token_type');
-                
+                 window.location.href = '/main.html';
                 // Перенаправляем на OAuth2 logout
-                window.location.href = '/oauth2/sign_out';
+                fetch('/oauth2/sign_out', { method: 'GET' }).catch(() => {});
             });
         }
 
@@ -817,15 +837,67 @@
             roleFilter.addEventListener('change', applyRoleFilter);
         }
 
+
+
+
+        // Функция загрузки проектов для сайдбара
+        async function loadProjectsForSidebar() {
+            console.log('[Sidebar] Function called');
+            const projectsList = document.getElementById('projects-list');
+
+             console.log('[Sidebar] Element found:', projectsList);
+            if (!projectsList) {
+        console.log('[Sidebar] projects-list element not found!');
+        return;
+    }
+            try {
+                const response = await apiFetch('/users/me/projects');
+                const projectRoles = response?.project_roles || [];
+
+                console.log('[Sidebar] Loaded projects:', projectRoles.length);
+
+                if (projectRoles.length === 0) {
+                    projectsList.innerHTML = '<p class="px-3 py-2 text-sm text-gray-500">Нет проектов</p>';
+                    return;
+                }
+
+                projectsList.innerHTML = '';
+
+                projectRoles.forEach(item => {
+                    const link = document.createElement('a');
+                        const currentPage = window.location.pathname.split('/').pop() || 'repo.html';
+    
+    // ✅ Используем текущую страницу вместо repo.html
+    link.href = `${currentPage}?project_id=${item.project_id}`;
+                    link.className = 'flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100 transition-colors';
+
+                    // Подсветка текущего проекта
+                    if (item.project_id === projectId) {
+                        link.className = 'flex items-center px-3 py-2 text-sm font-medium rounded-md bg-indigo-50 text-indigo-600';
+                    }
+
+                    link.innerHTML = `
+                <i class="fas fa-folder mr-3 text-gray-400 w-5 text-center"></i>
+                <span class="truncate">${item.project_name}</span>
+            `;
+
+                    projectsList.appendChild(link);
+                });
+            } catch (error) {
+                console.error('[Sidebar] Failed to load projects:', error);
+                projectsList.innerHTML = '<p class="px-3 py-2 text-sm text-red-500">Ошибка загрузки</p>';
+            }
+        }
         // =========================
         // Основная функция инициализации
         // =========================
         async function initializePage() {
             try {
+                 console.log('[Init] projectId:', projectId); 
                 // Обновляем ссылки в сайдбаре
                 updateSidebarLinks();
                 updateActiveSidebarLink();
-                
+                loadProjectsForSidebar();
                 // Получаем роль текущего пользователя
                 currentUserRole = await getCurrentUserRole();
                 console.log('Текущая роль пользователя:', currentUserRole);
